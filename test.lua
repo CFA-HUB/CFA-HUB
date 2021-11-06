@@ -3,27 +3,12 @@
 syn.queue_on_teleport([[
     repeat wait() until game:IsLoaded()
     if game.PlaceId==1730877806 then 
-
-        syn.queue_on_teleport('
-            repeat wait() until game:IsLoaded()
-            if game.PlaceId==1730877806 then 
-                game:GetService("ReplicatedStorage"):WaitForChild("Events")
-            wait(5)
-            print(game:GetService("ReplicatedStorage").Events.reserved:InvokeServer("40W6QKK"))
-            else
-                repeat wait() until game.ReplicatedStorage:FindFirstChild("Stats" .. game.Players.LocalPlayer.Name)
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/test.lua"))()
-            end
-            
-            
-        
-        
-        ')
+        syn.queue_on_teleport('repeat wait()until game:IsLoaded()repeat wait()until game.ReplicatedStorage:FindFirstChild("Stats"..game.Players.LocalPlayer.Name)loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/test.lua"))()')
 
 
         game:GetService("ReplicatedStorage"):WaitForChild("Events")
-    wait(5)
-    print(game:GetService("ReplicatedStorage").Events.reserved:InvokeServer("40W6QKK"))
+        wait(5)
+        print(game:GetService("ReplicatedStorage").Events.reserved:InvokeServer("40W6QKK"))
     else
         repeat wait() until game.ReplicatedStorage:FindFirstChild("Stats" .. game.Players.LocalPlayer.Name)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/test.lua"))()
