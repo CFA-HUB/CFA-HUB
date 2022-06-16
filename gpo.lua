@@ -471,7 +471,7 @@ spawn(function()
     end
 end)
 spawn(function() 
-    while wait(0) do
+    while wait(60) do
         if AutoHaki and game:GetService("ReplicatedStorage").Events.Haki:FireServer("Buso") then 
             UpPoint()
         end 
