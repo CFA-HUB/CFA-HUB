@@ -471,7 +471,7 @@ spawn(function()
     end
 end)
 spawn(function() 
-    while wait(.5) do
+    while wait(0) do
         if AutoHaki and game:GetService("ReplicatedStorage").Events.Haki:FireServer("Buso") then 
             UpPoint()
         end 
@@ -480,7 +480,7 @@ end)
 
 local valid = function() 
     if data.Stats.Level.Value<190 then 
-        return false
+        return falses
     end
     if not game.Players.LocalPlayer.QuestCD.Value and game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible==false then 
         return true
