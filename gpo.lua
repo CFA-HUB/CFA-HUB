@@ -347,6 +347,7 @@ local bringdf=false
 local btns = serv:Channel("Farming")
 local Farm=false
 local AutoPoint = false
+local AutoHaki = false
 
 local drop2 =
     btns:Toggle(
@@ -371,6 +372,19 @@ local drop2 =
       --  tpT(CFrame.new(islandpos[toolmob].pos),nil,CFrame.new(islandpos[toolmob].pos))
        --- noclip=false
     end
+)
+local drop2 =
+    btns:Toggle(
+    "Auto Haki (you don't have haki don't turn it on it will ban you)",
+    false,
+    function(bool)
+       -- print("Cac")
+      -- print(bool)
+       AutoHaki=bool
+      --  tpT(CFrame.new(islandpos[toolmob].pos),nil,CFrame.new(islandpos[toolmob].pos))
+       --- noclip=false
+    end
+)
 
 -- local drop2 =
 --     btns:Toggle(
@@ -451,6 +465,13 @@ local drop2 =
 spawn(function() 
     while wait(.5) do
         if AutoPoint and data.Stats.SkillPoints.Value>0 then 
+            UpPoint()
+        end 
+    end
+end)
+spawn(function() 
+    while wait(60) do
+        if AutoHaki and game:GetService("ReplicatedStorage").Events.Haki:FireServer("Buso") then 
             UpPoint()
         end 
     end
