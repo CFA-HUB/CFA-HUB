@@ -525,7 +525,7 @@ function AttackInCooldown()
     if not func or getfenv(func).script.Parent == nil then
         func=GetClick("MeleeScript",85)
     end
-    return debug.getupvalue(func,12)==4
+    return debug.getupvalue(func,11)>=4
 end
 function Click(type)
     getrenv().require=getgenv().require
