@@ -13,7 +13,13 @@ MucTieu.old=hookfunction(FindNearest,function(a,b)
     if MucTieu.MucTieu then  return MucTieu.MucTieu end
     return MucTieu.old(a,b)
 end)
-local secure_call = (syn and syn.secure_call) or secure_call
+local secure_call = (syn and syn.secure_call) or function(f) 
+
+setthreadcontext(2)
+f()
+setthreadcontext(7)
+
+end
 
 local plr = game.Players.LocalPlayer
 local Settings = {
