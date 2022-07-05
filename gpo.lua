@@ -1,3 +1,6 @@
+
+
+
 local plr = game.Players.LocalPlayer
 local Settings = {
     AutoStat={ Strength=false,
@@ -143,9 +146,12 @@ end
 function IsFishMan(pos)
     return pos.Y < -2000
 end
+
 local thieunang = CFrame.new(-1287.51025, 62.1618462, 248.200958, 0.160935402, -3.94616087e-31, 0.98696506, -1.16209818e-31, 1, 4.18777198e-31, -0.98696506, -1.8209114e-31, 0.160935402)
-setfflag("HumanoidParallelRemoveNoPhysics", "False")
-setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
+if setfflag then 
+    setfflag("HumanoidParallelRemoveNoPhysics", "False")
+    setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
+end
 loadstring([[
 		local old
 		old = hookmetamethod(game, "__namecall", function(...)
@@ -161,6 +167,19 @@ loadstring([[
 			return old(...)
 		end)
 	]])()
+    local tvktrumskid = tostring(math.random(0,100000))
+    function CreateTweenFloat()
+        if not plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
+            local BV = Instance.new("BodyVelocity")
+            BV.Parent = plr.Character.HumanoidRootPart
+            BV.Name = tvktrumskid
+            BV.MaxForce = Vector3.new(100000, 100000, 100000)
+            BV.Velocity = Vector3.new(0, 0, 0)
+        end
+    end
+    
+    local speaker=game.Players.LocalPlayer
+    
 game:GetService("RunService").Stepped:Connect(
     function()
         -- if Settings.WaterWalker and not (tweening or Settings.Farm or Settings.Dungeon) then
@@ -173,13 +192,37 @@ game:GetService("RunService").Stepped:Connect(
         -- else
         --     t.CFrame = CFrame.new(0, -100000, 0)
         -- end
+        if not setfflag or (identifyexecutor and identifyexecutor():upper()=="KRNL") then 
+            if
+            speaker.Character ~= nil and CheckEN("Noclip") and
+                game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
+                game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
+                not plr.PlayerGui:FindFirstChild("DEATHGUI")
+         then
+            CreateTweenFloat()
+    
+            for _, child in pairs(speaker.Character:GetDescendants()) do
+                if child:IsA("BasePart") and child.CanCollide == true then
+                    child.CanCollide = false
+                end
+            end
+        else
+            if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
+               plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
+            end
+        
+        end
+    else
+        if CheckEN("Noclip") then plr.Character.Humanoid:ChangeState(11)
+        end
+        end
         pcall(
             function()
                 -- if CheckEN("Nodrown") then
                 --     plr.Character.HumanoidRootPart.SwimPosition.Position = Vector3.new(0, -2.71834, 0)
                 -- end
-                if CheckEN("Noclip") then plr.Character.Humanoid:ChangeState(11)
-                end
+                
                 if CheckEN("Nodrown") then 
                     plr.Character.HumanoidRootPart.SwimPosition.Position = Vector3.new(0, -2.71834, 0)
                 end
@@ -363,9 +406,18 @@ end
 
 local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
 
+
+
+
+
 local win = lib:Window("CFA Hub - Grand Piece Online",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
 local tab = win:Tab("Farm")
+local executor = identifyexecutor()
+if executor=="Synapse X" or executor=="Krnl" then 
+else
+    lib:Notification("Notification", "Your Exploit Is Not Supported, Our Script's might not working perfectly (Supported Exploit: KRNL,Synapse X)", "Ok")
 
+end
 tab:Toggle("Level Farm",false, function(t)
     Settings.Farm=t
     SetEN("Noclip","Farm",t)
