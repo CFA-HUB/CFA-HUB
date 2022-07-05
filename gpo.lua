@@ -1,3 +1,14 @@
+-- anti afk rac vai lonn
+for i,v in next, getconnections(game.Players.LocalPlayer.Idled) do
+    v:Disable()
+end
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    wait(1)
+    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+
 local FindNearest
 for k,v in pairs(getgc()) do 
     if debug.getinfo(v).name=="FindNearest" and tostring(getfenv(v).script)=="Hitbox" then 
