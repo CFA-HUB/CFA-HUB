@@ -603,7 +603,7 @@ end
                                 Settings.AutoBuso=t
                                 --SetEN("Nodrown","Setting",t)
                                 end)
-                                tab:Dropdown("Auto Buso Method",{"Enable Everytime","Enable When Stand Near Mob"}, function(t)
+                                tab:Dropdown("Auto Buso Method",{"Always Enable","Enable When Stand Near Mob"}, function(t)
                                     Settings.BusoMethod=t
                                     end)
                                     function IsBusoActivated() 
