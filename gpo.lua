@@ -1,5 +1,19 @@
-
-
+local FindNearest
+for k,v in pairs(getgc()) do 
+    if debug.getinfo(v).name=="FindNearest" and tostring(getfenv(v).script)=="Hitbox" then 
+        FindNearest=v  
+        break;
+    end
+end
+if not FindNearest then 
+    game.Players.LocalPlayer:Kick("Script error when loading, rejoin and try again")
+end
+MucTieu = {}
+MucTieu.old=hookfunction(FindNearest,function(a,b) 
+    if MucTieu.MucTieu then  return MucTieu.MucTieu end
+    return MucTieu.old(a,b)
+end)
+local secure_call = (syn and syn.secure_call) or secure_call
 
 local plr = game.Players.LocalPlayer
 local Settings = {
@@ -117,7 +131,28 @@ local RiflePath = {
     }
 }
 
-
+local BusoFarm = {
+    [1] = {
+        Mob = "Yeti",
+        RiflePos = CFrame.new(
+            -6770.1044921875, 96.480255126953, 2113.1389160156
+        ),
+        Mobpos=CFrame.new(-6684.44, 10, 1828.623),
+        Questpos = CFrame.new(
+            -6566.0034179688, 169.4822845459, 1995.3051757813
+        ),
+        Quest = "Help becky",
+        Spawn = CFrame.new(
+            -1314.5081787109, 10.434856414795, 1113.4360351563
+        ),
+        Island = "Sandora",
+        LevelReq = 80,
+        CooldownY=52.4,
+        SwordY=68,
+        LevelRequest=80
+        
+    }
+}
 function CheckQuest(a, b,d)
     if d=="Buso" then return BusoFarm[1] end
     local index = math.huge
@@ -162,6 +197,10 @@ loadstring([[
 			end
 			if CheckEN("DashNoStam")
 			and tostring(Self) == "takestam" then
+				return nil
+			end
+			if  CheckEN("Nodrown")
+			and tostring(Self) == "swim" then
 				return nil
 			end
             local args = {...}
@@ -234,7 +273,7 @@ game:GetService("RunService").Stepped:Connect(
         )
     end
 )
-local vt = 120
+local vt = 100
 function RayCast2(a, b, c)
     local ignored = {game.Players.LocalPlayer.Character, game:GetService("Workspace").Effects, part0}
 
@@ -370,9 +409,16 @@ function TpTween(cf)
     SetEN("Nodrown","Tween",false)
 
 end
-local FishUp = CFrame.new(8580.072265625, -2138.8325195313, -17087.634765625)
-
+local FishUp = CFrame.new(8585.81641, -2136.12305, -17087.8145, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+function FireTouch(part) 
+    if plr.Character:FindFirstChild("HumanoidRootPart") then 
+        firetouchinterest(plr.Character:WaitForChild("HumanoidRootPart"), part, 0)
+        firetouchinterest(plr.Character:WaitForChild("HumanoidRootPart"), part, 1)    
+    end
+     
+end
 function Tp(pos,spt,par)
+    if Last then Last() Last=nil end
     if plr.Character:FindFirstChild("HumanoidRootPart") then
         if (plr.Character.HumanoidRootPart.Position - pos.p).magnitude < 25 then
             plr.Character.HumanoidRootPart.CFrame = pos
@@ -381,10 +427,11 @@ function Tp(pos,spt,par)
     end
     if IsFishMan(pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
         TpTween(pos,sp,part)
-        return
     end
     if not IsFishMan(pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
         TpTween(FishUp,sp,part)
+        FireTouch(game:GetService("Workspace").Fishman.Part2)
+
         wait(1)
         if not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then 
             TpTween(pos,sp,part)
@@ -392,7 +439,9 @@ function Tp(pos,spt,par)
        
     end
     if IsFishMan(pos) and not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
-        TpTween(CFrame.new(5638.99, -90, -16611.217),sp,part)
+        TpTween(CFrame.new(5639.86865, -92.762001, -16611.4688, -1, 0, 0, 0, 1, 0, 0, 0, -1),sp,part)
+        FireTouch(game:GetService("Workspace").Fishman.Part)
+
         wait(1)
         if IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then 
             TpTween(pos,sp,part)
@@ -418,7 +467,7 @@ local win = lib:Window("CFA Hub - Grand Piece Online",Color3.fromRGB(44, 120, 22
 local tab = win:Tab("Farm")
 local executor = identifyexecutor()
 
-if executor=="Synapse X" or executor=="Krnl" then 
+if (executor=="Synapse X" or executor=="Krnl") and secure_call then 
 else
     lib:Notification("Notification", "Your Exploit Is Not Supported, Our Script's might not working perfectly (Supported Exploit: KRNL,Synapse X)", "Ok")
 
@@ -427,9 +476,13 @@ tab:Toggle("Level Farm",false, function(t)
     Settings.Farm=t
     SetEN("Noclip","Farm",t)
     end)
+   
     tab:Dropdown("Level Farm Method",{"Rifle","Sword"}, function(t)
         Settings.FarmMode=t
         end)
+        tab:Toggle("Auto Buso Quest (Must Enable With Level Farm)",false, function(t)
+           Settings.AutoBusoQuest=t
+            end)
         local tab = win:Tab("Auto Stats")
         for k,v in pairs(Settings.AutoStat) do 
             tab:Toggle(k,v, function(t)
@@ -477,6 +530,48 @@ tab:Toggle("Level Farm",false, function(t)
         for k,v in pairs(LocationsCoord) do 
             table.insert(rac,k)
         end
+
+function WTS(part, toggle)
+    local screen = workspace.CurrentCamera:WorldToViewportPoint(part)
+    return Vector2.new(screen.x, screen.y)
+end
+local esplist = {}
+game:GetService("RunService").Stepped:connect(
+        function()
+           for k,v in pairs(esplist) do v() end
+        end
+    )
+function ESP(part, text, color, toggle)
+    local name = Drawing.new("Text")
+    name.Text = text
+    name.Color = color
+    name.Position = WTS(part)
+    name.Size = 20.0
+    name.Outline = true
+    name.Center = true
+    name.Visible = true
+
+    table.insert(esplist,function() 
+        pcall(
+            function()
+                if part ~= nil then
+                    name.Position = WTS(part)
+                end
+                local _, screen = workspace.CurrentCamera:WorldToViewportPoint(part)
+                if screen and Settings[toggle] then
+                    name.Visible = true
+                else
+                    name.Visible = false
+                end
+            end
+        )
+    end)
+end
+for k, v in pairs(LocationsCoord) do
+    
+    ESP(Vector3.new(v.X, v.Y, v.Z), k, Color3.fromRGB(255, 255, 255), "IslandE")
+end
+
         tab:Dropdown("Teleport",rac, function(rac)
             Tp(LocationsCoord[rac])
             end)
@@ -493,6 +588,10 @@ tab:Toggle("Level Farm",false, function(t)
                         Settings.NoFallDame=t
                         SetEN("DashNoStam","Setting",t)
                         end)
+                        tab:Toggle("Island ESP",false, function(t)
+                            Settings.IslandE=t
+                            --SetEN("Nodrown","Setting",t)
+                            end)
             function GetQuest(quest,rac)
                 local t = tick()
                 repeat
@@ -555,6 +654,12 @@ setmetatable(
         end
     }
 )
+function GetCurrentQuest() 
+    local rac 
+    secure_call(function() local v1, v2, v3, v4, v5 = require(game.ReplicatedStorage.Modules.ScriptSet).get();
+      rac=v5 end,game.Players.LocalPlayer.Backpack.MeleeScript)
+    return tostring(rac.Quest.CurrentQuest.Value)
+end
             local funcr
 function GetReload()
     for k, v in pairs(getgc()) do
@@ -776,8 +881,14 @@ while wait() do
             end
 
             local Dt = CheckQuest()
-            if Settings.AutoBusoQuest and data.Stats.BusoMastery.Value==0 and data.Stats.Level.Value>80 and data.Stats.Peli.Value>25000 and Settings.FarmMode=="Sword" then 
-                Dt=CheckQuest(nil,nil,"Buso")
+            if Settings.AutoBusoQuest and data.Stats.BusoMastery.Value==0 and data.Stats.Level.Value>80 then 
+                if GetCurrentQuest()=="Road to Armament" then 
+                    Dt=CheckQuest(nil,nil,"Buso")
+                else
+                    if data.Stats.Peli.Value>25000 then 
+                        Dt=CheckQuest(nil,nil,"Buso")
+                    end
+                end
             end
             local mob = Dt.Mob
             local Quest = Dt.Questpos
@@ -792,7 +903,7 @@ while wait() do
                 Tp(Dt.Mobpos)
             end
             if game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == true then
-                if olddd and olddd ~= Dt then
+                if olddd and olddd ~= Dt and Dt.Mob~="Yeti" then
                     -- Script generated by TurtleSpy, made by Intrer#0421
 
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
@@ -821,7 +932,7 @@ while wait() do
                      then
 
                         
-
+                        MucTieu.MucTieu=v.HumanoidRootPart
                         AutoClick = true
                         local orgin = v.HumanoidRootPart.Position.Y
                         
@@ -903,7 +1014,7 @@ while wait() do
                                   
                                 end
                                
-                                if true or not AttackInCooldown() then
+                                if not AttackInCooldown() then
                                     local dist = -1
                                 if Settings.FarmMode=="Black Leg" then 
                                     dist=14
@@ -922,13 +1033,16 @@ while wait() do
                                 
                                 local oldstate=curstate
                                 if Settings.FarmMode~="Black Leg" then 
-                                    if AttackInCooldown and tick()-lastclick>0.6 then 
+                                    if AttackInCooldown() and tick()-lastclick>0.6 then 
                                         if Dt.CooldownY then 
                                             cf= CFrame.new(cf.X,Dt.CooldownY,cf.Z)
                                             curstate=0
                                         end
                                     else
                                         curstate=1
+                                        if Dt.Mob=="Yeti" then 
+                                            cf= cf+Vector3.new(0,-1,0)
+                                        end
                                         if v.Humanoid.Jump or v:FindFirstChild("Tvk") then
                                             if Dt.Mob=="Yeti" then cf=cf+Vector3.new(0,3,0) else  
                                             cf= cf+Vector3.new(0,6,0)
@@ -945,7 +1059,7 @@ while wait() do
                                         
                                     end
                                 end
-                                print(curstate,oldstate)
+                               -- print(curstate,oldstate)
                                 if oldstate==0 and curstate==1 then 
                                     lastup=tick()
                                     print("Changed")
@@ -974,15 +1088,27 @@ while wait() do
                     end
                 end
             end
+            MucTieu.MucTieu=nil
         elseif Settings.FarmMode == "Rifle" or Settings.FarmMode=="Suke" then
             local questdata = CheckQuest("Rifle")
+            if Settings.AutoBusoQuest and data.Stats.BusoMastery.Value==0 and data.Stats.Level.Value>80 then 
+                if GetCurrentQuest()=="Road to Armament" then 
+                    questdata=CheckQuest(nil,nil,"Buso")
+                else
+                    if data.Stats.Peli.Value>25000 then 
+                        questdata=CheckQuest(nil,nil,"Buso")
+                    end
+                end
+            end
+            
+
             if data.Stats.SpawnPoint.Value ~= questdata.Island then
                 Tp(questdata.Spawn)
                 GetQuest(questdata.Quest,true)
             end
 
             if game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == true then
-                if olddd and olddd ~= questdata then
+                if olddd and olddd ~= questdata and questdata.Mob~="Yeti" then
                     -- Script generated by TurtleSpy, made by Intrer#0421
 
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
@@ -998,8 +1124,8 @@ while wait() do
                 GetQuest(questdata.Quest,true)
             end
             olddd = questdata
-
-            Tp(questdata.Mobpos)
+            local pos = questdata.RiflePos or questdata.Mobpos
+            Tp(pos)
 
             for k, v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
                 if
@@ -1013,11 +1139,11 @@ while wait() do
                         v:FindFirstChild("Head") and
                         v.Humanoid.Health > 0
                  then
-                    Tp(questdata.Mobpos)
+                    Tp(pos)
                     local tkk = tick()
                     repeat
                         wait()
-                        Tp(questdata.Mobpos)
+                        Tp(pos)
                         if
                            Settings.FarmMode=="Rifle" and game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Rifle") and
                                 game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
