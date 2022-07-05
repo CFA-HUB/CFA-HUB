@@ -164,6 +164,10 @@ loadstring([[
 			and tostring(Self) == "takestam" then
 				return nil
 			end
+            local args = {...}
+            if getnamecallmethod()=="InvokeServer" and tostring(Self)=="Skill" and args[2]=="Blocking " then
+                return
+            end
 			return old(...)
 		end)
 	]])()
@@ -413,6 +417,8 @@ local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scri
 local win = lib:Window("CFA Hub - Grand Piece Online",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
 local tab = win:Tab("Farm")
 local executor = identifyexecutor()
+lib:Notification("Notification", "Your Exploit Is Not Supported, Our Script's might not working perfectly (Supported Exploit: KRNL,Synapse X)", "Ok")
+
 if executor=="Synapse X" or executor=="Krnl" then 
 else
     lib:Notification("Notification", "Your Exploit Is Not Supported, Our Script's might not working perfectly (Supported Exploit: KRNL,Synapse X)", "Ok")
