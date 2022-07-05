@@ -42,6 +42,7 @@ getrenv()._G.hitbox.start=function(...)
     return old(unpack(arg)) 
 end
 local data = game.ReplicatedStorage["Stats" .. game.Players.LocalPlayer.Name]
+print(data.Stats.SpawnPoint.Value)
 local path = {
     [1] = {
         Mob = "Fishman Karate User",
@@ -487,8 +488,8 @@ tab:Toggle("Level Farm",false, function(t)
         Settings.FarmMode=t
         end)
         tab:Toggle("Auto Buso Quest (Must Enable With Level Farm)",false, function(t)
-           Settings.AutoBusoQuest=t
-            end)
+            Settings.AutoBusoQuest=t
+             end)
         local tab = win:Tab("Auto Stats")
         for k,v in pairs(Settings.AutoStat) do 
             tab:Toggle(k,v, function(t)
@@ -598,6 +599,52 @@ end
                             Settings.IslandE=t
                             --SetEN("Nodrown","Setting",t)
                             end)
+                            tab:Toggle("Auto Enable Buso Haki",false, function(t)
+                                Settings.AutoBuso=t
+                                --SetEN("Nodrown","Setting",t)
+                                end)
+                                tab:Dropdown("Auto Buso Method",{"Enable Everytime","Enable When Stand Near Mob"}, function(t)
+                                    Settings.BusoMethod=t
+                                    end)
+                                    function IsBusoActivated() 
+                                        if not plr.Character then return false end
+                                        for k,v in pairs(plr.Character:GetChildren()) do 
+                                            if string.match(v.Name,"Buso") then 
+                                                return true
+                                            end
+                                        end
+                                        return false
+                                    end
+                                    spawn(function() 
+                                        while wait(1) do 
+                                            if Settings.AutoBuso and data.Stats.BusoMastery.Value>0 then 
+                                                local a = true 
+                                                if Settings.BusoMethod=="Enable When Stand Near Mob" then 
+                                                    local function GetAllNearMob() 
+                                                        for k,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do 
+                                                            if v:FindFirstChild("Humanoid") and v.Humanoid:IsA("Humanoid") and v:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("HumanoidRootPart") then 
+                                                                if (v.HumanoidRootPart.Position-plr.Character.HumanoidRootPart.Position).magnitude<50 then 
+                                                                    return true
+                                                                end
+                                                            end
+                                                        end
+                                                        return false
+                                                    end
+                                                    if GetAllNearMob() then 
+                                                        a=true
+                                                    else
+                                                        if IsBusoActivated() then 
+                                                            game:GetService("ReplicatedStorage").Events.Haki:FireServer("Buso")
+                                                        end
+                                                        a=false
+                                                    end
+                                                end
+                                                if a and not IsBusoActivated() then
+                                                    game:GetService("ReplicatedStorage").Events.Haki:FireServer("Buso")
+                                                end
+                                            end
+                                        end
+                                    end)
             function GetQuest(quest,rac)
                 local t = tick()
                 repeat
@@ -610,7 +657,7 @@ end
                     repeat
                         wait()
                         if plr.Character:FindFirstChild("HumanoidRootPart") and rac then 
-                            plr.Character.HumanoidRootPart.CFrame= cur+Vector3.new(0,-13,0)
+                            plr.Character.HumanoidRootPart.CFrame= cur+Vector3.new(0,-11,0)
                         end
                         pcall(
                             function()
@@ -760,7 +807,7 @@ function ClickR(type)
     -- print(getfenv(func).script.Parent,getfenv(func).script,getfenv(func).script:GetFullName())
     if not funcr or getfenv(funcr).script.Parent == nil then
         funcr = GetClickGun()
-        print(funcr)
+        --print(funcr)
     end
     spawn(
         function()
