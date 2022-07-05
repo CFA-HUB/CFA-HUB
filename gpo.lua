@@ -143,6 +143,7 @@ end
 function IsFishMan(pos)
     return pos.Y < -2000
 end
+local thieunang = CFrame.new(-1287.51025, 62.1618462, 248.200958, 0.160935402, -3.94616087e-31, 0.98696506, -1.16209818e-31, 1, 4.18777198e-31, -0.98696506, -1.8209114e-31, 0.160935402)
 setfflag("HumanoidParallelRemoveNoPhysics", "False")
 setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
 loadstring([[
@@ -665,7 +666,7 @@ function CountNear(mob,mag,k)
     local c = 0
     for k,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do 
         if v.Name==mob then 
-            if plr.Character:FindFirstChild("HumanoidRootPart") then 
+            if plr.Character:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("HumanoidRootPart") then 
                 -- local c = false
                 -- if not k then 
                 --     c=true
