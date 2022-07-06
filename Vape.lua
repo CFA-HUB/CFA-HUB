@@ -684,7 +684,7 @@ function lib:Window(text, preset, closebind)
             return {
                 SetValue = function(cac)
                     if cac==toggled then return end
-                    if cac == false then
+                    if cac == true then
                         TweenService:Create(
                             Toggle,
                             TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
