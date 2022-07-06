@@ -1005,7 +1005,7 @@ function AttackInCooldown()
     if not func or getfenv(func).script.Parent == nil then
         func = GetClick("MeleeScript", 85)
     end
-    return debug.getupvalue(func, 11) >= 4
+    return debug.getupvalue(func, 11) >= 3
 end
 function Click(type)
     getrenv().require = getgenv().require
@@ -1063,8 +1063,14 @@ function ClickR(type)
     end
     spawn(
         function()
-            funcr(g, false)
-            Reload()
+            local s,e =pcall(function() 
+                funcr(g, false)
+                Reload()
+            end)
+            if not s then 
+                funcr=nil
+                reloadfunc=nil
+            end
         end
     )
 end
@@ -1380,6 +1386,8 @@ while wait() do
                                             lastclick = tick()
                                         end
                                     end
+                                else
+                                    
                                 end
 
                                 local oldstate = curstate
@@ -1394,7 +1402,7 @@ while wait() do
                                         if Dt.Mob == "Yeti" then
                                             cf = cf + Vector3.new(0, -1, 0)
                                         end
-                                        if v.Humanoid.Jump or v:FindFirstChild("Tvk") then
+                                        if v:FindFirstChild("Humanoid") and v.Humanoid.Jump or v:FindFirstChild("Tvk") then
                                             if Dt.Mob == "Yeti" then
                                                 cf = cf + Vector3.new(0, 3, 0)
                                             else
