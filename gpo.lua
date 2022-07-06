@@ -558,7 +558,14 @@ tab:Toggle(
         SetEN("Noclip", "Farm", t)
     end
 )
-
+-- tab:Toggle(
+--     "Cụt tay",
+--     false,
+--     function(t)
+--         Settings.Farm = t
+--         SetEN("Noclip", "Farm", t)
+--     end
+-- )
 local function GetNearestChest()
 	local Chest
 	for i, v in ipairs(game.workspace.Env:GetChildren()) do
@@ -1458,7 +1465,7 @@ while wait() do
 
             if data.Stats.SpawnPoint.Value ~= questdata.Island then
                 Tp(questdata.Spawn)
-                GetQuest(questdata.Quest, true)
+                GetQuest(questdata.Quest)
             end
 
             if game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == true then
