@@ -558,14 +558,14 @@ tab:Toggle(
         SetEN("Noclip", "Farm", t)
     end
 )
-tab:Toggle(
-    "1 Click Auto Farm",
-    false,
-    function(t)
-        Settings.Farm = t
-        SetEN("Noclip", "Farm", t)
-    end
-)
+-- tab:Toggle(
+--     "1 Click Auto Farm",
+--     false,
+--     function(t)
+--         Settings.Farm = t
+--         SetEN("Noclip", "Farm", t)
+--     end
+-- )
 local function GetNearestChest()
 	local Chest
 	for i, v in ipairs(game.workspace.Env:GetChildren()) do
