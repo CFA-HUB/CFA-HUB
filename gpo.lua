@@ -1614,11 +1614,11 @@ while wait() do
                                 game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Rifle")
                             )
                         end
-                        if v:FindFirstChild("HumanoidRootPart") then
+                        if v:FindFirstChild("Head") then
                             if Settings.FarmMode == "Rifle" then
-                                Shoot(v.HumanoidRootPart.CFrame)
+                                Shoot(v.Head.CFrame)
                             else
-                                ShootSuke(v.HumanoidRootPart.CFrame)
+                                ShootSuke(v.Head.CFrame)
                             end
                         end
                     until -- local ohString1 = "fire"
