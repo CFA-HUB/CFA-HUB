@@ -558,14 +558,14 @@ tab:Toggle(
         SetEN("Noclip", "Farm", t)
     end
 )
--- tab:Toggle(
---     "Cụt tay",
---     false,
---     function(t)
---         Settings.Farm = t
---         SetEN("Noclip", "Farm", t)
---     end
--- )
+tab:Toggle(
+    "1 Click Auto Farm",
+    false,
+    function(t)
+        Settings.Farm = t
+        SetEN("Noclip", "Farm", t)
+    end
+)
 local function GetNearestChest()
 	local Chest
 	for i, v in ipairs(game.workspace.Env:GetChildren()) do
@@ -1012,7 +1012,7 @@ function AttackInCooldown()
     if not func or getfenv(func).script.Parent == nil then
         func = GetClick("MeleeScript", 85)
     end
-    return debug.getupvalue(func, 11) >= 3
+    return debug.getupvalue(func, 11) >=4
 end
 function Click(type)
     getrenv().require = getgenv().require
