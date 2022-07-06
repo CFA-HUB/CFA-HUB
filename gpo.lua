@@ -683,7 +683,7 @@ spawn(function()
                         else
                             Tp(CFrame.new(982.9542846679688, 41.349090576171875, 1264.251708984375))
                         end
-                    until GetCurrentQuest()=="None" or tick()-t>20 or data.Quest.QuestProgress.Value==1
+                    until GetCurrentQuest()=="None" or tick()-t>20 or data.Quest.QuestProgress.Value==1 or not Settings.Chest
                     game.Players.LocalPlayer.CameraMaxZoomDistance = old2
                     game.Players.LocalPlayer.CameraMinZoomDistance = old  
                     Tp(cac)
