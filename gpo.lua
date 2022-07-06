@@ -10,7 +10,10 @@ game:GetService("Players").LocalPlayer.Idled:connect(
         vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
     end
 )
-
+local SwordPos = CFrame.new(5410.0478515625, 155.58578491210938, -5168.189453125)
+function BuyKatana() 
+    fireclickdetector(game:GetService("Workspace").BuyableItems.Katana.ShopPart.ClickDetector)
+end
 local FindNearest
 for k, v in pairs(getgc()) do
     if debug.getinfo(v).name == "FindNearest" and tostring(getfenv(v).script) == "Hitbox" then
@@ -272,7 +275,7 @@ game:GetService("RunService").Stepped:Connect(
         -- else
         --     t.CFrame = CFrame.new(0, -100000, 0)
         -- end
-        if not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") then
+        if true or not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") or true then
             if
                 speaker.Character ~= nil and CheckEN("Noclip") and
                     game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
@@ -362,7 +365,10 @@ function Tween2(t, cb)
             tween:Play()
             while (done == false) do
                 SetEN("Noclip", "Tween", true)
-
+                if not plr.Character:FindFirstChild("Humanoid") then return end
+                if plr.Character.Humanoid.Sit then
+                    plr.Character.Humanoid.Sit = false
+                end
                 wait()
             end
             noclip = false
@@ -406,7 +412,6 @@ function tpT(t,k,cur,dieukien)
         tween:Cancel()
         done = true
         SetEN("Noclip", "Tween", false)
-
     end
     Last = Stop
     while (done == false) do
@@ -416,6 +421,7 @@ function tpT(t,k,cur,dieukien)
         if plr:FindFirstChild("DEATHGUI") then
             return
         end
+        if not plr.Character:FindFirstChild("Humanoid") then Stop() return end
         if plr.Character.Humanoid.Sit then
             plr.Character.Humanoid.Sit = false
         end
@@ -536,7 +542,7 @@ function Tp(pos, checkfunc)
 end
 --tpT(CFrame.new(-1316.089, 15, 1129.95))
 
-local lib = loadstring(game:HttpGet "https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
+local lib = loadstring(game:HttpGet "https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/Vape.lua")()
 
 local win = lib:Window("CFA Hub - Grand Piece Online", Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
 local tab = win:Tab("Farm")
@@ -550,22 +556,50 @@ else
         "Ok"
     )
 end
-tab:Toggle(
+local lf = tab:Toggle(
     "Level Farm",
     false,
     function(t)
         Settings.Farm = t
         SetEN("Noclip", "Farm", t)
+        SetEN("NoFallDame","Farm",t)
     end
 )
--- tab:Toggle(
---     "1 Click Auto Farm",
---     false,
---     function(t)
---         Settings.Farm = t
---         SetEN("Noclip", "Farm", t)
---     end
--- )
+function GetSword()
+    for k, v in pairs(plr.Character:GetChildren()) do
+        if v:FindFirstChild("SwordEquip") then
+            return v, true
+        end
+    end
+    for k, v in pairs(plr.Backpack:GetChildren()) do
+        if v:FindFirstChild("SwordEquip") then
+            return v, false
+        end
+    end
+end
+local olf =tab:Toggle(
+    "1 Click Level Farm",
+    false,
+    function(t)
+        SetEN("Noclip", "OneClick", t)
+        SetEN("NoFallDame","OneClick",t)
+        Settings.OneClick = t
+    
+        --SetEN("Noclip", "Farm", t)
+    end
+)
+function CheckInven(item) 
+    local cac = game:GetService("HttpService"):JSONDecode(data.Inventory.Inventory.Value)
+    for k,v in pairs(cac) do 
+        if k==item then 
+            return k
+        end
+    end
+end
+function GetRifle() 
+    return game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Rifle") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("Rifle") 
+end
+
 local function GetNearestChest()
 	local Chest
 	for i, v in ipairs(game.workspace.Env:GetChildren()) do
@@ -601,7 +635,7 @@ function CollectChest(chest)
         wait(1)
         for i, v in ipairs(game.workspace.Env:GetChildren()) do 
             if v:FindFirstChild("ClickDetector") then 
-                if (v.Position - plr.Character.HumanoidRootPart.Position).magnitude < 5 then 
+                if (v.Position - plr.Character.HumanoidRootPart.Position).magnitude <10 then 
                     fireclickdetector(v.ClickDetector, 2)
                 end
             end
@@ -711,14 +745,79 @@ tab:Dropdown(
         Settings.FarmMode = t
     end
 )
-tab:Toggle(
+local AFB = tab:Toggle(
     "Auto Farm Beli (For Begginners Only)",
     false,
     function(t)
         Settings.Chest = t
         SetEN("Noclip", "Chest", t)
+        SetEN("NoFallDame","Chest",t)
     end
 )
+spawn(function() 
+    while wait() do 
+        local mode
+        local price
+        local GetItem
+        local BuyItem
+        local Pos
+        if Settings.FarmMode=="Sword" then
+             mode="Katana" 
+             price=1000 
+             GetItem = GetSword 
+             BuyItem=BuyKatana 
+             Pos = SwordPos 
+        end
+        if Settings.FarmMode=="Rifle" then
+            mode="Rifle" 
+            price=300 
+            GetItem=GetRifle 
+            BuyItem=function()  
+                fireclickdetector(game:GetService("Workspace").BuyableItems.Rifle.ShopPart.ClickDetector) 
+            end 
+            Pos = CFrame.new(999.6433715820312, 9.092554092407227, 1133.33740234375) 
+        end
+       
+        if Settings.OneClick and mode then 
+            lf.SetValue(false)
+            if not GetItem() and not CheckInven(mode) then
+                if data.Stats.Peli.Value < price then 
+                    AFB.SetValue(true)
+                else
+                    AFB.SetValue(false)
+                    Tp(Pos)
+                    wait(5)
+                    local t = tick()
+                    repeat
+                        wait(1)
+                        pcall(BuyItem)
+                    until game.Players.LocalPlayer.PlayerGui:FindFirstChild("NPCCHAT") or tick() - t > 3
+                    repeat wait()
+                        pcall(
+                            function()
+                                for k, v in pairs(
+                                    getconnections(
+                                        game.Players.LocalPlayer.PlayerGui:FindFirstChild("NPCCHAT").Frame.go.MouseButton1Click
+                                    )
+                                ) do
+                                    v:Fire()
+                                end
+                            end
+                        )
+                    until not game.Players.LocalPlayer.PlayerGui:FindFirstChild("NPCCHAT")
+                end
+            else
+                if CheckInven(mode) then 
+                    game:GetService("ReplicatedStorage").Events.Tools:InvokeServer("equip", mode)
+                end
+                AFB.SetValue(false)
+                lf.SetValue(true)
+                olf.SetValue(false)
+            end
+        end
+    end
+end)
+
 tab:Toggle(
     "Auto Buso Quest (Must Enable With Level Farm)",
     false,
