@@ -650,8 +650,6 @@ end
 spawn(function() 
     while wait() do 
         if Settings.Chest then 
-            
-
             if not game.Players.LocalPlayer.QuestCD.Value then 
                 local cac = CFrame.new(1009.720458984375, 8.999988555908203, 1179.4952392578125)
                 local old = plr.CameraMinZoomDistance
@@ -873,6 +871,22 @@ tab:Dropdown(
         Settings.BusoMethod = t
     end
 )
+local ws = 16
+tab:Slider("WalkSpeed Changer",16,150,1, function(t)
+    ws=t
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed=ws
+    end)
+spawn(function() 
+    while wait(1) do 
+        pcall(function() 
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed=ws
+        end)
+    end
+end)
+local tab = win:Tab("Settings")
+tab:Slider("Tween Speed (Higher = more risk)",50,120,(100/120)*100, function(t)
+   vt=t
+    end)
 function IsBusoActivated()
     if not plr.Character then
         return false
