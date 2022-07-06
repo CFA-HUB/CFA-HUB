@@ -650,48 +650,49 @@ end
 spawn(function() 
     while wait() do 
         if Settings.Chest then 
-            if not game.Players.LocalPlayer.QuestCD.Value then 
-                local cac = CFrame.new(1009.720458984375, 8.999988555908203, 1179.4952392578125)
-                local old = plr.CameraMinZoomDistance
-                local old2 = plr.CameraMaxZoomDistance
-
-                if GetCurrentQuest()~="Find Sarah's necklace" then 
-                    if GetCurrentQuest()~="None" then 
-                        game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
-                    end
-                    Tp(cac)
-                    GetQuest("Sarah", true)
-                end
-                plr.CameraMinZoomDistance = 128
-                game.Players.LocalPlayer.CameraMaxZoomDistance = 256
-                game.Players.LocalPlayer.CameraMinZoomDistance = 256
-                Tp(CFrame.new(982.9542846679688, 41.349090576171875, 1264.251708984375))
-                local t = tick()
-                repeat wait() 
-                    local cac = GetNeak()
-                    if cac then 
-                        local rac = cac.CFrame+Vector3.new(0,5,0)
-                        Tp(CFrame.new(rac.X,rac.Y,rac.Z))
-                        wait(1)
-                        if cac:FindFirstChild("ClickDetector") then 
-                            fireclickdetector(cac.ClickDetector,2)
-                        end
-                    else
-                        Tp(CFrame.new(982.9542846679688, 41.349090576171875, 1264.251708984375))
-                    end
-                until GetCurrentQuest()=="None" or tick()-t>20 or data.Quest.QuestProgress.Value==1
-                game.Players.LocalPlayer.CameraMaxZoomDistance = old2
-                game.Players.LocalPlayer.CameraMinZoomDistance = old  
-                Tp(cac)
-                GetQuest("Sarah", true)  
+            local chest = GetNearestChest()
+            if chest then 
+                CollectChest(chest)
             else
-                local chest = GetNearestChest()
-                if chest then 
-                    CollectChest(chest)
+                if not game.Players.LocalPlayer.QuestCD.Value then 
+                    local cac = CFrame.new(1009.720458984375, 8.999988555908203, 1179.4952392578125)
+                    local old = plr.CameraMinZoomDistance
+                    local old2 = plr.CameraMaxZoomDistance
+    
+                    if GetCurrentQuest()~="Find Sarah's necklace" then 
+                        if GetCurrentQuest()~="None" then 
+                            game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
+                        end
+                        Tp(cac)
+                        GetQuest("Sarah", true)
+                    end
+                    plr.CameraMinZoomDistance = 128
+                    game.Players.LocalPlayer.CameraMaxZoomDistance = 256
+                    game.Players.LocalPlayer.CameraMinZoomDistance = 256
+                    Tp(CFrame.new(982.9542846679688, 41.349090576171875, 1264.251708984375))
+                    local t = tick()
+                    repeat wait() 
+                        local cac = GetNeak()
+                        if cac then 
+                            local rac = cac.CFrame+Vector3.new(0,5,0)
+                            Tp(CFrame.new(rac.X,rac.Y,rac.Z))
+                            wait(1)
+                            if cac:FindFirstChild("ClickDetector") then 
+                                fireclickdetector(cac.ClickDetector,2)
+                            end
+                        else
+                            Tp(CFrame.new(982.9542846679688, 41.349090576171875, 1264.251708984375))
+                        end
+                    until GetCurrentQuest()=="None" or tick()-t>20 or data.Quest.QuestProgress.Value==1
+                    game.Players.LocalPlayer.CameraMaxZoomDistance = old2
+                    game.Players.LocalPlayer.CameraMinZoomDistance = old  
+                    Tp(cac)
+                    GetQuest("Sarah", true)  
                 else
                     
-                end
-            end 
+                end 
+            end
+            
         end 
     end
 end)
