@@ -558,14 +558,7 @@ tab:Toggle(
         SetEN("Noclip", "Farm", t)
     end
 )
-tab:Toggle(
-    "Auto Farm Beli (For Begginners Only)",
-    false,
-    function(t)
-        Settings.Chest = t
-        SetEN("Noclip", "Chest", t)
-    end
-)
+
 local function GetNearestChest()
 	local Chest
 	for i, v in ipairs(game.workspace.Env:GetChildren()) do
@@ -710,6 +703,14 @@ tab:Dropdown(
     {"Rifle", "Sword"},
     function(t)
         Settings.FarmMode = t
+    end
+)
+tab:Toggle(
+    "Auto Farm Beli (For Begginners Only)",
+    false,
+    function(t)
+        Settings.Chest = t
+        SetEN("Noclip", "Chest", t)
     end
 )
 tab:Toggle(
