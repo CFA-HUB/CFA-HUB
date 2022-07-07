@@ -747,7 +747,7 @@ end)
 
 tab:Dropdown(
     "Level Farm Method",
-    {"Rifle", "Sword"},
+    {"Rifle", "Sword","Black Leg"},
     function(t)
         Settings.FarmMode = t
     end
@@ -1327,7 +1327,7 @@ while wait() do
             end
 
             local Dt = CheckQuest()
-            if Settings.AutoBusoQuest and data.Stats.BusoMastery.Value == 0 and data.Stats.Level.Value > 80 then
+            if Settings.AutoBusoQuest and data.Stats.BusoMastery.Value == 0 and data.Stats.Level.Value > 80 and Settings.FarmMode == "Sword" then
                 if GetCurrentQuest() == "Road to Armament" then
                     Dt = CheckQuest(nil, nil, "Buso")
                 else
@@ -1381,6 +1381,7 @@ while wait() do
                             v.Humanoid.Health > 0
                      then
                         MucTieu.MucTieu = v.HumanoidRootPart
+
                         AutoClick = true
                         local orgin = v.HumanoidRootPart.Position.Y
 
@@ -1388,6 +1389,7 @@ while wait() do
                         local curstate = 1 -- 1: UP 0: DOWN
                         local curr = v.HumanoidRootPart.CFrame
                         repeat
+                            MucTieu.MucTieu = v.HumanoidRootPart
                             if
                                 Settings.FarmMode == "Black Leg" and IsSkillUnlocked("Party Table Kick Course") and
                                     CountNear(mob, 15) < CountNear(mob, 1000, true)
@@ -1418,6 +1420,7 @@ while wait() do
                                                     plr.Character.Humanoid:EquipTool(plr.Backpack.BlackLeg)
                                                 end
                                                 local curr = v.HumanoidRootPart.CFrame
+                                                MucTieu.MucTieu = v.HumanoidRootPart
                                                 local cf = CFrame.new(curr.X, Dt.BlackLegY, curr.Z)
                                                 Tp(cf)
                                                 Click()
