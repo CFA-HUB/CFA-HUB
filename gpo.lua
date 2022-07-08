@@ -1,4 +1,50 @@
--- anti afk rac vai lonn
+local request=request
+if syn then request=syn.request end
+local c = false
+local StoringDF = false
+getgenv().Click = function() 
+    c=true
+end
+local g = {
+    KeyCode = Enum.KeyCode.Unknown,
+    UserInputState = Enum.UserInputState.Begin,
+    UserInputType = Enum.UserInputType.MouseButton1
+}
+local func
+function GetClick(x, m)
+    for i, v in ipairs(getgc()) do
+        if tostring(getfenv(v).script) == x and (getfenv(v).script.Parent) ~= nil then
+            if
+                pcall(
+                    function()
+                        getconstant(v, m)
+                    end
+                ) == true
+             then
+                return v
+            end
+        end
+    end
+end
+
+function Clickc()
+    spawn(
+        function()
+            if not func or getfenv(func).script.Parent == nil then
+                func = GetClick("MeleeScript", 85)
+            end
+        func(g,false)
+        end
+    )
+end
+local old
+old=hookmetamethod(game,"__namecall",function(...)
+    if c and not checkcaller() and syn.get_thread_identity()==2 and tostring(getcallingscript())~="MeleeScript" then 
+        Clickc()
+        c=false 
+    end
+    return old(...)    
+end)
 for i, v in next, getconnections(game.Players.LocalPlayer.Idled) do
     v:Disable()
 end
@@ -101,7 +147,8 @@ local path = {
         Island = "Fishman Island",
         LevelReq = 190,
         SwordY = -2189.94,
-        BlackLegY = -2182.94
+        BlackLegY = -2182.94,
+        CooldownY=-2189.94
     }
 }
 local RiflePath = {
@@ -233,6 +280,15 @@ function GetVauDau()
     return banvaudau
 end
 local old
+old = hookfunction(Instance.new("RemoteEvent").FireServer, function(...)
+    local Self = ...
+    if CheckEN("Nodrown")
+    and tostring(Self) == "swim" then
+        return nil
+    end
+    return old(...)
+end)
+local old
 old = hookmetamethod(game, "__namecall", function(...)
     local Self = ...
     if CheckEN("NoFallDame")
@@ -269,6 +325,7 @@ function CreateTweenFloat()
 end
 
 local speaker = game.Players.LocalPlayer
+local StopFloat=false
 
 game:GetService("RunService").Stepped:Connect(
     function()
@@ -284,7 +341,7 @@ game:GetService("RunService").Stepped:Connect(
         -- end
         if true or not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") or true then
             if
-                speaker.Character ~= nil and CheckEN("Noclip") and
+                speaker.Character ~= nil and CheckEN("Noclip") and not StopFloat and
                     game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
                     game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
                     game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
@@ -373,9 +430,7 @@ function Tween2(t, cb)
             while (done == false) do
                 SetEN("Noclip", "Tween", true)
                 if not plr.Character:FindFirstChild("Humanoid") then return end
-                if plr.Character.Humanoid.Sit then
-                    plr.Character.Humanoid.Sit = false
-                end
+                
                 wait()
             end
             noclip = false
@@ -385,7 +440,18 @@ function Tween2(t, cb)
         return err
     end
 end
-
+spawn(function() 
+    while wait() do 
+        if plr.Character:FindFirstChild("Humanoid") then 
+            if plr.Character.Humanoid.Sit then 
+                StopFloat=true
+                wait(.1)
+                plr.Character.Humanoid.Sit=false
+                StopFloat=false
+            end
+        end
+    end
+end)
 local Last
 function tpT(t,k,cur,dieukien)
     --local k=nil;cur=nil
@@ -429,9 +495,7 @@ function tpT(t,k,cur,dieukien)
             return
         end
         if not plr.Character:FindFirstChild("Humanoid") then Stop() return end
-        if plr.Character.Humanoid.Sit then
-            plr.Character.Humanoid.Sit = false
-        end
+        
         wait()
         if sp and not part.Parent then
             return
@@ -452,6 +516,7 @@ function tpT(t,k,cur,dieukien)
             )
             return
         end
+        
         local pos = -2.7848949432373
         if
             not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) and IsSea() and
@@ -476,7 +541,8 @@ function tpT(t,k,cur,dieukien)
                 part
             )
         end
-
+        
+        
         --    if (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
         --     tween:Pause()
 
@@ -490,7 +556,7 @@ function tpT(t,k,cur,dieukien)
         --    -- repeat wait() until (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial ~= Enum.Material.Air)
 
         --     end
-        -- return tpT(CFrame.new(t.X, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y, t.Z), k, cur)
+        --return tpT(CFrame.new(t.X, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y, t.Z), k, cur)
     end
 end
 function TpTween(cf,checkfunc)
@@ -547,31 +613,12 @@ function Tp(pos, checkfunc)
         TpTween(pos,checkfunc)
     end
 end
---tpT(CFrame.new(-1316.089, 15, 1129.95))
+local CFAHub = 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/ui.lua"))()
 
-local lib = loadstring(game:HttpGet "https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/Vape.lua")()
+local Window = CFAHub:CreateWindow("<font color=\"#4FC3F7\">CFA Hub</font>", "Grand Piece Online", true)
 
-local win = lib:Window("CFA Hub - Grand Piece Online", Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
-local tab = win:Tab("Farm")
-local executor = identifyexecutor()
-
-if (executor == "Synapse X" or executor == "Krnl") and secure_call then
-else
-    lib:Notification(
-        "Notification",
-        "Your Exploit Is Not Supported, Our Script's might not working perfectly (Supported Exploit: KRNL,Synapse X)",
-        "Ok"
-    )
-end
-local lf = tab:Toggle(
-    "Level Farm",
-    false,
-    function(t)
-        Settings.Farm = t
-        SetEN("Noclip", "Farm", t)
-        SetEN("NoFallDame","Farm",t)
-    end
-)
+--CFAHub:AddNoti("CFA Hub Premium", "UI Loaded!", 6)
 function GetSword()
     for k, v in pairs(plr.Character:GetChildren()) do
         if v:FindFirstChild("SwordEquip") then
@@ -584,17 +631,6 @@ function GetSword()
         end
     end
 end
-local olf =tab:Toggle(
-    "1 Click Level Farm",
-    false,
-    function(t)
-        SetEN("Noclip", "OneClick", t)
-        SetEN("NoFallDame","OneClick",t)
-        Settings.OneClick = t
-    
-        --SetEN("Noclip", "Farm", t)
-    end
-)
 function CheckInven(item) 
     local cac = game:GetService("HttpService"):JSONDecode(data.Inventory.Inventory.Value)
     for k,v in pairs(cac) do 
@@ -695,6 +731,18 @@ local function GetNeak()
 		end
 	end
 end
+function GetSword()
+    for k, v in pairs(plr.Character:GetChildren()) do
+        if v:FindFirstChild("SwordEquip") then
+            return v, true
+        end
+    end
+    for k, v in pairs(plr.Backpack:GetChildren()) do
+        if v:FindFirstChild("SwordEquip") then
+            return v, false
+        end
+    end
+end
 spawn(function() 
     while wait() do 
         if Settings.Chest then 
@@ -745,22 +793,42 @@ spawn(function()
     end
 end)
 
-tab:Dropdown(
-    "Level Farm Method",
-    {"Rifle", "Sword","Black Leg"},
-    function(t)
-        Settings.FarmMode = t
-    end
-)
-local AFB = tab:Toggle(
-    "Auto Farm Beli (For Begginners Only)",
-    false,
-    function(t)
-        Settings.Chest = t
-        SetEN("Noclip", "Chest", t)
-        SetEN("NoFallDame","Chest",t)
-    end
-)
+local Tab2 = Window:CreatePage("Farm")
+local Section2 = Tab2:CreateSection("Main Farm")
+
+local executor = identifyexecutor()
+
+if (executor == "Synapse X" or executor == "Krnl") and secure_call then
+else
+    CFAHub:AddNoti("Warning", "Your Exploit Is Not Supported, Our Script's might not working perfectly (Supported Exploit: KRNL,Synapse X)", 1)
+end
+local lf = Section2:CreateToggle("Level Farm", {Description = "Will farm at Fishman Island (best way)"}, function(state)
+    Settings.Farm = state
+    SetEN("Noclip", "Farm", state)
+    SetEN("NoFallDame","Farm",state)
+end)
+
+local olf = Section2:CreateToggle("1 Click Level Farm", {Description = "Will auto farm beli -> Buy weapons then start level farm"}, function(state)
+    SetEN("Noclip", "OneClick", state)
+    SetEN("NoFallDame","OneClick",state)
+    Settings.OneClick = state
+end)
+Section2:CreateToggle("Auto Buso Quest", {Description = "Must enable with level farm"}, function(state)
+    AutoBusoQuest=state
+end)
+Section2:CreateDropdown("Level Farm Method", {
+    List = {"Rifle","Sword","Black Leg"},
+    Default = ""
+}, function(item)
+    Settings.FarmMode = item
+end)
+local Section2 = Tab2:CreateSection("Misc Farm")
+local AFB= Section2:CreateToggle("Auto Farm Beli (For Begginer Only)", {Description = "Auto Farm Chest then do Sarah quest"}, function(state)
+    Settings.Chest = state
+    SetEN("Noclip", "Chest", state)
+    SetEN("NoFallDame","Chest",state)
+end)
+
 spawn(function() 
     while wait() do 
         local mode
@@ -800,17 +868,11 @@ spawn(function()
                         pcall(BuyItem)
                     until game.Players.LocalPlayer.PlayerGui:FindFirstChild("NPCCHAT") or tick() - t > 3
                     repeat wait()
-                        pcall(
-                            function()
-                                for k, v in pairs(
-                                    getconnections(
-                                        game.Players.LocalPlayer.PlayerGui:FindFirstChild("NPCCHAT").Frame.go.MouseButton1Click
-                                    )
-                                ) do
-                                    v:Fire()
-                                end
+                        pcall(function()
+                            for k, v in pairs(getconnections(game.Players.LocalPlayer.PlayerGui:FindFirstChild("NPCCHAT").Frame.go.MouseButton1Click)) do
+                                v:Fire()
                             end
-                        )
+                        end)
                     until not game.Players.LocalPlayer.PlayerGui:FindFirstChild("NPCCHAT")
                 end
             else
@@ -824,23 +886,325 @@ spawn(function()
         end
     end
 end)
-
-tab:Toggle(
-    "Auto Buso Quest (Must Enable With Level Farm)",
-    false,
-    function(t)
-        Settings.AutoBusoQuest = t
-    end
-)
-local tab = win:Tab("Auto Stats")
-for k, v in pairs(Settings.AutoStat) do
-    tab:Toggle(
-        k,
-        v,
-        function(t)
-            Settings.AutoStat[k] = t
+function IsSkillUnlocked(skill)
+    if plr.PlayerGui:FindFirstChild("Keys") then
+        if plr.PlayerGui.Keys:FindFirstChild("Frame") then
+            if plr.PlayerGui.Keys.Frame:FindFirstChild(skill) then
+                if plr.PlayerGui.Keys.Frame[skill].TextLabel.TextLabel.Text ~= "???" then
+                    return true
+                end
+            end
         end
-    )
+    end
+    return false
+end
+local Section2 = Tab2:CreateSection("Ship Farm")
+Section2:CreateToggle("Ship Farm", {Description = false}, function(state)
+    Settings.ShipFarm = state
+    SetEN("Noclip", "ShipFarm", state)
+    SetEN("NoFallDame","ShipFarm",state)
+end)
+Section2:CreateDropdown("Ship Farm Method", {
+    List = {"Sword","Black Leg"},
+    Default = ""
+}, function(item)
+    Settings.ShipFarmMode = item
+end)
+Section2:CreateToggle("Kill Cannoners", {Description = false}, function(state)
+    Settings.KillCannon = state
+end)
+-- Section2:CreateToggle("Ignore Galleons", {Description = false}, function(state)
+--     Settings.IgnoreGalleon = state
+-- end)
+Section2:CreateButton("Set Ship Spawn Location", function(args)
+    Settings.ShipPos=game.Players.LocalPlayer.Character.HumanoidRootPart.Position--Vector3.new(6013.2841796875, -3.5988941192626953, -18909.974609375)--
+    CFAHub:AddNoti("Notification", "Set Ship Farm Position Complete", 5)
+end)
+function TpE(e,f)
+    if e:FindFirstChild("HumanoidRootPart") then 
+        repeat wait() 
+        spawn(function() 
+            if e:FindFirstChild("HumanoidRootPart") then 
+                Tp(e.HumanoidRootPart.CFrame*CFrame.new(0, -0.75, 3))
+            end
+        end)
+        until not e:FindFirstChild("HumanoidRootPart") or not pcall(function() return game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame end) or (game.Players.LocalPlayer.Character.HumanoidRootPart.Position-e.HumanoidRootPart.Position).magnitude<5 or not e.Parent or not f()
+    end
+end
+local function KillCaMap()
+    for i, v in ipairs(game.workspace.NPCs:GetChildren()) do
+		if plr.Character:FindFirstChild("HumanoidRootPart") and v.Name == "Shark" and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health ~= 0 then
+			local magnitude = (v.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).magnitude
+			if magnitude < 10 then
+				Click()
+			end
+		end
+    end
+end
+function EquipWpShip() 
+    if StoringDF then return end
+    if Settings.ShipFarmMode == "Black Leg" then
+        if
+            game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                plr.Backpack:FindFirstChild("BlackLeg") 
+         then
+            plr.Character.Humanoid:EquipTool(plr.Backpack.BlackLeg)
+        end
+    else
+        local sword, equip = GetSword()
+        if sword and not equip then
+            if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(sword)
+            end
+        end
+    end
+end
+function GetAllMobInShip(ship) 
+    local Mobs = {}
+    for k,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do 
+        if v:FindFirstChild("assignedShip") and v:FindFirstChild("Humanoid") and v.Humanoid.Health>0 then 
+            if v:FindFirstChild("HumanoidRootPart") then 
+                if v.assignedShip.Value==ship then 
+                    table.insert(Mobs,v)
+                end
+            end
+        end
+    end
+    return Mobs
+end
+
+function Kill(v,f) 
+    local tween=true
+    repeat
+        wait() 
+        EquipWpShip()
+        if v:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then 
+            TpE(v,function() 
+                return tween
+            end) 
+            if v:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (game.Players.LocalPlayer.Character.HumanoidRootPart.Position-v.HumanoidRootPart.Position).magnitude<5 then 
+                --game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.X, false,game)
+                MucTieu.MucTieu = v.HumanoidRootPart
+                Click()
+                if Settings.ShipFarmMode=="Black Leg" then 
+                    if IsSkillUnlocked("Party Table Kick Course") then
+                        if data.Stamina.Value>40 then 
+                            game:GetService("ReplicatedStorage").Events.Skill:InvokeServer("Party Table Kick Course")
+                        end
+                    end
+                end
+                if Settings.ShipFarmMode=="Sword" then 
+                    if IsSkillUnlocked("Rapid Slashes") then
+                        if data.Stamina.Value>20 then 
+                            game:GetService("ReplicatedStorage").Events.Skill:InvokeServer("Rapid Slashes")
+                        end
+                    end
+                end
+                
+            end
+        end
+    until f(v) 
+    MucTieu.MucTieu =nil
+    tween=false
+end
+
+plr.Backpack.ChildAdded:Connect(function(fruit) 
+    if fruit:FindFirstChild("FruitModel") then
+        spawn(function() 
+            if Settings.AutoStoreDF then 
+                local s, DFBackpackOwn = pcall(game:GetService("MarketplaceService").UserOwnsGamePassAsync, game:GetService("MarketplaceService"), plr.UserId, 12776768)
+                if (s and DFBackpackOwn)
+                or string.find(data.Inventory.Inventory.Value, "Fruit Bag") then
+                    local v = fruit
+                    StoringDF=true
+                    local t = tick()
+                    repeat wait()
+                        plr.Character.Humanoid:EquipTool(v)
+                        wait(.5)
+                        if pcall(function() return plr.PlayerGui.storefruit.TextButton end) and plr.PlayerGui.storefruit.TextButton.Visible == true then
+                            FireButton(plr.PlayerGui.storefruit.TextButton)
+                        end
+                    until not v
+                    or not v.Parent
+                    or not Settings.AutoStoreDF or tick()-t>5
+                    StoringDF=false
+                end
+            end
+        end)
+        if Settings.DFWebHook then 
+            if Settings.WebHookUrl then 
+                local msg = {
+                    ["content"] = (Settings.MentionEveryone and "@everyone") or "",
+                    ["embeds"] = {{
+                        ["title"] = "Grand Piece Online",
+                        ["description"] = "Fruit Gotten",
+                        ["type"] = "rich",
+                        ["color"] = tonumber(47103),
+                        ["fields"] = {
+                            {
+                                ["name"] = "Name",
+                                ["value"] = "||" .. plr.Name .. "||",
+                                ["inline"] = false
+                            },
+                            {
+                                ["name"] = "Item",
+                                ["value"] = fruit.Name,
+                                ["inline"] = false
+                            }
+                        },
+                        ["footer"] = {
+                            ["icon_url"] = "https://cdn.discordapp.com/attachments/880433061307772958/994650337485000804/dc6e727bd4a71a981a037834b8c8fe38.png",
+                            ["text"] = "CFA Hub (" .. os.date("%X") .. ")"
+                        }
+                    }}
+                }
+                local function SendWebHook()
+                    request({
+                        Url =Settings.WebHookUrl,
+                        Method = "POST",
+                        Headers = {
+                            ["Content-Type"] = "application/json"
+                        },
+                        Body = game:GetService("HttpService"):JSONEncode(msg)
+                    })
+                end
+                SendWebHook()
+            end
+        end
+    end
+end)
+-- plr.PlayerGui.Notifications.Frame.ChildAdded:Connect(function(v)
+--     wait(.5)
+--     if Settings.AutoStoreDF then
+--         for i, v in ipairs(v:GetDescendants()) do
+--             if v:IsA("TextLabel")
+--             and string.find(v.Name, "Group0")
+--             and v.TextColor3 == Color3.fromRGB(255, 255, 255)
+--             and v.Text == "DROP!" then
+--                 local Fruit = BackpackFruit()
+--                 if Fruit then
+--                     if string.find(InventoryItems.Value, "Prestige Fruitbag")
+--                     and GetItemValue(Fruit.Name) >= 2
+--                     or not string.find(InventoryItems.Value, "Prestige Fruitbag")
+--                     and GetItemValue(Fruit.Name) >= 1 then
+--                         if getgenv().toggledfwebhook then
+--                             ASDF(Fruit, true)
+--                         end
+--                         local Ignored = Instance.new("IntValue", Fruit)
+--                         Ignored.Name = "Ignored"
+--                     else
+--                         ASDF(Fruit)
+--                     end
+--                 end
+--                 return
+--             end
+--         end
+--     end
+-- end)
+function GetMob(name,stud) 
+    for k,v in pairs(game.Workspace.NPCs:GetChildren()) do 
+        if v.Name==name and v:FindFirstChild("HumanoidRootPart") then 
+            if plr.Character:FindFirstChild("HumanoidRootPart") and (game.Players.LocalPlayer.Character.HumanoidRootPart.Position-v.HumanoidRootPart.Position).magnitude<stud then 
+                return v
+            end
+        end
+    end
+end
+
+function ShipGetNearestMobSM(mob)
+    local nr = nil
+    for k, v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
+        if string.match(v.Name,mob) and v:FindFirstChild("assignedShip") then
+            if
+                plr.Character:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("HumanoidRootPart") and
+                    v:FindFirstChild("Humanoid") and
+                    v.Humanoid.Health > 0
+             then
+                if not nr then
+                    nr = v
+                end
+                if
+                    nr and nr:FindFirstChild("HumanoidRootPart") and
+                        (plr.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).magnitude <
+                            (plr.Character.HumanoidRootPart.Position - nr.HumanoidRootPart.Position).magnitude
+                 then
+                    nr = v
+                end
+            end
+        end
+    end
+    if nr then 
+        if
+        plr.Character:FindFirstChild("HumanoidRootPart") and nr:FindFirstChild("HumanoidRootPart") and
+        nr:FindFirstChild("Humanoid") and
+        nr.Humanoid.Health > 0 then 
+                if (plr.Character.HumanoidRootPart.Position - nr.HumanoidRootPart.Position).magnitude <1000 then 
+                    return nr
+                end
+            end
+    end
+    --return nr
+end
+
+spawn(function() 
+    while wait(.5) do 
+        if Settings.ShipFarm then 
+            if Settings.ShipPos and Settings.ShipPos~=Vector3.new(0,0,0) and not ShipGetNearestMobSM("Captain") then
+                if Settings.KillCannon then 
+                    if not ShipGetNearestMobSM("Cannoneer") then 
+                        Tp(CFrame.new(Settings.ShipPos)) 
+                    end
+                else
+                    Tp(CFrame.new(Settings.ShipPos))
+                end
+                
+            end
+            if not game.Workspace.Ships:FindFirstChild(plr.Name.."Ship") then 
+                game:GetService("ReplicatedStorage").Events.ShipEvents.Spawn:InvokeServer("true")
+            end
+            EquipWpShip()
+            KillCaMap()
+            local v = ShipGetNearestMobSM("Captain")
+            if v then 
+                if v:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("HumanoidRootPart") and (game.Players.LocalPlayer.Character.HumanoidRootPart.Position-v.HumanoidRootPart.Position).magnitude<1000 then 
+                    if v.Name=="Marine Captain" or v.Name=="Pirate Captain" and Settings.ShipFarm and v:FindFirstChild("assignedShip") then
+                        local ship = v.assignedShip.Value
+                        if ship then 
+                            local function dk(v) 
+                                return not v.Parent or not v:FindFirstChild("HumanoidRootPart") or not v:FindFirstChild("Humanoid") or v.Humanoid.Health==0 or not Settings.ShipFarm
+                            end
+                            Kill(v,dk)
+                        end
+                    end
+                end
+            else
+                if Settings.KillCannon then 
+                    if Settings.ShipFarm then 
+                        local v=ShipGetNearestMobSM("Cannoneer")
+                        if v and v:FindFirstChild("HumanoidRootPart") then 
+                            local function dk(v) 
+                                return not v.Parent or not v:FindFirstChild("HumanoidRootPart") or not v:FindFirstChild("Humanoid") or v.Humanoid.Health==0 or not Settings.ShipFarm
+                            end
+                            Kill(v,dk)
+                        end
+                        
+                    end
+                end
+            end
+        end
+        if not Settings.ShipFarm then 
+            AutoClick=false
+        end
+    end
+end)
+
+local Tab2 = Window:CreatePage("Auto Stats")
+local Section2 = Tab2:CreateSection("Main")
+
+for k, v in pairs(Settings.AutoStat) do
+    Section2:CreateToggle(k, {Description = false}, function(state)
+        Settings.AutoStat[k] = state
+    end)
 end
 spawn(
     function()
@@ -855,7 +1219,6 @@ spawn(
         end
     end
 )
-local tab = win:Tab("Misc")
 LocationsCoord = {
     ["Town of Beginnings"] = CFrame.new(965.146, 10, 1195.127),
     ["Marine Fort F-1"] = CFrame.new(2904.113, 25, -994.2),
@@ -880,11 +1243,6 @@ LocationsCoord = {
     ["Reverse Mountain"] = CFrame.new(-14338, 20, -9446),
     ["Shrine"] = CFrame.new(-12184.12890625, 3.2737002372742, -18545.69921875)
 }
-local rac = {}
-for k, v in pairs(LocationsCoord) do
-    table.insert(rac, k)
-end
-
 function WTS(part, toggle)
     local screen = workspace.CurrentCamera:WorldToViewportPoint(part)
     return Vector2.new(screen.x, screen.y)
@@ -929,67 +1287,89 @@ end
 for k, v in pairs(LocationsCoord) do
     ESP(Vector3.new(v.X, v.Y, v.Z), k, Color3.fromRGB(255, 255, 255), "IslandE")
 end
+local rac = {}
+for k, v in pairs(LocationsCoord) do
+    table.insert(rac, k)
+end
 
-tab:Dropdown(
-    "Teleport",
-    rac,
-    function(rac)
-        Tp(LocationsCoord[rac])
+local Tab2 = Window:CreatePage("Misc")
+local Section2 = Tab2:CreateSection("Teleport")
+Section2:CreateDropdown("Teleport", {
+    List = rac,
+    Default = ""
+}, function(item)
+    if item and item~="" then 
+        Tp(LocationsCoord[item])
     end
-)
+end)
+local Section2 = Tab2:CreateSection("Stuff")
+Section2:CreateToggle("Auto Store DF", {Description = false}, function(state)
+    Settings.AutoStoreDF = state
+end)
+local function FireButton(x)
+    for i, v in pairs(getconnections(x.MouseButton1Click)) do 
+        v:Function()
+    end
+end
 
-tab:Toggle(
-    "Nodrown",
-    false,
-    function(t)
-        Settings.Nodrown = t
-        SetEN("Nodrown", "Setting", t)
-    end
-)
-tab:Toggle(
-    "No Fall Damage",
-    false,
-    function(t)
-        Settings.NoFallDame = t
-        SetEN("NoFallDame", "Setting", t)
-    end
-)
-tab:Toggle(
-    "Dash No Stamina",
-    false,
-    function(t)
-        Settings.NoFallDame = t
-        SetEN("DashNoStam", "Setting", t)
-    end
-)
-tab:Toggle(
-    "Island ESP",
-    false,
-    function(t)
-        Settings.IslandE = t
-        --SetEN("Nodrown","Setting",t)
-    end
-)
-tab:Toggle(
-    "Auto Enable Buso Haki",
-    false,
-    function(t)
-        Settings.AutoBuso = t
-        --SetEN("Nodrown","Setting",t)
-    end
-)
-tab:Dropdown(
-    "Auto Buso Method",
-    {"Always Enable", "Enable When Stand Near Mob"},
-    function(t)
-        Settings.BusoMethod = t
-    end
-)
+Section2:CreateToggle("Auto Buso Haki", {Description = false}, function(state)
+    Settings.AutoBuso = state
+end)
+Section2:CreateDropdown("Auto Buso Method", {
+    List = {"Always Enable","Enable When Stand Near Mob"},
+    Default = "Enable When Stand Near Mob"
+}, function(item)
+    Settings.BusoMethod=item
+end)
+
+-- local Section2 = Tab2:CreateSection("Security")
+-- Section2:CreateToggle("Auto Kick", {Description = "Auto kick you from the game after selected minute"}, function(state)
+--     Settings.AutoKick = state
+-- 	while Settings.AutoKick and wait() do
+--         if Settings.AutoKickTimer then 
+--             pcall(function() 
+--                 local CurrentTick = tick()
+--                 repeat wait(1)
+--                 until tick() - CurrentTick >= Settings.AutoKickTimer * 60
+--                 or not Settings.AutoKick
+--                 if Settings.AutoKick then
+--                     plr:Kick("\n[CFA Hub]\n".. Settings.AutoKickTimer .." minute reached (Auto Kick)")
+--                 end
+--             end)
+--         end 
+-- 	end
+-- end)
+-- Section2:CreateSlider("Auto Kick Timer (minute)", {Min = 1, Max = 60, DefaultValue = 15}, function(value)
+--     Settings.AutoKickTimer=value
+--  end)
+--  Section2:CreateToggle("Auto Rejoin", {Description = false}, function(state)
+--     Settings.AutoBuso = state
+-- end)
+-- Section2:CreateTextbox("PS Code", "(Leave if you want rejoin to normal server)", function(args)
+--     Settings.WebHookUrl=args
+-- end)
+local Section2 = Tab2:CreateSection("Local Player")
+Section2:CreateToggle("No Drown", {Description = "Make you cant drown in water"}, function(state)
+    Settings.Nodrown = state
+    SetEN("Nodrown", "Setting", state)
+end)
+Section2:CreateToggle("No Fall Damage", {Description = "Make you get no damage when fall"}, function(state)
+    Settings.NoFallDame = state
+    SetEN("NoFallDame", "Setting", state)
+end)
+Section2:CreateToggle("Dash No Stamina", {Description = "Dashing wont take stamina"}, function(state)
+    Settings.NoFallDame = state
+    SetEN("DashNoStam", "Setting", state)
+end)
+-- Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
+--     Settings.Noclip = state
+--     SetEN("Noclip", "Setting", state)
+-- end)
 local ws = 16
-tab:Slider("WalkSpeed Changer",16,150,1, function(t)
-    ws=t
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed=ws
-    end)
+Section2:CreateSlider("WalkSpeed Changer", {Min = 16, Max = 100, DefaultValue = 16}, function(value)
+   ws=value
+end)
+
 spawn(function() 
     while wait(1) do 
         pcall(function() 
@@ -997,10 +1377,30 @@ spawn(function()
         end)
     end
 end)
-local tab = win:Tab("Settings")
-tab:Slider("Tween Speed (Higher = more risk)",50,120,(100/120)*100, function(t)
-   vt=t
-    end)
+local Section2 = Tab2:CreateSection("ESP")
+Section2:CreateToggle("Island ESP", {Description = false}, function(state)
+    Settings.IslandE=state
+end)
+local Tab2 = Window:CreatePage("Web Hook")
+local Section2 = Tab2:CreateSection("Main")
+
+Section2:CreateTextbox("Web Hook Url", "Enter here!", function(args)
+    Settings.WebHookUrl=args
+end)
+Section2:CreateToggle("Mention Everyone", {Description = false}, function(state)
+    Settings.MentionEveryone=state
+end)
+local Section2 = Tab2:CreateSection("DF")
+Section2:CreateToggle("DF Webhook", {Description = "Will notify when you have DF"}, function(state)
+    Settings.DFWebHook=state
+end)
+local Tab2 = Window:CreatePage("Settings")
+local Section2 = Tab2:CreateSection("Main")
+Section2:CreateSlider("Tween Speed", {Min = 50, Max = 120, DefaultValue = 80}, function(value)
+    vt=value
+end)
+
+
 function IsBusoActivated()
     if not plr.Character then
         return false
@@ -1100,7 +1500,7 @@ end
 local func
 function GetClick(x, m)
     for i, v in ipairs(getgc()) do
-        if tostring(getfenv(v).script) == x and (getfenv(v).script.Parent) ~= nil then
+        if pcall(function() return tostring(getfenv(v).script) end) and tostring(getfenv(v).script) == x and (getfenv(v).script.Parent) ~= nil then
             if
                 pcall(
                     function()
@@ -1118,12 +1518,21 @@ function AttackInCooldown()
     if not func or getfenv(func).script.Parent == nil then
         func = GetClick("MeleeScript", 85)
     end
-    return debug.getupvalue(func, 11) >=4
-end
-function Click(type)
-    getrenv().require = getgenv().require
+    if func then 
+        return debug.getupvalue(func, 11) >=4
+    else
+        return false
+    end
+    
+end  
+local collector = Instance.new("ScreenGui")
+collector.Parent=game.CoreGui
 
-    -- print(getfenv(func).script.Parent,getfenv(func).script,getfenv(func).script:GetFullName())
+function Click(type)
+     getrenv().require = getgenv().require
+--     game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, true, collector, 0)
+--   game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, false, collector, 0)    
+    -- -- print(getfenv(func).script.Parent,getfenv(func).script,getfenv(func).script:GetFullName())
     spawn(
         function()
             if not func or getfenv(func).script.Parent == nil then
@@ -1137,6 +1546,7 @@ function Click(type)
                     local t = tick()
                     func(g, false)
                     if tick() - t < 0.01 then
+                        print("Bucac")
                         func = GetClick()
                         wait(.5)
                     end
@@ -1148,7 +1558,7 @@ end
 function GetClickGun()
     for k, v in pairs(getgc()) do
         if tostring(getfenv(v).script) == "GunMain" and (getfenv(v).script.Parent) ~= nil then
-            print(k, v, tostring(debug.getconstant(v, 1)))
+            --print(k, v, tostring(debug.getconstant(v, 1)))
             if tostring(debug.getconstant(v, 1)) == "script" then
                 -- v(g,false)
                 --  print(getfenv(v).script:GetFullName())
@@ -1197,26 +1607,14 @@ function Shoot(pos)
             ClickR("Rifle")
         end
     )
-    -- game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, true, game, 0)
-    -- game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, false, game, 0)
+  
     -- --pcall(Reload)
     -- game:GetService("VirtualInputManager"):SendKeyEvent(true, "R", false, game)
 	-- game:GetService("VirtualInputManager"):SendKeyEvent(false, "R", false, game)
     wait(.3)
     shooting = false
 end
-function GetSword()
-    for k, v in pairs(plr.Character:GetChildren()) do
-        if v:FindFirstChild("SwordEquip") then
-            return v, true
-        end
-    end
-    for k, v in pairs(plr.Backpack:GetChildren()) do
-        if v:FindFirstChild("SwordEquip") then
-            return v, false
-        end
-    end
-end
+
 function GetNearestMob(mob)
     local nr = nil
     for k, v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
@@ -1255,18 +1653,7 @@ function GetNearestMob(mob)
     end
     return nr
 end
-function IsSkillUnlocked(skill)
-    if plr.PlayerGui:FindFirstChild("Keys") then
-        if plr.PlayerGui.Keys:FindFirstChild("Frame") then
-            if plr.PlayerGui.Keys.Frame:FindFirstChild(skill) then
-                if plr.PlayerGui.Keys.Frame[skill].TextLabel.TextLabel.Text ~= "???" then
-                    return true
-                end
-            end
-        end
-    end
-    return false
-end
+
 function CountNear(mob, mag, k)
     local c = 0
     for k, v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
@@ -1310,21 +1697,24 @@ local lastup = tick()
 while wait() do
     if Settings.Farm then
         if Settings.FarmMode == "Sword" or Settings.FarmMode == "Black Leg" then
-            if Settings.FarmMode == "Black Leg" then
-                if
-                    game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
-                        plr.Backpack:FindFirstChild("BlackLeg")
-                 then
-                    plr.Character.Humanoid:EquipTool(plr.Backpack.BlackLeg)
-                end
-            else
-                local sword, equip = GetSword()
-                if sword and not equip then
-                    if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-                        game.Players.LocalPlayer.Character.Humanoid:EquipTool(sword)
+            if not StoringDF then 
+                if Settings.FarmMode == "Black Leg" then
+                    if
+                        game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                            plr.Backpack:FindFirstChild("BlackLeg")
+                     then
+                        plr.Character.Humanoid:EquipTool(plr.Backpack.BlackLeg)
+                    end
+                else
+                    local sword, equip = GetSword()
+                    if sword and not equip then
+                        if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+                            game.Players.LocalPlayer.Character.Humanoid:EquipTool(sword)
+                        end
                     end
                 end
             end
+            
 
             local Dt = CheckQuest()
             if Settings.AutoBusoQuest and data.Stats.BusoMastery.Value == 0 and data.Stats.Level.Value > 80 and Settings.FarmMode == "Sword" then
@@ -1492,7 +1882,7 @@ while wait() do
                                             Settings.FarmMode == "Black Leg" and
                                                 IsSkillUnlocked("Party Table Kick Course") and
                                                 CountNear(mob, 23) == CountNear(mob, 1000, true) and
-                                                CountNear(mob, 18) > 1
+                                                CountNear(mob, 18) > 1 and data.Stamina.Value>50
                                          then
                                             game:GetService("VirtualInputManager"):SendKeyEvent(
                                                 true,
@@ -1511,7 +1901,7 @@ while wait() do
                                 end
 
                                 local oldstate = curstate
-                                if Settings.FarmMode ~= "Black Leg" then
+                                if true or Settings.FarmMode ~= "Black Leg" then
                                     if AttackInCooldown() and tick() - lastclick > 0.6 then
                                         if Dt.CooldownY then
                                             cf = CFrame.new(cf.X, Dt.CooldownY, cf.Z)
