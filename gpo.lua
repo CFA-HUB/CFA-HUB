@@ -899,10 +899,16 @@ function IsSkillUnlocked(skill)
     return false
 end
 local Section2 = Tab2:CreateSection("Ship Farm")
-Section2:CreateToggle("Ship Farm", {Description = false}, function(state)
-    Settings.ShipFarm = state
-    SetEN("Noclip", "ShipFarm", state)
-    SetEN("NoFallDame","ShipFarm",state)
+local sf
+sf=Section2:CreateToggle("Ship Farm", {Description = false}, function(state)
+    if Settings.ShipPos then 
+        Settings.ShipFarm = state
+        SetEN("Noclip", "ShipFarm", state)
+        SetEN("NoFallDame","ShipFarm",state)
+    else
+        CFAHub:AddNoti("Notification", "You need to set ship farm position", 5)
+        sf.SetValue(false)
+    end
 end)
 Section2:CreateDropdown("Ship Farm Method", {
     List = {"Sword","Black Leg"},
