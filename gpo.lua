@@ -1530,30 +1530,30 @@ collector.Parent=game.CoreGui
 
 function Click(type)
      getrenv().require = getgenv().require
---     game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, true, collector, 0)
---   game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, false, collector, 0)    
+   game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, true, nil, 0)
+  game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, false, nil, 0)    
     -- -- print(getfenv(func).script.Parent,getfenv(func).script,getfenv(func).script:GetFullName())
-    spawn(
-        function()
-            if not func or getfenv(func).script.Parent == nil then
-                func = GetClick("MeleeScript", 85)
-            end
-            if AttackInCooldown() then
-                return
-            end
-            pcall(
-                function()
-                    local t = tick()
-                    func(g, false)
-                    if tick() - t < 0.01 then
-                        print("Bucac")
-                        func = GetClick()
-                        wait(.5)
-                    end
-                end
-            )
-        end
-    )
+    -- spawn(
+    --     function()
+    --         if not func or getfenv(func).script.Parent == nil then
+    --             func = GetClick("MeleeScript", 85)
+    --         end
+    --         if AttackInCooldown() then
+    --             return
+    --         end
+    --         pcall(
+    --             function()
+    --                 local t = tick()
+    --                 func(g, false)
+    --                 if tick() - t < 0.01 then
+    --                     print("Bucac")
+    --                     func = GetClick()
+    --                     wait(.5)
+    --                 end
+    --             end
+    --         )
+    --     end
+    -- )
 end
 function GetClickGun()
     for k, v in pairs(getgc()) do
