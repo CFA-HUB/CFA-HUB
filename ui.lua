@@ -142,7 +142,7 @@ end
 
 local GuiName = "CFAHubPremium2022"
 
-function CFAHub:CreateWindow(title, gameName, intro: boolean)
+function CFAHub:CreateWindow(title, gameName, intro)
     title = title or "<font color=\"#1CB2F5\">CFA Hub Premium</font>"
     gameName = gameName or "N/A"
 
@@ -1043,7 +1043,7 @@ function CFAHub:CreateWindow(title, gameName, intro: boolean)
                     }):Play()
                     pcall(callback, isToggle)
                 end
-                function OnClick() 
+                local OnClick= function() 
                     if isToggle == false then
                         isToggle = true
                         game.TweenService:Create(IconEnable, TweenInfo.new(0.11, Enum.EasingStyle.Linear,Enum.EasingDirection.In), {
@@ -1057,9 +1057,7 @@ function CFAHub:CreateWindow(title, gameName, intro: boolean)
                     end
                     pcall(callback, isToggle)
                 end
-                ToggleButton.MouseButton1Click:Connect(function()
-                    OnClick()
-                end)
+                ToggleButton.MouseButton1Click:Connect(OnClick)
                 return {
                     SetValue = function(val) 
                         if val~=isToggle then 
