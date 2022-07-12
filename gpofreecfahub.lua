@@ -1,50 +1,6 @@
 local request=request
 if syn then request=syn.request end
-local c = false
 local StoringDF = false
-getgenv().Click = function() 
-    c=true
-end
-local g = {
-    KeyCode = Enum.KeyCode.Unknown,
-    UserInputState = Enum.UserInputState.Begin,
-    UserInputType = Enum.UserInputType.MouseButton1
-}
-local func
-function GetClick(x, m)
-    for i, v in ipairs(getgc()) do
-        if tostring(getfenv(v).script) == x and (getfenv(v).script.Parent) ~= nil then
-            if
-                pcall(
-                    function()
-                        getconstant(v, m)
-                    end
-                ) == true
-             then
-                return v
-            end
-        end
-    end
-end
-
-function Clickc()
-    spawn(
-        function()
-            if not func or getfenv(func).script.Parent == nil then
-                func = GetClick("MeleeScript", 85)
-            end
-        func(g,false)
-        end
-    )
-end
-local old
-old=hookmetamethod(game,"__namecall",function(...)
-    if c and not checkcaller() and syn.get_thread_identity()==2 and tostring(getcallingscript())~="MeleeScript" then 
-        Clickc()
-        c=false 
-    end
-    return old(...)    
-end)
 for i, v in next, getconnections(game.Players.LocalPlayer.Idled) do
     v:Disable()
 end
@@ -146,7 +102,7 @@ local path = {
         ),
         Island = "Fishman Island",
         LevelReq = 190,
-        SwordY = -2189.94,
+        SwordY = -2182.94,
         BlackLegY = -2182.94,
         CooldownY=-2189.94
     }
@@ -323,7 +279,10 @@ function CreateTweenFloat()
         BV.Velocity = Vector3.new(0, 0, 0)
     end
 end
-
+function QuayNgang(pos) 
+    local bulon = CFrame.new(pos.X,pos.Y,pos.Z,-0.008880537, 0.999960601, -6.28793302e-08, -5.37608429e-08, -5.96046448e-08, -0.99999994, -0.999960601, -0.008880537, 6.35593764e-08)
+    return bulon
+end
 local speaker = game.Players.LocalPlayer
 local StopFloat=false
 
@@ -339,7 +298,7 @@ game:GetService("RunService").Stepped:Connect(
         -- else
         --     t.CFrame = CFrame.new(0, -100000, 0)
         -- end
-        if true or not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") or true then
+        if  not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") then
             if
                 speaker.Character ~= nil and CheckEN("Noclip") and not StopFloat and
                     game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
@@ -614,7 +573,7 @@ function Tp(pos, checkfunc)
     end
 end
 local CFAHub = 
-loadstring(game:HttpGet("https://github.com/CFA-HUB/CFA-HUB/blob/main/uiprecfahub.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/cac/main/buoi.lua"))()
 
 local Window = CFAHub:CreateWindow("<font color=\"#4FC3F7\">CFA Hub</font>", "Grand Piece Online", true)
 
@@ -886,12 +845,27 @@ spawn(function()
         end
     end
 end)
+local DoneSeq="0 1 1 1 0 1 1 1 1 0 "
 function IsSkillUnlocked(skill)
     if plr.PlayerGui:FindFirstChild("Keys") then
         if plr.PlayerGui.Keys:FindFirstChild("Frame") then
             if plr.PlayerGui.Keys.Frame:FindFirstChild(skill) then
                 if plr.PlayerGui.Keys.Frame[skill].TextLabel.TextLabel.Text ~= "???" then
                     return true
+                end
+            end
+        end
+    end
+    return false
+end
+function IsSkillReady(skill)
+    if plr.PlayerGui:FindFirstChild("Keys") then
+        if plr.PlayerGui.Keys:FindFirstChild("Frame") then
+            if plr.PlayerGui.Keys.Frame:FindFirstChild(skill) then
+                if pcall(function() return plr.PlayerGui.Keys.Frame[skill].TextLabel.Frame.UIGradient.Color end) then 
+                    if tostring(plr.PlayerGui.Keys.Frame[skill].TextLabel.Frame.UIGradient.Color)==DoneSeq then 
+                        return true
+                    end
                 end
             end
         end
@@ -1361,10 +1335,10 @@ Section2:CreateToggle("Dash No Stamina", {Description = "Dashing wont take stami
     Settings.NoFallDame = state
     SetEN("DashNoStam", "Setting", state)
 end)
--- Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
---     Settings.Noclip = state
---     SetEN("Noclip", "Setting", state)
--- end)
+Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
+    Settings.Noclip = state
+    SetEN("Noclip", "Setting", state)
+end)
 local ws = 16
 Section2:CreateSlider("WalkSpeed Changer", {Min = 16, Max = 100, DefaultValue = 16}, function(value)
    ws=value
@@ -1527,42 +1501,97 @@ function AttackInCooldown()
 end  
 local collector = Instance.new("ScreenGui")
 collector.Parent=game.CoreGui
-
-function Click(type)
-     getrenv().require = getgenv().require
-   game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, true, nil, 0)
-  game:GetService("VirtualInputManager"):SendMouseButtonEvent(10, 100, 0, false, nil, 0)    
-    -- -- print(getfenv(func).script.Parent,getfenv(func).script,getfenv(func).script:GetFullName())
-    -- spawn(
-    --     function()
-    --         if not func or getfenv(func).script.Parent == nil then
-    --             func = GetClick("MeleeScript", 85)
-    --         end
-    --         if AttackInCooldown() then
-    --             return
-    --         end
-    --         pcall(
-    --             function()
-    --                 local t = tick()
-    --                 func(g, false)
-    --                 if tick() - t < 0.01 then
-    --                     print("Bucac")
-    --                     func = GetClick()
-    --                     wait(.5)
-    --                 end
-    --             end
-    --         )
-    --     end
-    -- )
+local c= false
+local g = {
+    KeyCode = Enum.KeyCode.Unknown,
+    UserInputState = Enum.UserInputState.Begin,
+    UserInputType = Enum.UserInputType.MouseButton1
+}
+local func
+function GetClick(x, m)
+    for i, v in ipairs(getgc()) do
+        if pcall(function() return tostring(getfenv(v).script) end) and tostring(getfenv(v).script) == x and (getfenv(v).script.Parent) ~= nil then
+            if pcall(function() getconstant(v, m) end ) == true then
+                return v
+            end
+        end
+    end
+end
+function Clickc()
+    spawn(function()
+        if pcall(function() return tostring(getfenv(func).script) end) and not func or getfenv(func).script.Parent == nil then
+            func = GetClick("MeleeScript", 85)
+        end
+        if func then 
+            func(g,false)
+        end
+    end)
 end
 function GetClickGun()
     for k, v in pairs(getgc()) do
         if tostring(getfenv(v).script) == "GunMain" and (getfenv(v).script.Parent) ~= nil then
-            --print(k, v, tostring(debug.getconstant(v, 1)))
             if tostring(debug.getconstant(v, 1)) == "script" then
-                -- v(g,false)
-                --  print(getfenv(v).script:GetFullName())
+                return v
+            end
+        end
+    end
+end
+local gunfunc
+function ClickcGun()
+    spawn(function()
+        if pcall(function() return tostring(getfenv(gunfunc).script) end) and not gunfunc or getfenv(gunfunc).script.Parent == nil then
+            gunfunc = GetClickGun()
+        end
+        if gunfunc then 
+            gunfunc(g,false)
+        end
+    end)
+end
 
+local noprint
+
+local old
+old=hookfunction(getrenv().warn,function(...) 
+    local self =...
+    if self=="peli change" then 
+        if c then
+            if not AttackInCooldown() then 
+                Clickc()    
+            end
+            return
+        end
+        if cGun then 
+            ClickcGun()    
+            return
+        end
+        if noprint then return end
+    end
+    return old(...)
+end)
+local data = game.ReplicatedStorage["Stats"..game.Players.LocalPlayer.Name]
+getgenv().ClickMelee = function() 
+    c=true
+    data.Stats.Peli.Value=data.Stats.Peli.Value+1
+    c=false
+    noprint=true
+    data.Stats.Peli.Value=data.Stats.Peli.Value-1
+    noprint=false
+end
+getgenv().ClickGun = function() 
+    cGun=true
+    data.Stats.Peli.Value=data.Stats.Peli.Value+1
+    cGun=false
+    noprint=true
+    data.Stats.Peli.Value=data.Stats.Peli.Value-1
+    noprint=false
+end
+function Click(type)
+    getgenv().ClickMelee()
+end
+function GetClickGun()
+    for k, v in pairs(getgc()) do
+        if tostring(getfenv(v).script) == "GunMain" and (getfenv(v).script.Parent) ~= nil then
+            if tostring(debug.getconstant(v, 1)) == "script" then
                 return v
             end
         end
@@ -1579,35 +1608,15 @@ function Reload()
         end
     )
 end
-function ClickR(type)
-    getrenv().require = getgenv().require
-    if not funcr or getfenv(funcr).script.Parent == nil then
-        funcr = GetClickGun()
-    end
-    spawn(
-        function()
-            local s,e =pcall(function() 
-                funcr(g, false)
-                Reload()
-            end)
-            if not s then 
-                funcr=nil
-                reloadfunc=nil
-            end
-        end
-    )
-end
+
 function ShootSuke(pos)
 end
 function Shoot(pos)
     shooting = true
     shootpos = pos
-    spawn(
-        function()
-            ClickR("Rifle")
-        end
-    )
-  
+    getgenv().ClickGun()
+    Reload()
+
     -- --pcall(Reload)
     -- game:GetService("VirtualInputManager"):SendKeyEvent(true, "R", false, game)
 	-- game:GetService("VirtualInputManager"):SendKeyEvent(false, "R", false, game)
@@ -1675,6 +1684,48 @@ function CountNear(mob, mag, k)
     end
     return c
 end
+function CheckReq() 
+    if Settings.FarmMode=="Sword" then 
+        if IsSkillUnlocked("Rapid Slashes") and syn then 
+            return true
+        end
+    end
+    if Settings.FarmMode=="Black Leg" then 
+        if IsSkillUnlocked("Party Table Kick Course") then 
+            return true
+        end
+    end
+    return false
+end
+function EquipTool() 
+    if Settings.FarmMode == "Black Leg" then
+        if
+            game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                plr.Backpack:FindFirstChild("BlackLeg")
+         then
+            plr.Character.Humanoid:EquipTool(plr.Backpack.BlackLeg)
+        end
+    elseif Settings.FarmMode=="Sword" then
+        local sword, equip = GetSword()
+        if sword and not equip then
+            if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(sword)
+            end
+        end
+    end
+end
+function CanFarm(v) 
+    return game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+    game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
+    game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
+    not plr.PlayerGui:FindFirstChild("DEATHGUI") and
+    v:FindFirstChild("HumanoidRootPart")
+end
+function InstantTp(pos) 
+    if plr.Character:FindFirstChild("HumanoidRootPart") then 
+        plr.Character.HumanoidRootPart.CFrame=pos
+    end
+end
 local mob = "Bandit"
 local olddd
 local pos =
@@ -1698,24 +1749,8 @@ while wait() do
     if Settings.Farm then
         if Settings.FarmMode == "Sword" or Settings.FarmMode == "Black Leg" then
             if not StoringDF then 
-                if Settings.FarmMode == "Black Leg" then
-                    if
-                        game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
-                            plr.Backpack:FindFirstChild("BlackLeg")
-                     then
-                        plr.Character.Humanoid:EquipTool(plr.Backpack.BlackLeg)
-                    end
-                else
-                    local sword, equip = GetSword()
-                    if sword and not equip then
-                        if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-                            game.Players.LocalPlayer.Character.Humanoid:EquipTool(sword)
-                        end
-                    end
-                end
+                EquipTool()
             end
-            
-
             local Dt = CheckQuest()
             if Settings.AutoBusoQuest and data.Stats.BusoMastery.Value == 0 and data.Stats.Level.Value > 80 and Settings.FarmMode == "Sword" then
                 if GetCurrentQuest() == "Road to Armament" then
@@ -1740,8 +1775,6 @@ while wait() do
             end
             if game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == true then
                 if olddd and olddd ~= Dt and Dt.Mob ~= "Yeti" then
-                    -- Script generated by TurtleSpy, made by Intrer#0421
-
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
                 end
             end
@@ -1781,7 +1814,7 @@ while wait() do
                         repeat
                             MucTieu.MucTieu = v.HumanoidRootPart
                             if
-                                Settings.FarmMode == "Black Leg" and IsSkillUnlocked("Party Table Kick Course") and
+                                CheckReq() and
                                     CountNear(mob, 15) < CountNear(mob, 1000, true)
                              then
                                 for k, v in pairs(game.Workspace.NPCs:GetChildren()) do
@@ -1803,12 +1836,7 @@ while wait() do
                                             local t = tick()
                                             repeat
                                                 wait()
-                                                if
-                                                    game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
-                                                        plr.Backpack:FindFirstChild("BlackLeg")
-                                                 then
-                                                    plr.Character.Humanoid:EquipTool(plr.Backpack.BlackLeg)
-                                                end
+                                                EquipTool()
                                                 local curr = v.HumanoidRootPart.CFrame
                                                 MucTieu.MucTieu = v.HumanoidRootPart
                                                 local cf = CFrame.new(curr.X, Dt.BlackLegY, curr.Z)
@@ -1823,36 +1851,19 @@ while wait() do
                                                     v:FindFirstChild("HumanoidRootPart") and
                                                     v.Humanoid.Health > 0) or
                                                 v.Info.Target.Value ~= nil
-                                            curr = v.HumanoidRootPart.CFrame or tick() - t > 6
+                                            or tick() - t > 6
                                         end
                                     end
                                 end
                             end
-                            wait()
-
-                            if Settings.FarmMode == "Black Leg" then
-                                if
-                                    game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
-                                        plr.Backpack:FindFirstChild("BlackLeg")
-                                 then
-                                    plr.Character.Humanoid:EquipTool(plr.Backpack.BlackLeg)
-                                end
-                            else
-                                local sword, equip = GetSword()
-                                if sword and not equip then
-                                    if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-                                        game.Players.LocalPlayer.Character.Humanoid:EquipTool(sword)
-                                    end
-                                end
+                            if v:FindFirstChild("HumanoidRootPart") then 
+                                curr = v.HumanoidRootPart.CFrame 
+                                MucTieu.MucTieu = v.HumanoidRootPart
                             end
-
-                            if
-                                game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
-                                    game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
-                                    game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
-                                    not plr.PlayerGui:FindFirstChild("DEATHGUI") and
-                                    v:FindFirstChild("HumanoidRootPart")
-                             then
+                            
+                            wait()
+                            EquipTool()
+                            if CanFarm(v) then
                                 if
                                     v:FindFirstChild("Info") and v.Info:FindFirstChild("Target") and
                                         v.Info.Target.Value ~= plr.Character.HumanoidRootPart
@@ -1869,36 +1880,57 @@ while wait() do
                                         cf = curr + Vector3.new(0, -11, 0)
                                     end
                                 end
-
-                                if not AttackInCooldown() then
-                                    local dist = -1
-                                    if Settings.FarmMode == "Black Leg" then
-                                        dist = 14
-                                    else
-                                        dist = 20
-                                    end
-                                    if CountNear(mob, dist) > 0 then
-                                        if
-                                            Settings.FarmMode == "Black Leg" and
-                                                IsSkillUnlocked("Party Table Kick Course") and
-                                                CountNear(mob, 23) == CountNear(mob, 1000, true) and
-                                                CountNear(mob, 18) > 1 and data.Stamina.Value>50
-                                         then
+                                local dist = -1
+                                if Settings.FarmMode == "Black Leg" then
+                                    dist = 14
+                                else
+                                    dist = 20
+                                end
+                                if CountNear(mob, dist) > 0 then
+                                    if CheckReq() and CountNear(mob, 23) == CountNear(mob, 1000, true) and CountNear(mob, 18) > 1 and data.Stamina.Value>50 then
+                                        if Settings.FarmMode=="Black Leg" then
                                             game:GetService("VirtualInputManager"):SendKeyEvent(
                                                 true,
                                                 Enum.KeyCode.X,
                                                 false,
                                                 game
                                             )
-                                        end
-                                        if not AttackInCooldown() and curstate == 1 and tick() - lastup > 0.4 then
-                                            Click()
-                                            lastclick = tick()
-                                        end
+                                        elseif Settings.FarmMode =="Sword" then
+                                            if IsSkillReady("Rapid Slashes") and data.Stamina.Value>25 then 
+                                                game:GetService("VirtualInputManager"):SendKeyEvent(
+                                                    true,
+                                                    Enum.KeyCode.R,
+                                                    false,
+                                                    game
+                                                )
+                                                repeat wait()
+                                                    if plr.Character:FindFirstChild("HumanoidRootPart") then 
+                                                        local rac = plr.Character.HumanoidRootPart.CFrame
+                                                        InstantTp(QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z)))
+                                                        game:GetService("VirtualInputManager"):SendKeyEvent(
+                                                    true,
+                                                    Enum.KeyCode.R,
+                                                    false,
+                                                    game
+                                                )
+                                                    end
+                                                until not IsSkillReady("Rapid Slashes") or CountNear(mob, 18) ==0 or
+                                                not Settings.Farm
+                                                game:GetService("VirtualInputManager"):SendKeyEvent(
+                                                    true,
+                                                    Enum.KeyCode.R,
+                                                    true,
+                                                    game
+                                                )
+                                            end
+                                        end 
                                     end
-                                else
-                                    
+                                    if not AttackInCooldown() and curstate == 1 and tick() - lastup > 0.4 then
+                                        Click()
+                                        lastclick = tick()
+                                    end
                                 end
+                                
 
                                 local oldstate = curstate
                                 if true or Settings.FarmMode ~= "Black Leg" then
