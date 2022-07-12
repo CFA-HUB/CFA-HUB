@@ -1357,10 +1357,10 @@ Section2:CreateToggle("Dash No Stamina", {Description = "Dashing wont take stami
     Settings.NoFallDame = state
     SetEN("DashNoStam", "Setting", state)
 end)
-Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
-    Settings.Noclip = state
-    SetEN("Noclip", "Setting", state)
-end)
+-- Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
+--     Settings.Noclip = state
+--     SetEN("Noclip", "Setting", state)
+-- end)
 local ws = 16
 Section2:CreateSlider("WalkSpeed Changer", {Min = 16, Max = 100, DefaultValue = 16}, function(value)
    ws=value
