@@ -1,3 +1,5 @@
+local rnd = tostring(math.random(1,100000))
+
 local request=request
 if syn then request=syn.request end
 local StoringDF = false
@@ -283,11 +285,30 @@ function QuayNgang(pos)
     local bulon = CFrame.new(pos.X,pos.Y,pos.Z,-0.008880537, 0.999960601, -6.28793302e-08, -5.37608429e-08, -5.96046448e-08, -0.99999994, -0.999960601, -0.008880537, 6.35593764e-08)
     return bulon
 end
+function GetAllState() 
+    local cac = {}
+    for k,v in pairs(Enum.HumanoidStateType:GetEnumItems()) do 
+        if plr.Character:FindFirstChild("Humanoid") then 
+            cac[v]=plr.Character.Humanoid:GetStateEnabled(v)
+        end
+    end
+    return cac
+end
+function SetAllState(rac) 
+    local cac = {}
+    for k,v in pairs(Enum.HumanoidStateType:GetEnumItems()) do 
+        if plr.Character:FindFirstChild("Humanoid") then 
+           plr.Character.Humanoid:SetStateEnabled(v,rac)
+        end
+    end
+    return cac
+end
 local speaker = game.Players.LocalPlayer
 local StopFloat=false
 
 game:GetService("RunService").Stepped:Connect(
     function()
+        
         -- if Settings.WaterWalker and not (tweening or Settings.Farm or Settings.Dungeon) then
         --     t.CFrame =
         --         CFrame.new(
@@ -298,7 +319,8 @@ game:GetService("RunService").Stepped:Connect(
         -- else
         --     t.CFrame = CFrame.new(0, -100000, 0)
         -- end
-        if  not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") then
+        
+        if true or not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") then
             if
                 speaker.Character ~= nil and CheckEN("Noclip") and not StopFloat and
                     game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
@@ -306,6 +328,7 @@ game:GetService("RunService").Stepped:Connect(
                     game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
                     not plr.PlayerGui:FindFirstChild("DEATHGUI")
              then
+                SetAllState(false)
                 CreateTweenFloat()
 
                 for _, child in pairs(speaker.Character:GetDescendants()) do
@@ -323,6 +346,7 @@ game:GetService("RunService").Stepped:Connect(
                 plr.Character.Humanoid:ChangeState(11)
             end
         end
+        if not CheckEN("Noclip") then  SetAllState(true) end
         pcall(
             function()
                 -- if CheckEN("Nodrown") then
@@ -1904,9 +1928,21 @@ while wait() do
                                                     game
                                                 )
                                                 repeat wait()
-                                                    if plr.Character:FindFirstChild("HumanoidRootPart") then 
-                                                        local rac = plr.Character.HumanoidRootPart.CFrame
-                                                        InstantTp(QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z)))
+                                                    if plr.Character:FindFirstChild("HumanoidRootPart") then
+                                                        if true then
+                                                            local rac = plr.Character.HumanoidRootPart.CFrame
+                                                            Tp(QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z)))
+                                                        else
+                                                            local rac = plr.Character.HumanoidRootPart.CFrame
+                                                            Tp((CFrame.new(rac.X,Dt.BlackLegY,rac.Z)))
+                                                            local bm = plr.Character.UpperTorso:FindFirstChild(rnd) or Instance.new("BodyGyro",game.Players.LocalPlayer.Character.UpperTorso)
+                                                            bm.Name=rnd
+                                                            bm.CFrame = QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z))
+                                                            bm.MaxTorque = Vector3.new(0, math.huge, 0)
+                                                            bm.D = tonumber(shared.D or 0)
+                                                            bm.P = tonumber(shared.P or 5000)
+                                                        end
+                                                        
                                                         game:GetService("VirtualInputManager"):SendKeyEvent(
                                                     true,
                                                     Enum.KeyCode.R,
@@ -1916,6 +1952,9 @@ while wait() do
                                                     end
                                                 until not IsSkillReady("Rapid Slashes") or CountNear(mob, 18) ==0 or
                                                 not Settings.Farm
+                                                if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
+                                                    plr.Character.UpperTorso[rnd]:Destroy()
+                                                end
                                                 game:GetService("VirtualInputManager"):SendKeyEvent(
                                                     true,
                                                     Enum.KeyCode.R,
