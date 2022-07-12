@@ -1839,7 +1839,7 @@ while wait() do
                             MucTieu.MucTieu = v.HumanoidRootPart
                             if
                                 CheckReq() and
-                                    CountNear(mob, 15) < CountNear(mob, 1000, true)
+                                    CountNear(mob, 15) < CountNear(mob, 1000, true) and Dt.mob~="Yeti"
                              then
                                 for k, v in pairs(game.Workspace.NPCs:GetChildren()) do
                                     if v.Name == mob then
@@ -1910,7 +1910,7 @@ while wait() do
                                 else
                                     dist = 20
                                 end
-                                if CountNear(mob, dist) > 0 then
+                                if CountNear(mob, dist) > 0 and Dt.mob~="Yeti" then
                                     if CheckReq() and CountNear(mob, 23) == CountNear(mob, 1000, true) and CountNear(mob, 18) > 1 and data.Stamina.Value>50 then
                                         if Settings.FarmMode=="Black Leg" then
                                             game:GetService("VirtualInputManager"):SendKeyEvent(
