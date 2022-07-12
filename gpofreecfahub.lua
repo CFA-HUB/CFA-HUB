@@ -105,6 +105,7 @@ if game.PlaceId==1730877806 then
     end
     return
 end
+local plr = game.Players.LocalPlayer
 
 local rnd = tostring(math.random(1,100000))
 
