@@ -79,7 +79,9 @@ and plr:FindFirstChild("Backpack")
 and plr.Character:FindFirstChild("Humanoid")
 and plr:FindFirstChild("PlayerGui")
 and plr.PlayerGui:FindFirstChild("Notifications")
-and #plr.Backpack:GetChildren() ~= 0
+and #plr.Backpack:GetChildren() ~= 0 and pcall(function() 
+    return game.Players.LocalPlayer.Idled
+end)
 
 if game.PlaceId==1730877806 then
     repeat wait() until game:GetService("ReplicatedStorage").Events:FindFirstChild("reserved")
