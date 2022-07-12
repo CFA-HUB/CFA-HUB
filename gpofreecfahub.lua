@@ -1819,7 +1819,7 @@ function CountNear(mob, mag, k)
 end
 function CheckReq() 
     if Settings.FarmMode=="Sword" then 
-        if IsSkillUnlocked("Rapid Slashes") and syn then 
+        if IsSkillUnlocked("Rapid Slashes") then 
             return true
         end
     end
@@ -1862,17 +1862,15 @@ end
 local TpPoss
 do 
     local cc = false
-    game:GetService("RunService").Stepped:connect(
-        function()
-            if not cc and TpPoss then
-                cc=true 
-                pcall(function() 
-                    Tp(TpPoss)
-                end)
-                cc=false
-            end
+    game:GetService("RunService").Stepped:connect(function()
+        if not cc and TpPoss then
+            cc=true 
+            pcall(function() 
+                Tp(TpPoss)
+            end)
+            cc=false
         end
-    )
+    end)
 end
 
 local mob = "Bandit"
