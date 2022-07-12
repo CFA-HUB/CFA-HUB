@@ -82,12 +82,21 @@ and plr.PlayerGui:FindFirstChild("Notifications")
 and #plr.Backpack:GetChildren() ~= 0 and pcall(function() 
     return game.Players.LocalPlayer.Idled
 end)
-
+local function FireButton(x)
+    for i, v in pairs(getconnections(x.MouseButton1Click)) do 
+        v:Function()
+    end
+end
 if game.PlaceId==1730877806 then
     repeat wait() until game:GetService("ReplicatedStorage").Events:FindFirstChild("reserved")
     if Settings.PSCode and Settings.PSCode~="" then 
+        local clicked = false
         while wait(2) do 
             game:GetService("ReplicatedStorage").Events.reserved:InvokeServer(Settings.PSCode)
+            pcall(function() 
+                FireButton(game:GetService("Players").LocalPlayer.PlayerGui.chooseType.Frame.regular)
+                clicked=true
+            end)
         end
     else
         while wait(2) do 
@@ -1387,11 +1396,7 @@ local Section2 = Tab2:CreateSection("Stuff")
 Section2:CreateToggle("Auto Store DF", {Toggled=Settings.AutoStoreDF,Description = false}, function(state)
     Settings.AutoStoreDF = state
 end)
-local function FireButton(x)
-    for i, v in pairs(getconnections(x.MouseButton1Click)) do 
-        v:Function()
-    end
-end
+
 
 Section2:CreateToggle("Auto Buso Haki", {Toggled=Settings.AutoBuso,Description = false}, function(state)
     Settings.AutoBuso = state
