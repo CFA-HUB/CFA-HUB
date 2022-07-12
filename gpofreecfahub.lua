@@ -320,7 +320,7 @@ game:GetService("RunService").Stepped:Connect(
         --     t.CFrame = CFrame.new(0, -100000, 0)
         -- end
         
-        if true or not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") then
+        if  not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") then
             if
                 speaker.Character ~= nil and CheckEN("Noclip") and not StopFloat and
                     game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
