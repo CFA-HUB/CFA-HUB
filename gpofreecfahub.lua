@@ -1,3 +1,100 @@
+local plr = game.Players.LocalPlayer
+local queue_on_teleport = queue_on_teleport
+if syn then queue_on_teleport = syn.queue_on_teleport end
+queue_on_teleport([[
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/cfahubfree.lua"))()
+]])
+local Settings = {
+    AutoStat = {
+        Strength = false,
+        Stamina = false,
+        Defense = false,
+        GunMastery = false,
+        SwordMastery = false
+    }
+}
+local Temp = {
+    Nodrown = {},
+    Noclip = {},
+    DashNoStam = {},
+    NoFallDame = {}
+}
+function TableToSave(tb) 
+    local cac = {}
+    for k,v in pairs(tb) do
+        if type(v)=="vector" then 
+            cac[k]={v.X,v.Y,v.Z,"Vector3"}
+        else
+            cac[k]=v
+        end
+    end
+    return cac
+end
+function SaveToTable(tb) 
+    local cac = {}
+    for k,v in pairs(tb) do
+        if type(v)=="table" and #v==4 and v[4]=="Vector3" then 
+            cac[k]=Vector3.new(v[1],v[2],v[3])
+        else
+            cac[k]=v
+        end
+    end
+    return cac
+end 
+local SaveFileName = plr.Name.."_GPO.json"
+
+function SaveSettings()
+    local HttpService = game:GetService("HttpService")
+    if not isfolder("CFA HUB") then
+        makefolder("CFA HUB")
+    end
+    writefile("CFA HUB/" .. SaveFileName, HttpService:JSONEncode(TableToSave(Settings)))
+end
+
+function ReadSetting() 
+    local s,e = pcall(function() 
+        local HttpService = game:GetService("HttpService")
+        if not isfolder("CFA HUB") then
+            makefolder("CFA HUB")
+        end
+        return HttpService:JSONDecode(readfile("CFA HUB/" .. SaveFileName))
+    end)
+    if s then return e 
+    else
+        SaveSettings()
+        return ReadSetting()
+    end
+end
+spawn(function() 
+    while wait(1) do SaveSettings() end
+end)
+Settings = SaveToTable(ReadSetting())
+repeat wait() until game:IsLoaded()
+
+repeat wait(.25)
+until plr:FindFirstChild("Loaded")
+and plr.Loaded.Value == true
+and plr.Character
+and plr:FindFirstChild("Backpack")
+and plr.Character:FindFirstChild("Humanoid")
+and plr:FindFirstChild("PlayerGui")
+and plr.PlayerGui:FindFirstChild("Notifications")
+and #plr.Backpack:GetChildren() ~= 0
+
+if game.PlaceId==1730877806 then
+    repeat wait() until game:GetService("ReplicatedStorage").Events:FindFirstChild("reserved")
+    if Settings.PSCode and Settings.PSCode~="" then 
+        while wait(2) do 
+            game:GetService("ReplicatedStorage").Events.reserved:InvokeServer(Settings.PSCode)
+        end
+    else
+        while wait(2) do 
+            game:GetService("ReplicatedStorage").Events.playgame:FireServer()
+        end
+    end
+    return
+end
+
 local rnd = tostring(math.random(1,100000))
 
 local request=request
@@ -45,22 +142,8 @@ local secure_call = (syn and syn.secure_call) or function(f)
         setthreadcontext(7)
     end
 
-local plr = game.Players.LocalPlayer
-local Settings = {
-    AutoStat = {
-        Strength = false,
-        Stamina = false,
-        Defense = false,
-        GunMastery = false,
-        SwordMastery = false
-    }
-}
-local Temp = {
-    Nodrown = {},
-    Noclip = {},
-    DashNoStam = {},
-    NoFallDame = {}
-}
+
+
 local old = getrenv()._G.hitbox.start
 getrenv()._G.hitbox.start = function(...)
     local arg = {...}
@@ -783,28 +866,28 @@ if (executor == "Synapse X" or executor == "Krnl") and secure_call then
 else
     CFAHub:AddNoti("Warning", "Your Exploit Is Not Supported, Our Script's might not working perfectly (Supported Exploit: KRNL,Synapse X)", 1)
 end
-local lf = Section2:CreateToggle("Level Farm", {Description = "Will farm at Fishman Island (best way)"}, function(state)
+local lf = Section2:CreateToggle("Level Farm", {Toggled=Settings.Farm,Description = "Will farm at Fishman Island (best way)"}, function(state)
     Settings.Farm = state
     SetEN("Noclip", "Farm", state)
     SetEN("NoFallDame","Farm",state)
 end)
 
-local olf = Section2:CreateToggle("1 Click Level Farm", {Description = "Will auto farm beli -> Buy weapons then start level farm"}, function(state)
+local olf = Section2:CreateToggle("1 Click Level Farm", {Toggled=Settings.OneClick,Description = "Will auto farm beli -> Buy weapons then start level farm"}, function(state)
     SetEN("Noclip", "OneClick", state)
     SetEN("NoFallDame","OneClick",state)
     Settings.OneClick = state
 end)
-Section2:CreateToggle("Auto Buso Quest", {Description = "Must enable with level farm"}, function(state)
-    AutoBusoQuest=state
+Section2:CreateToggle("Auto Buso Quest", {Toggled=Settings.AutoBusoQuest,Description = "Must enable with level farm"}, function(state)
+    Settings.AutoBusoQuest=state
 end)
 Section2:CreateDropdown("Level Farm Method", {
     List = {"Rifle","Sword","Black Leg"},
-    Default = ""
+    Default = Settings.FarmMode
 }, function(item)
     Settings.FarmMode = item
 end)
 local Section2 = Tab2:CreateSection("Misc Farm")
-local AFB= Section2:CreateToggle("Auto Farm Beli (For Begginer Only)", {Description = "Auto Farm Chest then do Sarah quest"}, function(state)
+local AFB= Section2:CreateToggle("Auto Farm Beli (For Begginer Only)", {Toggled=Settings.Chest,Description = "Auto Farm Chest then do Sarah quest"}, function(state)
     Settings.Chest = state
     SetEN("Noclip", "Chest", state)
     SetEN("NoFallDame","Chest",state)
@@ -895,18 +978,18 @@ function IsSkillReady(skill)
     return false
 end
 local Section2 = Tab2:CreateSection("Ship Farm")
-Section2:CreateToggle("Ship Farm", {Description = false}, function(state)
+Section2:CreateToggle("Ship Farm", {Toggled=Settings.ShipFarm,Description = false}, function(state)
     Settings.ShipFarm = state
     SetEN("Noclip", "ShipFarm", state)
     SetEN("NoFallDame","ShipFarm",state)
 end)
 Section2:CreateDropdown("Ship Farm Method", {
     List = {"Sword","Black Leg"},
-    Default = ""
+    Default =  Settings.ShipFarmMode
 }, function(item)
     Settings.ShipFarmMode = item
 end)
-Section2:CreateToggle("Kill Cannoners", {Description = false}, function(state)
+Section2:CreateToggle("Kill Cannoners", {Toggled=Settings.KillCannon,Description = false}, function(state)
     Settings.KillCannon = state
 end)
 -- Section2:CreateToggle("Ignore Galleons", {Description = false}, function(state)
@@ -1198,7 +1281,7 @@ local Tab2 = Window:CreatePage("Auto Stats")
 local Section2 = Tab2:CreateSection("Main")
 
 for k, v in pairs(Settings.AutoStat) do
-    Section2:CreateToggle(k, {Description = false}, function(state)
+    Section2:CreateToggle(k, {Description = false,Toggled=v}, function(state)
         Settings.AutoStat[k] = state
     end)
 end
@@ -1299,7 +1382,7 @@ Section2:CreateDropdown("Teleport", {
     end
 end)
 local Section2 = Tab2:CreateSection("Stuff")
-Section2:CreateToggle("Auto Store DF", {Description = false}, function(state)
+Section2:CreateToggle("Auto Store DF", {Toggled=Settings.AutoStoreDF,Description = false}, function(state)
     Settings.AutoStoreDF = state
 end)
 local function FireButton(x)
@@ -1308,53 +1391,65 @@ local function FireButton(x)
     end
 end
 
-Section2:CreateToggle("Auto Buso Haki", {Description = false}, function(state)
+Section2:CreateToggle("Auto Buso Haki", {Toggled=Settings.AutoBuso,Description = false}, function(state)
     Settings.AutoBuso = state
 end)
 Section2:CreateDropdown("Auto Buso Method", {
     List = {"Always Enable","Enable When Stand Near Mob"},
-    Default = "Enable When Stand Near Mob"
+    Default = Settings.BusoMethod or "Enable When Stand Near Mob"
 }, function(item)
     Settings.BusoMethod=item
+    
 end)
-
--- local Section2 = Tab2:CreateSection("Security")
--- Section2:CreateToggle("Auto Kick", {Description = "Auto kick you from the game after selected minute"}, function(state)
---     Settings.AutoKick = state
--- 	while Settings.AutoKick and wait() do
---         if Settings.AutoKickTimer then 
---             pcall(function() 
---                 local CurrentTick = tick()
---                 repeat wait(1)
---                 until tick() - CurrentTick >= Settings.AutoKickTimer * 60
---                 or not Settings.AutoKick
---                 if Settings.AutoKick then
---                     plr:Kick("\n[CFA Hub]\n".. Settings.AutoKickTimer .." minute reached (Auto Kick)")
---                 end
---             end)
---         end 
--- 	end
--- end)
--- Section2:CreateSlider("Auto Kick Timer (minute)", {Min = 1, Max = 60, DefaultValue = 15}, function(value)
---     Settings.AutoKickTimer=value
---  end)
---  Section2:CreateToggle("Auto Rejoin", {Description = false}, function(state)
---     Settings.AutoBuso = state
--- end)
--- Section2:CreateTextbox("PS Code", "(Leave if you want rejoin to normal server)", function(args)
---     Settings.WebHookUrl=args
--- end)
+game.CoreGui.DescendantAdded:Connect(function()
+	wait(2)
+	pcall(function()
+		if game.CoreGui.RobloxPromptGui.promptOverlay:FindFirstChild("ErrorPrompt")
+		and Settings.AutoRejoin then
+			while wait() do
+				game:GetService("TeleportService"):Teleport(1730877806, plr)
+				wait(5)
+			end
+		end
+	end)
+end)
+local Section2 = Tab2:CreateSection("Security")
+Section2:CreateToggle("Auto Kick", {Description = "Auto kick you from the game after selected minute"}, function(state)
+    Settings.AutoKick = state
+	while Settings.AutoKick and wait() do
+        if Settings.AutoKickTimer then 
+            pcall(function() 
+                local CurrentTick = tick()
+                repeat wait(1)
+                until tick() - CurrentTick >= Settings.AutoKickTimer * 60
+                or not Settings.AutoKick
+                if Settings.AutoKick then
+                    plr:Kick("\n[CFA Hub]\n".. Settings.AutoKickTimer .." minute reached (Auto Kick)")
+                end
+            end)
+        end 
+	end
+end)
+Section2:CreateSlider("Auto Kick Timer (minute)", {Min = 1, Max = 120, DefaultValue = Settings.AutoKickTimer or 15}, function(value)
+    Settings.AutoKickTimer=value
+ end)
+ Section2:CreateToggle("Auto Rejoin", {Toggled=Settings.AutoRejoin,Description = false}, function(state)
+    Settings.AutoRejoin = state
+end)
+Section2:CreateTextbox("PS Code", "(Leave if you want rejoin to normal server)", function(args)
+    Settings.PSCode=args
+end,Settings.PSCode)
 local Section2 = Tab2:CreateSection("Local Player")
-Section2:CreateToggle("No Drown", {Description = "Make you cant drown in water"}, function(state)
+Section2:CreateToggle("No Drown", {Toggled=Settings.Nodrown,Description = "Make you cant drown in water"}, function(state)
     Settings.Nodrown = state
     SetEN("Nodrown", "Setting", state)
 end)
-Section2:CreateToggle("No Fall Damage", {Description = "Make you get no damage when fall"}, function(state)
+Section2:CreateToggle("No Fall Damage", {Toggled=Settings.NoFallDame,Description = "Make you get no damage when fall"}, function(state)
     Settings.NoFallDame = state
     SetEN("NoFallDame", "Setting", state)
 end)
-Section2:CreateToggle("Dash No Stamina", {Description = "Dashing wont take stamina"}, function(state)
-    Settings.NoFallDame = state
+Section2:CreateToggle("Dash No Stamina", {Toggled=Settings.DashNoStam,Description = "Dashing wont take stamina"}, function(state)
+    Settings.DashNoStam = state
     SetEN("DashNoStam", "Setting", state)
 end)
 -- Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
@@ -1374,7 +1469,7 @@ spawn(function()
     end
 end)
 local Section2 = Tab2:CreateSection("ESP")
-Section2:CreateToggle("Island ESP", {Description = false}, function(state)
+Section2:CreateToggle("Island ESP", {Toggled=Settings.IslandE,Description = false}, function(state)
     Settings.IslandE=state
 end)
 local Tab2 = Window:CreatePage("Web Hook")
@@ -1382,12 +1477,12 @@ local Section2 = Tab2:CreateSection("Main")
 
 Section2:CreateTextbox("Web Hook Url", "Enter here!", function(args)
     Settings.WebHookUrl=args
-end)
-Section2:CreateToggle("Mention Everyone", {Description = false}, function(state)
+end,Settings.WebHookUrl)
+Section2:CreateToggle("Mention Everyone", {Toggled=Settings.MentionEveryone,Description = false}, function(state)
     Settings.MentionEveryone=state
 end)
 local Section2 = Tab2:CreateSection("DF")
-Section2:CreateToggle("DF Webhook", {Description = "Will notify when you have DF"}, function(state)
+Section2:CreateToggle("DF Webhook", {Toggled=Settings.DFWebHook,Description = "Will notify when you have DF"}, function(state)
     Settings.DFWebHook=state
 end)
 local Tab2 = Window:CreatePage("Settings")
