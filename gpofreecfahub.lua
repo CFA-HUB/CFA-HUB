@@ -4,7 +4,7 @@ local plr = game.Players.LocalPlayer
 local queue_on_teleport = queue_on_teleport
 if syn then queue_on_teleport = syn.queue_on_teleport end
 queue_on_teleport([[
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFA-HUB/main/cfahubfree.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFAHub-Free/main/cfahubfree.lua"))()
 ]])
 local Settings = {
     AutoStat = {
@@ -201,7 +201,7 @@ local path = {
         ),
         Island = "Fishman Island",
         LevelReq = 190,
-        SwordY = -2182.94,
+        SwordY = -2189.94,
         BlackLegY = -2182.94,
         CooldownY=-2189.94
     }
@@ -438,7 +438,7 @@ game:GetService("RunService").Stepped:Connect(
                 end
             end
         else
-            if CheckEN("Noclip") then
+            if CheckEN("Noclip") and not StopFloat then
                 plr.Character.Humanoid:ChangeState(11)
             end
         end
@@ -581,7 +581,7 @@ function tpT(t,k,cur,dieukien)
         local hp = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
         local p1 = Vector3.new(t.X, 0, t.Z)
         local p2 = Vector3.new(hp.X, 0, hp.Z)
-        if (p1 - p2).magnitude < 50 and not sp then
+        if (p1 - p2).magnitude < vt*10 and not sp then
             tween:Cancel()
             Tween2(
                 cur,
@@ -621,20 +621,26 @@ function tpT(t,k,cur,dieukien)
         end
         
         
-        --    if (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
-        --     tween:Pause()
-
-        --     local info = TweenInfo.new(10000/30, Enum.EasingStyle.Linear)
-
-        --     local tween = tween_s:Create(plr.Character:WaitForChild("HumanoidRootPart"), info, {CFrame = plr.Character.HumanoidRootPart.CFrame+Vector3.new(0,-10000,0)})
-        --     tween:Play()
-        --     repeat wait() until (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial ~= Enum.Material.Air)
-        --     tween:Pause()
-
-        --    -- repeat wait() until (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial ~= Enum.Material.Air)
-
-        --     end
-        --return tpT(CFrame.new(t.X, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y, t.Z), k, cur)
+        if not IsSea() and (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
+            local tss = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Vector3.new(0, -500, 0))
+            local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Vector3.new(0, -4, 0))
+            if not tvk then 
+                if tss and tss.Instance then 
+                    local cf = plr.Character.HumanoidRootPart.CFrame
+                    Tween2(
+                        CFrame.new(cf.X, tss.Position.Y+3, cf.Z),
+                        function(a)
+                            Stop = function()
+                                Stop()
+                                a()
+                            end
+                        end
+                    )
+                    return tpT(CFrame.new(t.X, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y, t.Z), k, cur)
+                end
+            end
+        end
+        
     end
 end
 function TpTween(cf,checkfunc)
@@ -1853,6 +1859,22 @@ function InstantTp(pos)
         plr.Character.HumanoidRootPart.CFrame=pos
     end
 end
+local TpPoss
+do 
+    local cc = false
+    game:GetService("RunService").Stepped:connect(
+        function()
+            if not cc and TpPoss then
+                cc=true 
+                pcall(function() 
+                    Tp(TpPoss)
+                end)
+                cc=false
+            end
+        end
+    )
+end
+
 local mob = "Bandit"
 local olddd
 local pos =
@@ -1984,7 +2006,7 @@ while wait() do
                                 end
                             end
                             if v:FindFirstChild("HumanoidRootPart") then 
-                                curr = v.HumanoidRootPart.CFrame 
+                               -- curr = v.HumanoidRootPart.CFrame 
                                 MucTieu.MucTieu = v.HumanoidRootPart
                             end
                             
@@ -2038,12 +2060,7 @@ while wait() do
                                                         else
                                                             local rac = plr.Character.HumanoidRootPart.CFrame
                                                             Tp((CFrame.new(rac.X,Dt.BlackLegY,rac.Z)))
-                                                            local bm = plr.Character.UpperTorso:FindFirstChild(rnd) or Instance.new("BodyGyro",game.Players.LocalPlayer.Character.UpperTorso)
-                                                            bm.Name=rnd
-                                                            bm.CFrame = QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z))
-                                                            bm.MaxTorque = Vector3.new(0, math.huge, 0)
-                                                            bm.D = tonumber(shared.D or 0)
-                                                            bm.P = tonumber(shared.P or 5000)
+                                                            TpPoss=QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z))
                                                         end
                                                         
                                                         game:GetService("VirtualInputManager"):SendKeyEvent(
@@ -2058,6 +2075,7 @@ while wait() do
                                                 if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
                                                     plr.Character.UpperTorso[rnd]:Destroy()
                                                 end
+                                                TpPoss=nil
                                                 game:GetService("VirtualInputManager"):SendKeyEvent(
                                                     true,
                                                     Enum.KeyCode.R,
