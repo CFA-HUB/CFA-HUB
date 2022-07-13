@@ -2076,6 +2076,7 @@ while wait() do
                                                 )
                                                 local tvk=tick()
                                                 repeat wait()
+                                                    Click()
                                                     if plr.Character:FindFirstChild("HumanoidRootPart") then
                                                         if syn then
                                                             local rac = curr
