@@ -416,32 +416,38 @@ game:GetService("RunService").Stepped:Connect(
         -- else
         --     t.CFrame = CFrame.new(0, -100000, 0)
         -- end
-        
-        if  not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL") then
-            if
-                speaker.Character ~= nil and CheckEN("Noclip") and not StopFloat and
-                    game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
-                    game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
-                    game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
-                    not plr.PlayerGui:FindFirstChild("DEATHGUI")
-             then
-                CreateTweenFloat()
-
-                for _, child in pairs(speaker.Character:GetDescendants()) do
-                    if child:IsA("BasePart") and child.CanCollide == true then
-                        child.CanCollide = false
+        if CheckEN("Noclip") and not StopFloat then 
+            if (not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL")) then
+                if
+                    speaker.Character ~= nil and CheckEN("Noclip") and not StopFloat and
+                        game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                        game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
+                        game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
+                        not plr.PlayerGui:FindFirstChild("DEATHGUI")
+                 then
+                    CreateTweenFloat()
+    
+                    for _, child in pairs(speaker.Character:GetDescendants()) do
+                        if child:IsA("BasePart") and child.CanCollide == true then
+                            child.CanCollide = false
+                        end
+                    end
+                else
+                    if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
+                        plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
                     end
                 end
             else
-                if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
-                    plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
+                if CheckEN("Noclip") and not StopFloat then
+                    plr.Character.Humanoid:ChangeState(11)
                 end
             end
         else
-            if CheckEN("Noclip") and not StopFloat then
-                plr.Character.Humanoid:ChangeState(11)
+            if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
+                plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
             end
         end
+        
         pcall(
             function()
                 -- if CheckEN("Nodrown") then
@@ -507,8 +513,11 @@ function Tween2(t, cb)
             tween:Play()
             while (done == false) do
                 SetEN("Noclip", "Tween", true)
-                if not plr.Character:FindFirstChild("Humanoid") then return end
-                
+                if not( game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
+                game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
+                not plr.PlayerGui:FindFirstChild("DEATHGUI")) then done = true
+                    tween:Cancel() return end                
                 wait()
             end
             noclip = false
@@ -569,9 +578,10 @@ function tpT(t,k,cur,dieukien)
         if dieukien and not dieukien() then Stop() return end
         SetEN("Noclip", "Tween", true)
 
-        if plr:FindFirstChild("DEATHGUI") then
-            return
-        end
+        if not( game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+        game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
+        game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
+        not plr.PlayerGui:FindFirstChild("DEATHGUI")) then Stop() return end
         if not plr.Character:FindFirstChild("Humanoid") then Stop() return end
         
         wait()
@@ -1468,10 +1478,10 @@ Section2:CreateToggle("Dash No Stamina", {Toggled=Settings.DashNoStam,Descriptio
     Settings.DashNoStam = state
     SetEN("DashNoStam", "Setting", state)
 end)
--- Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
---     Settings.Noclip = state
---     SetEN("Noclip", "Setting", state)
--- end)
+Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
+    Settings.Noclip = state
+    SetEN("Noclip", "Setting", state)
+end)
 local ws = 16
 Section2:CreateSlider("WalkSpeed Changer", {Min = 16, Max = 100, DefaultValue = 16}, function(value)
    ws=value
@@ -1830,6 +1840,15 @@ function CheckReq()
     end
     return false
 end
+function RapidHold() 
+    if not game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then return end
+    local cac = game.Players.LocalPlayer.Character.Humanoid
+    local rac = cac:GetPlayingAnimationTracks()
+    for k,v in pairs(rac) do 
+        if tostring(v)=="rapidHold" then return true end
+    end   
+    
+end
 function EquipTool() 
     if Settings.FarmMode == "Black Leg" then
         if
@@ -1869,6 +1888,7 @@ do
                 Tp(TpPoss)
             end)
             cc=false
+        else
         end
     end)
 end
@@ -2004,7 +2024,11 @@ while wait() do
                                 end
                             end
                             if v:FindFirstChild("HumanoidRootPart") then 
-                               -- curr = v.HumanoidRootPart.CFrame 
+                                
+                                if (v.HumanoidRootPart.Position-curr.p).magnitude>20 then 
+                                    curr = v.HumanoidRootPart.CFrame 
+                                end
+                               
                                 MucTieu.MucTieu = v.HumanoidRootPart
                             end
                             
@@ -2052,13 +2076,28 @@ while wait() do
                                                 )
                                                 repeat wait()
                                                     if plr.Character:FindFirstChild("HumanoidRootPart") then
-                                                        if true then
-                                                            local rac = plr.Character.HumanoidRootPart.CFrame
+                                                        if syn then
+                                                            local rac = curr
                                                             Tp(QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z)))
                                                         else
-                                                            local rac = plr.Character.HumanoidRootPart.CFrame
-                                                            Tp((CFrame.new(rac.X,Dt.BlackLegY,rac.Z)))
-                                                            TpPoss=QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z))
+                                                            if RapidHold() then 
+                                                                local v = GetNearestMob(mob)
+                                                                if v and v:FindFirstChild("HumanoidRootPart") then 
+                                                                    local rac = v.HumanoidRootPart.CFrame
+                                                                    
+                                                                    -- local bm = plr.Character.UpperTorso:FindFirstChild(rnd) or Instance.new("BodyGyro",game.Players.LocalPlayer.Character.UpperTorso)
+                                                                    -- bm.Name=rnd
+                                                                    -- bm.CFrame = QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z))
+                                                                    -- bm.MaxTorque = Vector3.new(0, math.huge, 0)
+                                                                    -- bm.D = tonumber(shared.D or 0)
+                                                                    -- bm.P = tonumber(shared.P or 5000)      
+                                                                    Tp(rac*CFrame.new(0,0,10))                                               
+                                                                    ---TpPoss=rac*CFrame.new(0,0,7)
+                                                                end
+                                                            end
+                                                            
+                                                            
+                                                            --plr.Character.Humanoid.PlatformStand=true
                                                         end
                                                         
                                                         game:GetService("VirtualInputManager"):SendKeyEvent(
@@ -2073,6 +2112,10 @@ while wait() do
                                                 if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
                                                     plr.Character.UpperTorso[rnd]:Destroy()
                                                 end
+                                                if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
+                                                    plr.Character.UpperTorso[rnd]:Destroy()
+                                                end
+                                               -- plr.Character.Humanoid.PlatformStand=false
                                                 TpPoss=nil
                                                 game:GetService("VirtualInputManager"):SendKeyEvent(
                                                     true,
