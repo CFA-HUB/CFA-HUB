@@ -2074,6 +2074,7 @@ while wait() do
                                                     false,
                                                     game
                                                 )
+                                                local tvk=tick()
                                                 repeat wait()
                                                     if plr.Character:FindFirstChild("HumanoidRootPart") then
                                                         if syn then
@@ -2085,12 +2086,12 @@ while wait() do
                                                                 if v and v:FindFirstChild("HumanoidRootPart") then 
                                                                     local rac = v.HumanoidRootPart.CFrame
                                                                     
-                                                                    -- local bm = plr.Character.UpperTorso:FindFirstChild(rnd) or Instance.new("BodyGyro",game.Players.LocalPlayer.Character.UpperTorso)
-                                                                    -- bm.Name=rnd
-                                                                    -- bm.CFrame = QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z))
-                                                                    -- bm.MaxTorque = Vector3.new(0, math.huge, 0)
-                                                                    -- bm.D = tonumber(shared.D or 0)
-                                                                    -- bm.P = tonumber(shared.P or 5000)      
+                                                                    local bm = plr.Character.UpperTorso:FindFirstChild(rnd) or Instance.new("BodyGyro",game.Players.LocalPlayer.Character.UpperTorso)
+                                                                    bm.Name=rnd
+                                                                    bm.CFrame = QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z))
+                                                                    bm.MaxTorque = Vector3.new(0, math.huge, 0)
+                                                                    bm.D = tonumber(shared.D or 0)
+                                                                    bm.P = tonumber(shared.P or 5000)      
                                                                     Tp(rac*CFrame.new(0,0,10))                                               
                                                                     ---TpPoss=rac*CFrame.new(0,0,7)
                                                                 end
@@ -2108,7 +2109,7 @@ while wait() do
                                                 )
                                                     end
                                                 until not IsSkillReady("Rapid Slashes") or CountNear(mob, 18) ==0 or
-                                                not Settings.Farm
+                                                not Settings.Farm or tick()-tvk >7
                                                 if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
                                                     plr.Character.UpperTorso[rnd]:Destroy()
                                                 end
