@@ -229,60 +229,21 @@ local FarmPath = {
                 ),
                 Island = "Fishman Island",
                 LevelReq = 190,
-                SwordY = -2189.94,
+                SwordY = -2182.94,
                 BlackLegY = -2182.94,
                 CooldownY=-2189.94,
                 RapidY=-2182.94
             }
         },
         Advance = {
-            [1] = {
-                Mob = "Fishman Karate User",
-                Mobpos = CFrame.new(7670.65137, -2189.93994, -17322.8379, 1, 0, 0, 0, 1, 0, 0, 0, 1),
-                Questpos = CFrame.new(
-                    7730.92773,
-                    -2175.83203,
-                    -17222.5781,
-                    0.0217917003,
-                    -7.93145247e-08,
-                    0.999762535,
-                    -3.60022554e-08,
-                    1,
-                    8.01180988e-08,
-                    -0.999762535,
-                    -3.77396141e-08,
-                    0.0217917003
-                ),
-                Quest = "Help becky",
-                Spawn = CFrame.new(
-                    7976.84131,
-                    -2152.8313,
-                    -17073.9063,
-                    0.647454381,
-                    1.1295689e-07,
-                    0.762104213,
-                    -4.50578455e-08,
-                    1,
-                    -1.09937709e-07,
-                    -0.762104213,
-                    3.68408735e-08,
-                    0.647454381
-                ),
-                Island = "Fishman Island",
-                LevelReq = 190,
-                SwordY = -2189.94,
-                BlackLegY = -2182.94,
-                CooldownY=-2189.94,
-                RapidY=-2182.94
-            },
-            [120] = {
+            [160] = {
                 Mob = "Gravito's Undermen",
                 Mobpos = CFrame.new(2718.87573, 60.1180725, -15689.9375, -0.965884089, -1.76300429e-19, 0.25897485, -1.13688492e-19, 1, 2.56745101e-19, -0.25897485, 2.18543522e-19, -0.965884089),
                 Questpos = CFrame.new(2510.30103, 41.4681244, -15541.5859, 0.996558726, -4.13273469e-08, 0.0828894675, 3.50337892e-08, 1, 7.73815572e-08, -0.0828894675, -7.42113357e-08, 0.996558726),
                 Quest = "Help Miska",
                 Spawn = CFrame.new(2585.16138, 7.64981413, -15364.9072, 0.999508381, 4.34313142e-06, 0.0313485563, -5.47222771e-06, 0.99999994, 3.59315163e-05, -0.0313485563, -3.60853955e-05, 0.999508381),
                 Island = "Gravito's Fort",
-                LevelReq = 120,
+                LevelReq = 160,
                 SwordY = 31.861898422241,
                 BlackLegY = 35.39432144165,
                 CooldownY=7.6498141288757,
@@ -342,60 +303,12 @@ local FarmPath = {
             }
         },
         Advance = {
-            [1] = {
-                Mob = "Fishman Karate User",
-                Mobpos = CFrame.new(
-                    7824.5166,
-                    -2138.18994,
-                    -17138.4766,
-                    0.916648865,
-                    0,
-                    0.399693429,
-                    0,
-                    1,
-                    0,
-                    -0.399693429,
-                    0,
-                    0.916648865
-                ),
-                Questpos = CFrame.new(
-                    7730.92773,
-                    -2175.83203,
-                    -17222.5781,
-                    0.0217917003,
-                    -7.93145247e-08,
-                    0.999762535,
-                    -3.60022554e-08,
-                    1,
-                    8.01180988e-08,
-                    -0.999762535,
-                    -3.77396141e-08,
-                    0.0217917003
-                ),
-                Quest = "Help becky",
-                LevelRequest = 190,
-                Spawn = CFrame.new(
-                    7976.84131,
-                    -2152.8313,
-                    -17073.9063,
-                    0.647454381,
-                    1.1295689e-07,
-                    0.762104213,
-                    -4.50578455e-08,
-                    1,
-                    -1.09937709e-07,
-                    -0.762104213,
-                    3.68408735e-08,
-                    0.647454381
-                ),
-                Island = "Fishman Island"
-            },
-            [120] = {
+            [160] = {
                 Mob = "Gravito's Undermen",
                 Mobpos = CFrame.new(2718.87573, 60.1180725, -15689.9375, -0.965884089, -1.76300429e-19, 0.25897485, -1.13688492e-19, 1, 2.56745101e-19, -0.25897485, 2.18543522e-19, -0.965884089),
                 Questpos = CFrame.new(2510.30103, 41.4681244, -15541.5859, 0.996558726, -4.13273469e-08, 0.0828894675, 3.50337892e-08, 1, 7.73815572e-08, -0.0828894675, -7.42113357e-08, 0.996558726),
                 Quest = "Help Miska",
-                LevelRequest = 120,
+                LevelRequest = 160,
                 Spawn = CFrame.new(2585.16138, 7.64981413, -15364.9072, 0.999508381, 4.34313142e-06, 0.0313485563, -5.47222771e-06, 0.99999994, 3.59315163e-05, -0.0313485563, -3.60853955e-05, 0.999508381),
                 Island = "Gravito's Fort"
             }
@@ -403,6 +316,10 @@ local FarmPath = {
     }
 
 }
+
+FarmPath.Rifle.Advance[1]=FarmPath.Rifle.Normal[1]
+FarmPath.Melee.Advance[1]=FarmPath.Melee.Normal[1]
+
 local lvadd=190
 FarmPath.Rifle.Advance[lvadd]=FarmPath.Rifle.Advance[1]
 FarmPath.Melee.Advance[lvadd]=FarmPath.Melee.Advance[1]
@@ -517,13 +434,25 @@ old = hookmetamethod(game, "__namecall", function(...)
 end)
 
 local tvktrumskid = tostring(math.random(0, 100000))
+local TweenFloatVelocity = Vector3.new(0,0,0)
 function CreateTweenFloat()
-    if not plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
+    local BV = plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) or Instance.new("BodyVelocity")
+    BV.Parent = plr.Character.HumanoidRootPart
+    BV.Name = tvktrumskid
+    BV.MaxForce = Vector3.new(100000, 100000, 100000)
+    BV.Velocity = TweenFloatVelocity
+end
+function TweenFloat(tvk)
+    if tvk and not plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid..tvktrumskid) then
         local BV = Instance.new("BodyVelocity")
         BV.Parent = plr.Character.HumanoidRootPart
-        BV.Name = tvktrumskid
+        BV.Name = tvktrumskid..tvktrumskid
         BV.MaxForce = Vector3.new(100000, 100000, 100000)
         BV.Velocity = Vector3.new(0, 0, 0)
+    else
+        if not tvk and  plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid..tvktrumskid) then 
+            plr.Character.HumanoidRootPart[tvktrumskid..tvktrumskid]:Destroy()
+        end
     end
 end
 function QuayNgang(pos) 
@@ -564,16 +493,19 @@ game:GetService("RunService").Stepped:Connect(
         -- else
         --     t.CFrame = CFrame.new(0, -100000, 0)
         -- end
-        if CheckEN("Noclip") and not StopFloat then 
+        if  CheckEN("Noclip") then 
             if (not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL")) then
                 if
-                    speaker.Character ~= nil and CheckEN("Noclip") and not StopFloat and
+                    speaker.Character ~= nil and CheckEN("Noclip") and
                         game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
                         game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
                         game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
                         not plr.PlayerGui:FindFirstChild("DEATHGUI")
                  then
-                    CreateTweenFloat()
+                    if not StopFloat then 
+                        CreateTweenFloat()
+                    end
+                    
     
                     for _, child in pairs(speaker.Character:GetDescendants()) do
                         if child:IsA("BasePart") and child.CanCollide == true then
@@ -583,11 +515,17 @@ game:GetService("RunService").Stepped:Connect(
                 else
                     if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
                         plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
+                       
                     end
                 end
             else
                 if CheckEN("Noclip") and not StopFloat then
                     plr.Character.Humanoid:ChangeState(11)
+                    for _, child in pairs(plr.Character:GetDescendants()) do
+                        if child:IsA("BasePart") and child.CanCollide == true then
+                            child.CanCollide = false
+                        end
+                    end
                 end
             end
         else
@@ -696,145 +634,145 @@ function y0(vc)
 end
 local DisableSafeMode = false
 local Last
-function tpT(t,k,cur,dieukien)
-    --local k=nil;cur=nil
-    if Last then
-        Last()
-        Last = nil
+local FishUp = CFrame.new(8585.81641, -2136.12305, -17087.8145, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+function FireTouch(part)
+    if plr.Character:FindFirstChild("HumanoidRootPart") then
+        firetouchinterest(plr.Character:WaitForChild("HumanoidRootPart"), part, 0)
+        firetouchinterest(plr.Character:WaitForChild("HumanoidRootPart"), part, 1)
     end
-    if not cur then
-        cur = t
+end
+function tpT(Pos,k,Origin,dieukien,DisableBypass,Float)
+    if not plr.Character:FindFirstChild("HumanoidRootPart") then return end
+    if (plr.Character.HumanoidRootPart.Position-Pos.Position).magnitude <40 then 
+        plr.Character.HumanoidRootPart.CFrame=Pos
+        --tween:Cancel()
+        return
     end
-
-    local info = TweenInfo.new((plr.Character.HumanoidRootPart.Position - t.p).magnitude / vt, Enum.EasingStyle.Linear)
-    -- print(t,k)
-    if k == nil then
-        k = 1
-    end
-    local plr = game:service "Players".LocalPlayer
-    local tween_s = game:service "TweenService"
-    local tic_k = tick()
-    local cframe = t
-
-    local tween = tween_s:Create(plr.Character:WaitForChild("HumanoidRootPart"), info, {CFrame = cframe})
-    local done = false
-    tween.Completed:Connect(
-        function()
+    if not Float then 
+        StopFloat=true
+    else
+        StopFloat=false
+    end   
+    local tvk = function() 
+        if not IsFishMan(Pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+            tpT(FishUp,nil,nil,dieukien,DisableBypass,Float)
+            DisableSafeMode=true
+            FireTouch(game:GetService("Workspace").Fishman.Part2)
+    
+            wait(1)
+            if not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+                DisableSafeMode=false
+                return tpT(Pos,nil,nil,dieukien,DisableBypass,Float)
+            end
+        end
+        if IsFishMan(Pos) and not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+            tpT(CFrame.new(5639.86865, -92.762001, -16611.4688, -1, 0, 0, 0, 1, 0, 0, 0, -1),nil,nil,dieukien,DisableBypass,Float)
+            DisableSafeMode=true
+            FireTouch(game:GetService("Workspace").Fishman.Part)
+    
+            wait(1)
+            if IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+                DisableSafeMode=false
+                return tpT(Pos,nil,nil,dieukien,DisableBypass,Float)
+            end
+        -- TpTween(pos,sp,part)
+        end
+        if Last then
+            Last()
+            Last = nil
+        end
+        if not Origin then
+            Origin = Pos
+        end
+    
+        local info = TweenInfo.new((plr.Character.HumanoidRootPart.Position - Pos.p).magnitude / vt, Enum.EasingStyle.Linear)
+        if k == nil then
+            k = 1
+        end
+        local tween_s = game:service "TweenService"
+        local tween = game:service "TweenService":Create(plr.Character:WaitForChild("HumanoidRootPart"), info, {CFrame = Pos})
+        local done = false
+        tween.Completed:Connect(
+            function()
+                done = true
+            end
+        )
+        tween:Play()
+        local Stop = function()
+            tween:Cancel()
             done = true
+            SetEN("Noclip", "Tween", false)
         end
-    )
-    tween:Play()
-    local Stop = function()
-        tween:Cancel()
-        done = true
-        SetEN("Noclip", "Tween", false)
-    end
-    Last = Stop
-    while (done == false) do
-        if dieukien and not dieukien() then Stop() return end
-        SetEN("Noclip", "Tween", true)
-
-        if not( game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
-        game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
-        game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
-        not plr.PlayerGui:FindFirstChild("DEATHGUI")) then Stop() return end
-        if not plr.Character:FindFirstChild("Humanoid") then Stop() return end
-        
-        wait()
-        if sp and not part.Parent then
-            return
-        end
-
-        do 
-            local hp = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-            local p1 = Vector3.new(cur.X, 0, cur.Z)
-            local p2 = Vector3.new(hp.X, 0, hp.Z)
-            if (p1 - p2).magnitude < 200 then
-                tween:Cancel()
-                Tween2(
-                    cur,
-                    function(a)
-                        Stop = function()
-                            Stop()
-                            a()
-                        end
-                    end
-                )
+        Last = Stop
+        while (done == false) do
+            if dieukien and not dieukien() then Stop() return end
+            SetEN("Noclip", "Tween", true)
+            if not( game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+            game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
+            game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
+            not plr.PlayerGui:FindFirstChild("DEATHGUI")) then Stop() return end
+            if not plr.Character:FindFirstChild("Humanoid") then Stop() return end
+    
+            if math.abs(Pos.Position.Y-plr.Character.HumanoidRootPart.Position.Y)>50 then
+                StopFloat=false 
+            else
+                if not Float then 
+                    StopFloat=true
+                else
+                    StopFloat=false
+                end
+            end
+            wait(.1)
+            if sp and not part.Parent then
                 return
-            
             end
-        end
-
-        local hp = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-        local p1 = Vector3.new(t.X, 0, t.Z)
-        local p2 = Vector3.new(hp.X, 0, hp.Z)
-        if (p1 - p2).magnitude < vt*5 then
-            tween:Cancel()
-            Tween2(
-               t,
-                function(a)
-                    Stop = function()
-                        Stop()
-                        a()
-                    end
+            if (plr.Character.HumanoidRootPart.Position-Pos.Position).magnitude <40 then 
+                plr.Character.HumanoidRootPart.CFrame=Pos
+                tween:Cancel()
+                return
+            end
+            do 
+                local hp = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                local p1 = Vector3.new(Origin.X, 0, Origin.Z)
+                local p2 = Vector3.new(hp.X, 0, hp.Z)
+                if (p1 - p2).magnitude < 200 then
+                    tween:Cancel()
+                    return tpT(Origin,nil,Origin,dieukien,true,true)
                 end
-            )
-            return tpT(
-                cur,
-                k,
-                cur,
-                sp,
-                part)
-        end
-        
-        local pos = -2.7848949432373
-        if
-            not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) and IsSea() and
-                math.abs(plr.Character.HumanoidRootPart.Position.Y - pos) > .1
-         then
-            tween:Cancel()
-            local cf = plr.Character.HumanoidRootPart.CFrame
-            Tween2(
-                CFrame.new(cf.X, pos, cf.Z),
-                function(a)
-                    Stop = function()
-                        Stop()
-                        a()
-                    end
-                end
-            )
-            return tpT(
-                CFrame.new(t.X, pos, t.Z),
-                k,
-                cur,
-                sp,
-                part
-            )
-        end
-        
-        
-        if not IsSea() and (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
-            tween:Cancel()
-            local tss = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -500, 0))
-            local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -7, 0))
-            if not tvk then 
-                if tss and tss.Instance then 
-                    local cf = plr.Character.HumanoidRootPart.CFrame
-                    Tween2(
-                        CFrame.new(cf.X, tss.Position.Y+3, cf.Z),
-                        function(a)
-                            Stop = function()
-                                Stop()
-                                a()
-                            end
-                        end
+            end
+            if not DisableBypass then 
+                local pos = -2.7848949432373
+                if
+                    not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) and IsSea() and
+                        math.abs(plr.Character.HumanoidRootPart.Position.Y - pos) > .1
+                 then
+                    tween:Cancel()
+                    local cf = plr.Character.HumanoidRootPart.CFrame      
+                    return tpT(
+                        CFrame.new(Pos.X, cf.Y, Pos.Z),
+                        k,
+                        Origin,
+                        dieukien,DisableBypass,Float
                     )
-                    return tpT(CFrame.new(t.X,  tss.Position.Y+3, t.Z), k, cur)
                 end
+                if not IsSea() and (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
+                    --print("bu cu")
+                    local tss = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -500, 0))
+                    local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -7, 0))
+                    if not tvk then 
+                        if tss and tss.Instance then 
+                            tween:Cancel()
+                            local cf = plr.Character.HumanoidRootPart.CFrame
+                            return tpT(CFrame.new(Pos.X,  cf.Y, Pos.Z), k, Origin,dieukien,DisableBypass,Float)
+                        end
+                    end
+                end
+                return tpT(CFrame.new(Pos.X,  Pos.Y, Pos.Z), k, Origin,dieukien,DisableBypass,Float)
             end
         end
-        
     end
+    tvk()
+    StopFloat=false
 end
 function TpTween(cf,checkfunc)
     SetEN("Nodrown", "Tween", true)
@@ -843,57 +781,53 @@ function TpTween(cf,checkfunc)
     SetEN("Noclip", "Tween", false)
     SetEN("Nodrown", "Tween", false)
 end
-local FishUp = CFrame.new(8585.81641, -2136.12305, -17087.8145, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-function FireTouch(part)
-    if plr.Character:FindFirstChild("HumanoidRootPart") then
-        firetouchinterest(plr.Character:WaitForChild("HumanoidRootPart"), part, 0)
-        firetouchinterest(plr.Character:WaitForChild("HumanoidRootPart"), part, 1)
-    end
-end
 function Tp(pos, checkfunc)
     if Last then
         Last()
         Last = nil
     end
-    if plr.Character:FindFirstChild("HumanoidRootPart") then
-        if (plr.Character.HumanoidRootPart.Position - pos.p).magnitude < 25 then
-            plr.Character.HumanoidRootPart.CFrame = pos
-            return
-        end
-    end
-    if IsFishMan(pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
-        TpTween(pos,checkfunc)
-    end
-    if not IsFishMan(pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
-        TpTween(FishUp, checkfunc)
-        DisableSafeMode=true
-        FireTouch(game:GetService("Workspace").Fishman.Part2)
+    TpTween(pos,checkfunc)
+    -- if plr.Character:FindFirstChild("HumanoidRootPart") then
+    --     if (plr.Character.HumanoidRootPart.Position - pos.p).magnitude < 25 then
+    --         plr.Character.HumanoidRootPart.CFrame = pos
+    --         return
+    --     end
+    -- end
+    -- if IsFishMan(pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+    --     TpTween(pos,checkfunc)
+    -- end
+    -- if not IsFishMan(pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+    --     TpTween(FishUp, checkfunc)
+    --     DisableSafeMode=true
+    --     FireTouch(game:GetService("Workspace").Fishman.Part2)
 
-        wait(1)
-        if not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
-            DisableSafeMode=false
-            TpTween(pos, checkfunc)
-        end
-    end
-    if IsFishMan(pos) and not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
-        TpTween(CFrame.new(5639.86865, -92.762001, -16611.4688, -1, 0, 0, 0, 1, 0, 0, 0, -1), checkfunc)
-        DisableSafeMode=true
-        FireTouch(game:GetService("Workspace").Fishman.Part)
+    --     wait(1)
+    --     if not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+    --         DisableSafeMode=false
+    --         TpTween(pos, checkfunc)
+    --     end
+    -- end
+    -- if IsFishMan(pos) and not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+    --     TpTween(CFrame.new(5639.86865, -92.762001, -16611.4688, -1, 0, 0, 0, 1, 0, 0, 0, -1), checkfunc)
+    --     DisableSafeMode=true
+    --     FireTouch(game:GetService("Workspace").Fishman.Part)
 
-        wait(1)
-        if IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
-            DisableSafeMode=false
-            TpTween(pos, checkfunc)
-        end
-    -- TpTween(pos,sp,part)
-    end
-    if
-        not IsFishMan(pos) and
-            not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position)
-     then
-        TpTween(pos,checkfunc)
-    end
+    --     wait(1)
+    --     if IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+    --         DisableSafeMode=false
+    --         TpTween(pos, checkfunc)
+    --     end
+    -- -- TpTween(pos,sp,part)
+    -- end
+    -- if
+    --     not IsFishMan(pos) and
+    --         not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position)
+    --  then
+    --     TpTween(pos,checkfunc)
+    -- end
 end
+
+
 local CFAHub = 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/cac/main/buoi.lua"))()
 
@@ -1111,7 +1045,7 @@ function IsAdvanceMode(k)
     if k=="1-500 at Fishman" then return false else return true end
 end
 Section2:CreateDropdown("Level Farm Path", {
-    List = {"1-500 at Fishman","1-120 at Fishman, 120-190 at gravito fort, 190-500 at Fishman"},
+    List = {"1-500 at Fishman","1-160 at Fishman, 160-190 at gravito fort, 190-500 at Fishman"},
     Default = Settings.FarmPath or "1-500 at Fishman"
 }, function(item)
     Settings.FarmPath = item
@@ -1327,7 +1261,8 @@ plr.Backpack.ChildAdded:Connect(function(fruit)
                     local v = fruit
                     StoringDF=true
                     local t = tick()
-                    repeat wait()
+                    
+                    repeat wait(1)
                         plr.Character.Humanoid:EquipTool(v)
                         wait(.5)
                         if pcall(function() return plr.PlayerGui.storefruit.TextButton end) and plr.PlayerGui.storefruit.TextButton.Visible == true then
@@ -1608,7 +1543,11 @@ Section2:CreateDropdown("Teleport", {
     Default = ""
 }, function(item)
     if item and item~="" then 
-        Tp(LocationsCoord[item])
+        local s,e = xpcall(function()Tp(LocationsCoord[item]) end,function(e) 
+            print(e)
+            print(debug.traceback())
+        end)
+       -- print(s,e)
     end
 end)
 local Section2 = Tab2:CreateSection("Stuff")
@@ -1755,19 +1694,21 @@ Section2:CreateToggle("Auto Kick at 499 rifle shoot", {Toggled=Settings.RifleKic
 end)
 Section2:CreateToggle("Auto Kick", {Toggled=Settings.AutoKick,Description = "Auto kick you from the game after selected minute"}, function(state)
     Settings.AutoKick = state
-	while Settings.AutoKick and wait() do
-        if Settings.AutoKickTimer then 
-            pcall(function() 
-                local CurrentTick = tick()
-                repeat wait(1)
-                until tick() - CurrentTick >= Settings.AutoKickTimer * 60
-                or not Settings.AutoKick
-                if Settings.AutoKick then
-                    plr:Kick("\n[CFA Hub]\n".. Settings.AutoKickTimer .." minute reached (Auto Kick)")
-                end
-            end)
-        end 
-	end
+	spawn(function() 
+        while Settings.AutoKick and wait() do
+            if Settings.AutoKickTimer then 
+                pcall(function() 
+                    local CurrentTick = tick()
+                    repeat wait(1)
+                    until tick() - CurrentTick >= Settings.AutoKickTimer * 60
+                    or not Settings.AutoKick
+                    if Settings.AutoKick then
+                        plr:Kick("\n[CFA Hub]\n".. Settings.AutoKickTimer .." minute reached (Auto Kick)")
+                    end
+                end)
+            end 
+        end
+    end)
 end)
 Section2:CreateSlider("Auto Kick Timer (minute)", {Min = 1, Max = 120, DefaultValue = Settings.AutoKickTimer or 15}, function(value)
     Settings.AutoKickTimer=value
@@ -2166,6 +2107,7 @@ function RapidHold()
     
 end
 function EquipTool() 
+    if StoringDF then return end
     if Settings.FarmMode == "Black Leg" then
         if
             game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
