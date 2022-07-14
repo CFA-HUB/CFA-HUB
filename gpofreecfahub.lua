@@ -493,46 +493,54 @@ game:GetService("RunService").Stepped:Connect(
         -- else
         --     t.CFrame = CFrame.new(0, -100000, 0)
         -- end
-        if  CheckEN("Noclip") then 
-            if (not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL")) then
-                if
-                    speaker.Character ~= nil and CheckEN("Noclip") and
-                        game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
-                        game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
-                        game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
-                        not plr.PlayerGui:FindFirstChild("DEATHGUI")
-                 then
-                    if not StopFloat then 
-                        CreateTweenFloat()
-                    end
-                    
-    
-                    for _, child in pairs(speaker.Character:GetDescendants()) do
-                        if child:IsA("BasePart") and child.CanCollide == true then
-                            child.CanCollide = false
+        if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+        game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
+        game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
+        not plr.PlayerGui:FindFirstChild("DEATHGUI") then 
+            if CheckEN("Noclip") then 
+                if (not setfflag or (identifyexecutor and identifyexecutor():upper() == "KRNL")) then
+                    if
+                        speaker.Character ~= nil and CheckEN("Noclip") and
+                            game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                            game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
+                            game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
+                            not plr.PlayerGui:FindFirstChild("DEATHGUI")
+                     then
+                        if not StopFloat then 
+                            CreateTweenFloat()
+                        end
+                        
+        
+                        for _, child in pairs(speaker.Character:GetDescendants()) do
+                            if child:IsA("BasePart") and child.CanCollide == true then
+                                child.CanCollide = false
+                            end
+                        end
+                    else
+                        if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
+                            plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
+                           
                         end
                     end
                 else
-                    if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
-                        plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
-                       
-                    end
-                end
-            else
-                if CheckEN("Noclip") and not StopFloat then
-                    plr.Character.Humanoid:ChangeState(11)
-                    for _, child in pairs(plr.Character:GetDescendants()) do
-                        if child:IsA("BasePart") and child.CanCollide == true then
-                            child.CanCollide = false
+                    if CheckEN("Noclip") then
+                        if not StopFloat then 
+                            plr.Character.Humanoid:ChangeState(11)
+                        end
+                        for _, child in pairs(plr.Character:GetDescendants()) do
+                            if child:IsA("BasePart") and child.CanCollide == true then
+                                child.CanCollide = false
+                            end
                         end
                     end
                 end
-            end
-        else
-            if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
-                plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
+            else
+                if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
+                    plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
+                end
             end
         end
+        
         
         pcall(
             function()
