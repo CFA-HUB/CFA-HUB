@@ -816,7 +816,7 @@ function tpT(t,k,cur,dieukien)
         if not IsSea() and (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
             tween:Cancel()
             local tss = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -500, 0))
-            local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Vector3.new(0, -4, 0))
+            local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -4, 0))
             if not tvk then 
                 if tss and tss.Instance then 
                     local cf = plr.Character.HumanoidRootPart.CFrame
@@ -1641,39 +1641,39 @@ game.CoreGui.DescendantAdded:Connect(function()
 end)
 local current = tick()
 local last = current
-local humadd = function(v) 
-    if v.Name=="Humanoid" then 
-       v:GetPropertyChangedSignal("FloorMaterial"):Connect(function()
-            if plr.Character.Humanoid.FloorMaterial == Enum.Material.Air
-             then
-                last=tick() --tren troi
-             else 
-                current=tick() --duoi dat
-            end
-        end)
-    end
-end
-if plr.Character:FindFirstChild("Humanoid") then 
-    humadd(plr.Character.Humanoid)
-end
+-- local humadd = function(v) 
+--     if v.Name=="Humanoid" then 
+--        v:GetPropertyChangedSignal("FloorMaterial"):Connect(function()
+--             if plr.Character.Humanoid.FloorMaterial == Enum.Material.Air
+--              then
+--                 last=tick() --tren troi
+--              else 
+--                 current=tick() --duoi dat
+--             end
+--         end)
+--     end
+-- end
+-- if plr.Character:FindFirstChild("Humanoid") then 
+--     humadd(plr.Character.Humanoid)
+-- end
 function RCDetect() 
     if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("Humanoid") and plr.Character.Humanoid.Health>0 then 
         local plrPos = plr.Character.HumanoidRootPart.Position
         local Distance
         if plr.Character.HumanoidRootPart.Position.Y <= 20 then
-            Distance = -100
+            Distance = -5
         else
-            Distance = -25
+            Distance = -5
         end
-        local rcu = RayCast2(Vector3.new(plrPos.X, plrPos.Y - 3, plrPos.Z),Vector3.new(0, Distance, 0))
+        local rcu = RayCast2(Vector3.new(plrPos.X, plrPos.Y, plrPos.Z),Vector3.new(0, Distance, 0))
         if plr.Character.Humanoid.FloorMaterial ~= Enum.Material.Air
         or game.workspace.Ragdolls:FindFirstChild(plr.Name)
         or plr.Character.HumanoidRootPart:FindFirstChild("geppo")
         or plr.Character.HumanoidRootPart:FindFirstChild("SwimPosition")
-        or plr.Character.HumanoidRootPart:FindFirstChild("BodyVelocity")
         or plr.Character:FindFirstChild("ToriFullForm")
         or plr.Character:FindFirstChild("AirBypass")
-        or rcu then
+        or rcu or IsSea() then
+            --print("duoi dat")
             current=tick()-- duoi dat
         else
             last=tick() --tren troi
@@ -1685,11 +1685,9 @@ end
 function Detect()
 	if game.workspace.PlayerCharacters:FindFirstChild(plr.Name)
 	and not game.workspace.Ragdolls:FindFirstChild(plr.Name)
-	and not plr.Character:FindFirstChild("Stun")
-	and not plr.Character:FindFirstChild("RagdollConstraints")
 	and not plr.PlayerGui:FindFirstChild("DEATHGUI")
 	and not plr.PlayerGui:FindFirstChild("Blackout")
-	and not plr.Character:FindFirstChild("ForceField") and plr.Character:FindFirstChild("HumanoidRootPart") then
+	and plr.Character:FindFirstChild("HumanoidRootPart") then
 		return true
 	end
 	return false
@@ -1720,18 +1718,20 @@ local LastNguyHiem = tick()
 spawn(function()
     while wait() do
         RCDetect()
-        if current-last >8 then
+        
+        if last-current >8 then
             NguyHiem=true
             wait(1)
         else
             NguyHiem=false
         end 
+        --print(last-current)
         if Settings.SafeMode and Detect() then 
 			if plr.Character.HumanoidRootPart.Velocity.Y > 700
 			or plr.Character.HumanoidRootPart.Velocity.Y < -700 then
 				SafeModeKick()
             end
-            if current-last >13 then 
+            if last-current >13 then 
                 SafeModeKick()
             end
             if game.workspace.Ragdolls:FindFirstChild(plr.Name) then
@@ -1791,10 +1791,10 @@ Section2:CreateToggle("Dash No Stamina", {Toggled=Settings.DashNoStam,Descriptio
     Settings.DashNoStam = state
     SetEN("DashNoStam", "Setting", state)
 end)
-Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
-    Settings.Noclip = state
-    SetEN("Noclip", "Setting", state)
-end)
+-- Section2:CreateToggle("No Clip", {Description = "Make you get no damage when fall"}, function(state)
+--     Settings.Noclip = state
+--     SetEN("Noclip", "Setting", state)
+-- end)
 local ws = 16
 Section2:CreateSlider("WalkSpeed Changer", {Min = 16, Max = 100, DefaultValue = 16}, function(value)
    ws=value
@@ -2570,7 +2570,7 @@ while wait() do
             end
 
             if game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == true then
-                if GetCurrentQuest()~=Dt.Quest then
+                if GetCurrentQuest()~=questdata.Quest then
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
                 end
             end
