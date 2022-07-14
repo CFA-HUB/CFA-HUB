@@ -403,7 +403,7 @@ local FarmPath = {
     }
 
 }
-local lvadd=300
+local lvadd=190
 FarmPath.Rifle.Advance[lvadd]=FarmPath.Rifle.Advance[1]
 FarmPath.Melee.Advance[lvadd]=FarmPath.Melee.Advance[1]
 
