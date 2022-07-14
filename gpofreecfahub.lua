@@ -816,7 +816,7 @@ function tpT(t,k,cur,dieukien)
         if not IsSea() and (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
             tween:Cancel()
             local tss = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -500, 0))
-            local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -4, 0))
+            local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -7, 0))
             if not tvk then 
                 if tss and tss.Instance then 
                     local cf = plr.Character.HumanoidRootPart.CFrame
