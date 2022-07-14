@@ -1,11 +1,14 @@
-repeat wait() until game.Players.LocalPlayer
 
+repeat wait() until game.Players.LocalPlayer
+if not getgenv().tvk then getgenv().tvk={} end
+for k,v in pairs(getgenv().tvk) do v.On=false end
 local plr = game.Players.LocalPlayer
 local queue_on_teleport = queue_on_teleport
 if syn then queue_on_teleport = syn.queue_on_teleport end
 queue_on_teleport([[
     loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/CFAHub-Free/main/cfahubfree.lua"))()
 ]])
+local NguyHiem=false
 local Settings = {
     AutoStat = {
         Strength = false,
@@ -67,9 +70,15 @@ function ReadSetting()
         return ReadSetting()
     end
 end
-spawn(function() 
-    while wait(1) do SaveSettings() end
-end)
+local tvkdumb = {On=true}
+function tvkdumb:cac(self) 
+    spawn(function() 
+        while wait(1) and self.On do SaveSettings() end
+        print("Stoped")
+        end)
+end
+tvkdumb:cac(tvkdumb)
+table.insert(getgenv().tvk,tvkdumb)
 Settings = SaveToTable(ReadSetting())
 repeat wait() until game:IsLoaded()
 
@@ -166,122 +175,255 @@ getrenv()._G.hitbox.start = function(...)
 end
 local data = game.ReplicatedStorage["Stats" .. game.Players.LocalPlayer.Name]
 print(data.Stats.SpawnPoint.Value)
-local path = {
-    [1] = {
-        Mob = "Fishman Karate User",
-        Mobpos = CFrame.new(7670.65137, -2189.93994, -17322.8379, 1, 0, 0, 0, 1, 0, 0, 0, 1),
-        Questpos = CFrame.new(
-            7730.92773,
-            -2175.83203,
-            -17222.5781,
-            0.0217917003,
-            -7.93145247e-08,
-            0.999762535,
-            -3.60022554e-08,
-            1,
-            8.01180988e-08,
-            -0.999762535,
-            -3.77396141e-08,
-            0.0217917003
-        ),
-        Quest = "Help becky",
-        Spawn = CFrame.new(
-            7976.84131,
-            -2152.8313,
-            -17073.9063,
-            0.647454381,
-            1.1295689e-07,
-            0.762104213,
-            -4.50578455e-08,
-            1,
-            -1.09937709e-07,
-            -0.762104213,
-            3.68408735e-08,
-            0.647454381
-        ),
-        Island = "Fishman Island",
-        LevelReq = 190,
-        SwordY = -2189.94,
-        BlackLegY = -2182.94,
-        CooldownY=-2189.94
-    }
-}
-local RiflePath = {
-    [1] = {
-        Mob = "Fishman Karate User",
-        Mobpos = CFrame.new(
-            7824.5166,
-            -2138.18994,
-            -17138.4766,
-            0.916648865,
-            0,
-            0.399693429,
-            0,
-            1,
-            0,
-            -0.399693429,
-            0,
-            0.916648865
-        ),
-        Questpos = CFrame.new(
-            7730.92773,
-            -2175.83203,
-            -17222.5781,
-            0.0217917003,
-            -7.93145247e-08,
-            0.999762535,
-            -3.60022554e-08,
-            1,
-            8.01180988e-08,
-            -0.999762535,
-            -3.77396141e-08,
-            0.0217917003
-        ),
-        Quest = "Help becky",
-        LevelRequest = 190,
-        Spawn = CFrame.new(
-            7976.84131,
-            -2152.8313,
-            -17073.9063,
-            0.647454381,
-            1.1295689e-07,
-            0.762104213,
-            -4.50578455e-08,
-            1,
-            -1.09937709e-07,
-            -0.762104213,
-            3.68408735e-08,
-            0.647454381
-        ),
-        Island = "Fishman Island"
-    }
-}
 
-local BusoFarm = {
-    [1] = {
-        Mob = "Yeti",
-        RiflePos = CFrame.new(-6770.1044921875, 96.480255126953, 2113.1389160156),
-        Mobpos = CFrame.new(-6684.44, 10, 1828.623),
-        Questpos = CFrame.new(-6566.0034179688, 169.4822845459, 1995.3051757813),
-        Quest = "Help becky",
-        Spawn = CFrame.new(-1314.5081787109, 10.434856414795, 1113.4360351563),
-        Island = "Sandora",
-        LevelReq = 80,
-        CooldownY = 52.4,
-        SwordY = 68,
-        LevelRequest = 80
+local FarmPath = {
+    Buso =  {
+        [1] = {
+            Mob = "Yeti",
+            RiflePos = CFrame.new(-6770.1044921875, 96.480255126953, 2113.1389160156),
+            Mobpos = CFrame.new(-6684.44, 10, 1828.623),
+            Questpos = CFrame.new(-6566.0034179688, 169.4822845459, 1995.3051757813),
+            Quest = "Road to Armament",
+            Spawn = CFrame.new(-1314.5081787109, 10.434856414795, 1113.4360351563),
+            Island = "Sandora",
+            LevelReq = 80,
+            CooldownY = 52.4,
+            SwordY = 68,
+            LevelRequest = 80,
+            RapidY = 70
+        }
+    },
+    Melee = {
+        Normal = {
+            [1] = {
+                Mob = "Fishman Karate User",
+                Mobpos = CFrame.new(7670.65137, -2189.93994, -17322.8379, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+                Questpos = CFrame.new(
+                    7730.92773,
+                    -2175.83203,
+                    -17222.5781,
+                    0.0217917003,
+                    -7.93145247e-08,
+                    0.999762535,
+                    -3.60022554e-08,
+                    1,
+                    8.01180988e-08,
+                    -0.999762535,
+                    -3.77396141e-08,
+                    0.0217917003
+                ),
+                Quest = "Help becky",
+                Spawn = CFrame.new(
+                    7976.84131,
+                    -2152.8313,
+                    -17073.9063,
+                    0.647454381,
+                    1.1295689e-07,
+                    0.762104213,
+                    -4.50578455e-08,
+                    1,
+                    -1.09937709e-07,
+                    -0.762104213,
+                    3.68408735e-08,
+                    0.647454381
+                ),
+                Island = "Fishman Island",
+                LevelReq = 190,
+                SwordY = -2189.94,
+                BlackLegY = -2182.94,
+                CooldownY=-2189.94,
+                RapidY=-2182.94
+            }
+        },
+        Advance = {
+            [1] = {
+                Mob = "Fishman Karate User",
+                Mobpos = CFrame.new(7670.65137, -2189.93994, -17322.8379, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+                Questpos = CFrame.new(
+                    7730.92773,
+                    -2175.83203,
+                    -17222.5781,
+                    0.0217917003,
+                    -7.93145247e-08,
+                    0.999762535,
+                    -3.60022554e-08,
+                    1,
+                    8.01180988e-08,
+                    -0.999762535,
+                    -3.77396141e-08,
+                    0.0217917003
+                ),
+                Quest = "Help becky",
+                Spawn = CFrame.new(
+                    7976.84131,
+                    -2152.8313,
+                    -17073.9063,
+                    0.647454381,
+                    1.1295689e-07,
+                    0.762104213,
+                    -4.50578455e-08,
+                    1,
+                    -1.09937709e-07,
+                    -0.762104213,
+                    3.68408735e-08,
+                    0.647454381
+                ),
+                Island = "Fishman Island",
+                LevelReq = 190,
+                SwordY = -2189.94,
+                BlackLegY = -2182.94,
+                CooldownY=-2189.94,
+                RapidY=-2182.94
+            },
+            [120] = {
+                Mob = "Gravito's Undermen",
+                Mobpos = CFrame.new(2718.87573, 60.1180725, -15689.9375, -0.965884089, -1.76300429e-19, 0.25897485, -1.13688492e-19, 1, 2.56745101e-19, -0.25897485, 2.18543522e-19, -0.965884089),
+                Questpos = CFrame.new(2510.30103, 41.4681244, -15541.5859, 0.996558726, -4.13273469e-08, 0.0828894675, 3.50337892e-08, 1, 7.73815572e-08, -0.0828894675, -7.42113357e-08, 0.996558726),
+                Quest = "Help Miska",
+                Spawn = CFrame.new(2585.16138, 7.64981413, -15364.9072, 0.999508381, 4.34313142e-06, 0.0313485563, -5.47222771e-06, 0.99999994, 3.59315163e-05, -0.0313485563, -3.60853955e-05, 0.999508381),
+                Island = "Gravito's Fort",
+                LevelReq = 120,
+                SwordY = 31.861898422241,
+                BlackLegY = 35.39432144165,
+                CooldownY=7.6498141288757,
+                RapidY=35.39432144165
+            },
+        }
+    },
+    Rifle = {
+        Normal = {
+            [1] = {
+                Mob = "Fishman Karate User",
+                Mobpos = CFrame.new(
+                    7824.5166,
+                    -2138.18994,
+                    -17138.4766,
+                    0.916648865,
+                    0,
+                    0.399693429,
+                    0,
+                    1,
+                    0,
+                    -0.399693429,
+                    0,
+                    0.916648865
+                ),
+                Questpos = CFrame.new(
+                    7730.92773,
+                    -2175.83203,
+                    -17222.5781,
+                    0.0217917003,
+                    -7.93145247e-08,
+                    0.999762535,
+                    -3.60022554e-08,
+                    1,
+                    8.01180988e-08,
+                    -0.999762535,
+                    -3.77396141e-08,
+                    0.0217917003
+                ),
+                Quest = "Help becky",
+                LevelRequest = 190,
+                Spawn = CFrame.new(
+                    7976.84131,
+                    -2152.8313,
+                    -17073.9063,
+                    0.647454381,
+                    1.1295689e-07,
+                    0.762104213,
+                    -4.50578455e-08,
+                    1,
+                    -1.09937709e-07,
+                    -0.762104213,
+                    3.68408735e-08,
+                    0.647454381
+                ),
+                Island = "Fishman Island"
+            }
+        },
+        Advance = {
+            [1] = {
+                Mob = "Fishman Karate User",
+                Mobpos = CFrame.new(
+                    7824.5166,
+                    -2138.18994,
+                    -17138.4766,
+                    0.916648865,
+                    0,
+                    0.399693429,
+                    0,
+                    1,
+                    0,
+                    -0.399693429,
+                    0,
+                    0.916648865
+                ),
+                Questpos = CFrame.new(
+                    7730.92773,
+                    -2175.83203,
+                    -17222.5781,
+                    0.0217917003,
+                    -7.93145247e-08,
+                    0.999762535,
+                    -3.60022554e-08,
+                    1,
+                    8.01180988e-08,
+                    -0.999762535,
+                    -3.77396141e-08,
+                    0.0217917003
+                ),
+                Quest = "Help becky",
+                LevelRequest = 190,
+                Spawn = CFrame.new(
+                    7976.84131,
+                    -2152.8313,
+                    -17073.9063,
+                    0.647454381,
+                    1.1295689e-07,
+                    0.762104213,
+                    -4.50578455e-08,
+                    1,
+                    -1.09937709e-07,
+                    -0.762104213,
+                    3.68408735e-08,
+                    0.647454381
+                ),
+                Island = "Fishman Island"
+            },
+            [120] = {
+                Mob = "Gravito's Undermen",
+                Mobpos = CFrame.new(2718.87573, 60.1180725, -15689.9375, -0.965884089, -1.76300429e-19, 0.25897485, -1.13688492e-19, 1, 2.56745101e-19, -0.25897485, 2.18543522e-19, -0.965884089),
+                Questpos = CFrame.new(2510.30103, 41.4681244, -15541.5859, 0.996558726, -4.13273469e-08, 0.0828894675, 3.50337892e-08, 1, 7.73815572e-08, -0.0828894675, -7.42113357e-08, 0.996558726),
+                Quest = "Help Miska",
+                LevelRequest = 120,
+                Spawn = CFrame.new(2585.16138, 7.64981413, -15364.9072, 0.999508381, 4.34313142e-06, 0.0313485563, -5.47222771e-06, 0.99999994, 3.59315163e-05, -0.0313485563, -3.60853955e-05, 0.999508381),
+                Island = "Gravito's Fort"
+            }
+        }
     }
+
 }
+local lvadd=300
+FarmPath.Rifle.Advance[lvadd]=FarmPath.Rifle.Advance[1]
+FarmPath.Melee.Advance[lvadd]=FarmPath.Melee.Advance[1]
+
+
 function CheckQuest(a, b, d)
     if d == "Buso" then
-        return BusoFarm[1]
+        return FarmPath.Buso[1]
     end
+    
     local index = math.huge
     local questchecker
     local level = data.Stats.Level.Value
-    local path = path
+    local path = FarmPath.Melee
     if a == "Rifle" then
-        path = RiflePath
+        path = FarmPath.Rifle
+    end
+    if b then 
+        path=path.Advance
+    else
+        path=path.Normal
     end
     for i, v in pairs(path) do
         if (level - i) >= 0 then
@@ -334,6 +476,7 @@ end
 function GetVauDau() 
     return banvaudau
 end
+
 local old
 old = hookfunction(Instance.new("RemoteEvent").FireServer, function(...)
     local Self = ...
@@ -364,6 +507,11 @@ old = hookmetamethod(game, "__namecall", function(...)
     end
     if tostring(Self)=="CIcklcon" then 
         SetVaoDau(GetVauDau()+1)
+        if Settings.RifleKick then
+            if GetVaoDau()>480 then 
+                plr:Kick("\n[CFA Hub]\nKicked 499th rifle shoot (Rifle Kick)")
+            end
+        end
     end
     return old(...)
 end)
@@ -480,7 +628,7 @@ function IsSea()
     end
     return false
 end
-
+local tvk = function(f) f() end
 local plr = game:service "Players".LocalPlayer
 local tween_s = game:service "TweenService"
 function Tween2(t, cb)
@@ -494,7 +642,7 @@ function Tween2(t, cb)
     local tic_k = tick()
     local cframe = t
     local tween, err =
-        pcall(
+    tvk(
         function()
             local tween = tween_s:Create(plr.Character:WaitForChild("HumanoidRootPart"), info, {CFrame = cframe})
             local done = false
@@ -517,15 +665,19 @@ function Tween2(t, cb)
                 game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
                 game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
                 not plr.PlayerGui:FindFirstChild("DEATHGUI")) then done = true
-                    tween:Cancel() return end                
+                    tween:Cancel() return end               
+                if (plr.Character.HumanoidRootPart.Position-t.Position).magnitude <40 then 
+                    plr.Character.HumanoidRootPart.CFrame=t
+                    tween:Cancel()
+                    return
+                end
                 wait()
             end
+
             noclip = false
         end
     )
-    if not tween then
-        return err
-    end
+
 end
 spawn(function() 
     while wait() do 
@@ -539,6 +691,10 @@ spawn(function()
         end
     end
 end)
+function y0(vc) 
+    return Vector3.new(vc.X,0,vc.Z)
+end
+local DisableSafeMode = false
 local Last
 function tpT(t,k,cur,dieukien)
     --local k=nil;cur=nil
@@ -588,13 +744,34 @@ function tpT(t,k,cur,dieukien)
         if sp and not part.Parent then
             return
         end
+
+        do 
+            local hp = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+            local p1 = Vector3.new(cur.X, 0, cur.Z)
+            local p2 = Vector3.new(hp.X, 0, hp.Z)
+            if (p1 - p2).magnitude < 200 then
+                tween:Cancel()
+                Tween2(
+                    cur,
+                    function(a)
+                        Stop = function()
+                            Stop()
+                            a()
+                        end
+                    end
+                )
+                return
+            
+            end
+        end
+
         local hp = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
         local p1 = Vector3.new(t.X, 0, t.Z)
         local p2 = Vector3.new(hp.X, 0, hp.Z)
-        if (p1 - p2).magnitude < vt*10 and not sp then
+        if (p1 - p2).magnitude < vt*5 then
             tween:Cancel()
             Tween2(
-                cur,
+               t,
                 function(a)
                     Stop = function()
                         Stop()
@@ -602,7 +779,12 @@ function tpT(t,k,cur,dieukien)
                     end
                 end
             )
-            return
+            return tpT(
+                cur,
+                k,
+                cur,
+                sp,
+                part)
         end
         
         local pos = -2.7848949432373
@@ -622,7 +804,7 @@ function tpT(t,k,cur,dieukien)
                 end
             )
             return tpT(
-                CFrame.new(t.X, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y, t.Z),
+                CFrame.new(t.X, pos, t.Z),
                 k,
                 cur,
                 sp,
@@ -632,7 +814,8 @@ function tpT(t,k,cur,dieukien)
         
         
         if not IsSea() and (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
-            local tss = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Vector3.new(0, -500, 0))
+            tween:Cancel()
+            local tss = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -500, 0))
             local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Vector3.new(0, -4, 0))
             if not tvk then 
                 if tss and tss.Instance then 
@@ -646,7 +829,7 @@ function tpT(t,k,cur,dieukien)
                             end
                         end
                     )
-                    return tpT(CFrame.new(t.X, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y, t.Z), k, cur)
+                    return tpT(CFrame.new(t.X,  tss.Position.Y+3, t.Z), k, cur)
                 end
             end
         end
@@ -656,7 +839,7 @@ end
 function TpTween(cf,checkfunc)
     SetEN("Nodrown", "Tween", true)
     SetEN("Noclip", "Tween", true)
-    tpT(cf,nil,nil,checkfunc)
+    tpT(cf,nil,cf,checkfunc)
     SetEN("Noclip", "Tween", false)
     SetEN("Nodrown", "Tween", false)
 end
@@ -683,19 +866,23 @@ function Tp(pos, checkfunc)
     end
     if not IsFishMan(pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
         TpTween(FishUp, checkfunc)
+        DisableSafeMode=true
         FireTouch(game:GetService("Workspace").Fishman.Part2)
 
         wait(1)
         if not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+            DisableSafeMode=false
             TpTween(pos, checkfunc)
         end
     end
     if IsFishMan(pos) and not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
         TpTween(CFrame.new(5639.86865, -92.762001, -16611.4688, -1, 0, 0, 0, 1, 0, 0, 0, -1), checkfunc)
+        DisableSafeMode=true
         FireTouch(game:GetService("Workspace").Fishman.Part)
 
         wait(1)
         if IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+            DisableSafeMode=false
             TpTween(pos, checkfunc)
         end
     -- TpTween(pos,sp,part)
@@ -901,6 +1088,10 @@ local lf = Section2:CreateToggle("Level Farm", {Toggled=Settings.Farm,Descriptio
     SetEN("Noclip", "Farm", state)
     SetEN("NoFallDame","Farm",state)
 end)
+-- local lf = Section2:CreateToggle("Legit Farm", {Toggled=Settings.Legit,Description = "Legit Farm"}, function(state)
+--     Settings.Legit = state
+    
+-- end)
 
 local olf = Section2:CreateToggle("1 Click Level Farm", {Toggled=Settings.OneClick,Description = "Will auto farm beli -> Buy weapons then start level farm"}, function(state)
     SetEN("Noclip", "OneClick", state)
@@ -915,6 +1106,15 @@ Section2:CreateDropdown("Level Farm Method", {
     Default = Settings.FarmMode
 }, function(item)
     Settings.FarmMode = item
+end)
+function IsAdvanceMode(k) 
+    if k=="1-500 at Fishman" then return false else return true end
+end
+Section2:CreateDropdown("Level Farm Path", {
+    List = {"1-500 at Fishman","1-120 at Fishman, 120-190 at gravito fort, 190-500 at Fishman"},
+    Default = Settings.FarmPath or "1-500 at Fishman"
+}, function(item)
+    Settings.FarmPath = item
 end)
 local Section2 = Tab2:CreateSection("Misc Farm")
 local AFB= Section2:CreateToggle("Auto Farm Beli (For Begginer Only)", {Toggled=Settings.Chest,Description = "Auto Farm Chest then do Sarah quest"}, function(state)
@@ -1439,8 +1639,121 @@ game.CoreGui.DescendantAdded:Connect(function()
 		end
 	end)
 end)
+local current = tick()
+local last = current
+local humadd = function(v) 
+    if v.Name=="Humanoid" then 
+       v:GetPropertyChangedSignal("FloorMaterial"):Connect(function()
+            if plr.Character.Humanoid.FloorMaterial == Enum.Material.Air
+             then
+                last=tick() --tren troi
+             else 
+                current=tick() --duoi dat
+            end
+        end)
+    end
+end
+if plr.Character:FindFirstChild("Humanoid") then 
+    humadd(plr.Character.Humanoid)
+end
+function RCDetect() 
+    if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("Humanoid") and plr.Character.Humanoid.Health>0 then 
+        local plrPos = plr.Character.HumanoidRootPart.Position
+        local Distance
+        if plr.Character.HumanoidRootPart.Position.Y <= 20 then
+            Distance = -100
+        else
+            Distance = -25
+        end
+        local rcu = RayCast2(Vector3.new(plrPos.X, plrPos.Y - 3, plrPos.Z),Vector3.new(0, Distance, 0))
+        if plr.Character.Humanoid.FloorMaterial ~= Enum.Material.Air
+        or game.workspace.Ragdolls:FindFirstChild(plr.Name)
+        or plr.Character.HumanoidRootPart:FindFirstChild("geppo")
+        or plr.Character.HumanoidRootPart:FindFirstChild("SwimPosition")
+        or plr.Character.HumanoidRootPart:FindFirstChild("BodyVelocity")
+        or plr.Character:FindFirstChild("ToriFullForm")
+        or plr.Character:FindFirstChild("AirBypass")
+        or rcu then
+            current=tick()-- duoi dat
+        else
+            last=tick() --tren troi
+        end
+    else
+        current=tick() -- duoi dat
+    end 
+end
+function Detect()
+	if game.workspace.PlayerCharacters:FindFirstChild(plr.Name)
+	and not game.workspace.Ragdolls:FindFirstChild(plr.Name)
+	and not plr.Character:FindFirstChild("Stun")
+	and not plr.Character:FindFirstChild("RagdollConstraints")
+	and not plr.PlayerGui:FindFirstChild("DEATHGUI")
+	and not plr.PlayerGui:FindFirstChild("Blackout")
+	and not plr.Character:FindFirstChild("ForceField") and plr.Character:FindFirstChild("HumanoidRootPart") then
+		return true
+	end
+	return false
+end
+function SafeModeKick() 
+    plr:Kick("\n[CFA Hub]\nKicked for suspicious movements (Safe Mode)")
+end
+plr.Character.ChildAdded:Connect(humadd)
+spawn(function() 
+    while wait() do 
+        if Detect() then 
+            local old = plr.Character.HumanoidRootPart.Position
+            wait(1)
+            local new = plr.Character.HumanoidRootPart.Position
+            local speed = (old - new).magnitude
+            if Detect() and speed >= 300 and not DisableSafeMode then
+                if Settings.SafeMode then
+                    SafeModeKick()
+                else
+                    if Last then Last() end
+                end
+            end
+        end
+        
+    end
+end)
+local LastNguyHiem = tick()
+spawn(function()
+    while wait() do
+        RCDetect()
+        if current-last >8 then
+            NguyHiem=true
+            wait(1)
+        else
+            NguyHiem=false
+        end 
+        if Settings.SafeMode and Detect() then 
+			if plr.Character.HumanoidRootPart.Velocity.Y > 700
+			or plr.Character.HumanoidRootPart.Velocity.Y < -700 then
+				SafeModeKick()
+            end
+            if current-last >13 then 
+                SafeModeKick()
+            end
+            if game.workspace.Ragdolls:FindFirstChild(plr.Name) then
+                if Last then Last() end
+                if game.workspace.Ragdolls[plr.Name].HumanoidRootPart.Position.Y < -100
+                and (Vector3.new(8073.316, -2016.831, -17376.289) - game.workspace.Ragdolls[plr.Name].HumanoidRootPart.Position).magnitude >= 3000 then
+                    SafeModeKick()
+                end
+            end
+        end
+    end
+end)
+
+
 local Section2 = Tab2:CreateSection("Security")
-Section2:CreateToggle("Auto Kick", {Description = "Auto kick you from the game after selected minute"}, function(state)
+Section2:CreateToggle("Safe Mode", {Toggled=Settings.SafeMode,Description = "Will kick you if your character having suspicious movements"}, function(state)
+    Settings.SafeMode = state
+end)
+Section2:CreateToggle("Auto Kick at 499 rifle shoot", {Toggled=Settings.SafeMode,Description = "Will kick you if you shooted more than 499 shoot"}, function(state)
+    Settings.RifleKick = state
+end)
+Section2:CreateToggle("Auto Kick", {Toggled=Settings.AutoKick,Description = "Auto kick you from the game after selected minute"}, function(state)
     Settings.AutoKick = state
 	while Settings.AutoKick and wait() do
         if Settings.AutoKickTimer then 
@@ -1632,6 +1945,7 @@ function GetClick(x, m)
 end
 func = GetClick("MeleeScript", 85)
 function AttackInCooldown()
+    if NguyHiem then return false end
     if not func or getfenv(func).script.Parent == nil then
         func = GetClick("MeleeScript", 85)
     end
@@ -1731,6 +2045,7 @@ end
 function Click(type)
     getgenv().ClickMelee()
 end
+
 function GetClickGun()
     for k, v in pairs(getgc()) do
         if tostring(getfenv(v).script) == "GunMain" and (getfenv(v).script.Parent) ~= nil then
@@ -1806,7 +2121,8 @@ function GetNearestMob(mob)
     return nr
 end
 
-function CountNear(mob, mag, k)
+function CountNear(mob, mag, kk)
+   local kk = function() return true end 
     local c = 0
     for k, v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
         if v.Name == mob then
@@ -1819,7 +2135,7 @@ function CountNear(mob, mag, k)
                 --         c=true
                 --     end
                 -- end
-                if (plr.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).magnitude < mag and c then
+                if (plr.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).magnitude < mag and kk(v) then
                     c = c + 1
                 end
             end
@@ -1892,6 +2208,26 @@ do
         end
     end)
 end
+function SendKey(Key,a) 
+    game:GetService("VirtualInputManager"):SendKeyEvent(
+        a,
+        Enum.KeyCode[Key],
+        false,
+        game
+    )
+end
+spawn(function() 
+    while wait() do 
+        if Settings.Legit then 
+            if AttackInCooldown() then 
+                SendKey("F",true)
+            else
+                SendKey("F",false)
+                Click()
+            end
+        end
+    end
+end)
 
 local mob = "Bandit"
 local olddd
@@ -1912,13 +2248,14 @@ local pos =
 )
 local lastclick = tick()
 local lastup = tick()
+
 while wait() do
     if Settings.Farm then
         if Settings.FarmMode == "Sword" or Settings.FarmMode == "Black Leg" then
             if not StoringDF then 
                 EquipTool()
             end
-            local Dt = CheckQuest()
+            local Dt = CheckQuest(nil,IsAdvanceMode(Settings.FarmPath))
             if Settings.AutoBusoQuest and data.Stats.BusoMastery.Value == 0 and data.Stats.Level.Value > 80 and Settings.FarmMode == "Sword" then
                 if GetCurrentQuest() == "Road to Armament" then
                     Dt = CheckQuest(nil, nil, "Buso")
@@ -1941,7 +2278,7 @@ while wait() do
                 Tp(Dt.Mobpos)
             end
             if game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == true then
-                if olddd and olddd ~= Dt and Dt.Mob ~= "Yeti" then
+                if GetCurrentQuest()~=Dt.Quest then
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
                 end
             end
@@ -1978,12 +2315,20 @@ while wait() do
                         local tk = tick()
                         local curstate = 1 -- 1: UP 0: DOWN
                         local curr = v.HumanoidRootPart.CFrame
+                        local function Ff(v) 
+                            if Dt.Mob~="Yeti" then return true end
+                            local yetiY = 79
+                            if math.abs(v.HumanoidRootPart.Position.Y - yetiY) < 5 then
+                                return true
+                            end
+                        end
                         repeat
                             MucTieu.MucTieu = v.HumanoidRootPart
                             if
                                 CheckReq() and
-                                    CountNear(mob, 15) < CountNear(mob, 1000, true) and Dt.mob~="Yeti"
+                                    CountNear(mob, 15,Ff) < CountNear(mob, 1000, Ff) and Dt.Mob~="Yeti"
                              then
+                                
                                 for k, v in pairs(game.Workspace.NPCs:GetChildren()) do
                                     if v.Name == mob then
                                         if
@@ -1998,7 +2343,7 @@ while wait() do
                                                 v:FindFirstChild("Info") and
                                                 v.Info:FindFirstChild("Target") and
                                                 v.Info.Target.Value == nil and
-                                                Settings.Farm
+                                                Settings.Farm and Ff(v)
                                          then
                                             local t = tick()
                                             repeat
@@ -2006,7 +2351,14 @@ while wait() do
                                                 EquipTool()
                                                 local curr = v.HumanoidRootPart.CFrame
                                                 MucTieu.MucTieu = v.HumanoidRootPart
-                                                local cf = CFrame.new(curr.X, Dt.BlackLegY, curr.Z)
+                                                
+                                                
+                                                local posf = (Settings.FarmMode=="Sword" and Dt.SwordY) or (Settings.FarmMode=="Black Leg" and Dt.BlackLegY)
+                                                if AttackInCooldown() then 
+                                                    posf=Dt.CooldownY
+                                                end
+                                                local cf = CFrame.new(curr.X, posf, curr.Z)
+                                               
                                                 Tp(cf)
                                                 Click()
                                             until not v.Parent or
@@ -2057,76 +2409,86 @@ while wait() do
                                 else
                                     dist = 20
                                 end
-                                if CountNear(mob, dist) > 0 and Dt.mob~="Yeti" then
-                                    if CheckReq() and CountNear(mob, 23) == CountNear(mob, 1000, true) and CountNear(mob, 18) > 1 and data.Stamina.Value>50 then
-                                        if Settings.FarmMode=="Black Leg" then
-                                            game:GetService("VirtualInputManager"):SendKeyEvent(
-                                                true,
-                                                Enum.KeyCode.X,
-                                                false,
-                                                game
-                                            )
-                                        elseif Settings.FarmMode =="Sword" then
-                                            if IsSkillReady("Rapid Slashes") and data.Stamina.Value>25 then 
+                                if CountNear(mob, dist) > 0  then
+                                    if CheckReq() then
+                                        local function Farmable()
+                                            if Dt.Mob=="Yeti" then return false end
+                                            return CountNear(mob, 23,Ff) == CountNear(mob, 1000, Ff) and CountNear(mob, 23,Ff)>0
+                                        end
+                                        if Farmable() then 
+                                            if Settings.FarmMode=="Black Leg" and data.Stamina.Value>50  then
                                                 game:GetService("VirtualInputManager"):SendKeyEvent(
                                                     true,
-                                                    Enum.KeyCode.R,
+                                                    Enum.KeyCode.X,
                                                     false,
                                                     game
                                                 )
-                                                local tvk=tick()
-                                                repeat wait()
-                                                    Click()
-                                                    if plr.Character:FindFirstChild("HumanoidRootPart") then
-                                                        if syn then
-                                                            local rac = curr
-                                                            Tp(QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z)))
+                                            elseif Settings.FarmMode =="Sword" then
+                                                if IsSkillReady("Rapid Slashes") and data.Stamina.Value>25 then 
+                                                    game:GetService("VirtualInputManager"):SendKeyEvent(
+                                                        true,
+                                                        Enum.KeyCode.R,
+                                                        false,
+                                                        game
+                                                    )
+                                                    local tvk=tick()
+                                                    repeat wait()
+                                                        if AttackInCooldown() then 
+                                                            Click()
                                                         else
-                                                            if RapidHold() then 
-                                                                local v = GetNearestMob(mob)
-                                                                if v and v:FindFirstChild("HumanoidRootPart") then 
-                                                                    local rac = v.HumanoidRootPart.CFrame
-                                                                    
-                                                                    local bm = plr.Character.UpperTorso:FindFirstChild(rnd) or Instance.new("BodyGyro",game.Players.LocalPlayer.Character.UpperTorso)
-                                                                    bm.Name=rnd
-                                                                    bm.CFrame = QuayNgang(CFrame.new(rac.X,Dt.BlackLegY,rac.Z))
-                                                                    bm.MaxTorque = Vector3.new(0, math.huge, 0)
-                                                                    bm.D = tonumber(shared.D or 0)
-                                                                    bm.P = tonumber(shared.P or 5000)      
-                                                                    Tp(rac*CFrame.new(0,0,10))                                               
-                                                                    ---TpPoss=rac*CFrame.new(0,0,7)
-                                                                end
-                                                            end
-                                                            
-                                                            
-                                                            --plr.Character.Humanoid.PlatformStand=true
+
                                                         end
                                                         
+                                                        local Y = Dt.RapidY
+                                                        if not RapidHold() then Y=Dt.CooldownY end
+                                                        if plr.Character:FindFirstChild("HumanoidRootPart") then
+                                                            if syn then
+                                                                local rac = curr
+                                                                Tp(QuayNgang(CFrame.new(rac.X,Y,rac.Z)))
+                                                            else
+                                                                if RapidHold() then 
+                                                                    local v = GetNearestMob(mob)
+                                                                    if v and v:FindFirstChild("HumanoidRootPart") then 
+                                                                        local rac = v.HumanoidRootPart.CFrame
+                                                                        
+                                                                        -- local bm = plr.Character.UpperTorso:FindFirstChild(rnd) or Instance.new("BodyGyro",game.Players.LocalPlayer.Character.UpperTorso)
+                                                                        -- bm.Name=rnd
+                                                                        -- bm.CFrame = QuayNgang(CFrame.new(rac.X,Dt.RapidY,rac.Z))
+                                                                        -- bm.MaxTorque = Vector3.new(0, math.huge, 0)
+                                                                        -- bm.D = tonumber(shared.D or 0)
+                                                                        -- bm.P = tonumber(shared.P or 5000)      
+                                                                        Tp(rac*CFrame.new(0,0,10))                                               
+                                                                        ---TpPoss=rac*CFrame.new(0,0,7)
+                                                                    end
+                                                                end--plr.Character.Humanoid.PlatformStand=true
+                                                            end 
+                                                        end
                                                         game:GetService("VirtualInputManager"):SendKeyEvent(
-                                                    true,
-                                                    Enum.KeyCode.R,
-                                                    false,
-                                                    game
-                                                )
+                                                        true,
+                                                        Enum.KeyCode.R,
+                                                        false,
+                                                        game
+                                                    )
+                                                    until not IsSkillReady("Rapid Slashes") or CountNear(mob, 40,Ff) ==0 or
+                                                    not Settings.Farm or tick()-tvk >7
+                                                    if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
+                                                        plr.Character.UpperTorso[rnd]:Destroy()
                                                     end
-                                                until not IsSkillReady("Rapid Slashes") or CountNear(mob, 18) ==0 or
-                                                not Settings.Farm or tick()-tvk >7
-                                                if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
-                                                    plr.Character.UpperTorso[rnd]:Destroy()
+                                                    if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
+                                                        plr.Character.UpperTorso[rnd]:Destroy()
+                                                    end
+                                                   -- plr.Character.Humanoid.PlatformStand=false
+                                                    TpPoss=nil
+                                                    game:GetService("VirtualInputManager"):SendKeyEvent(
+                                                        false,
+                                                        Enum.KeyCode.R,
+                                                        false,
+                                                        game
+                                                    )
                                                 end
-                                                if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
-                                                    plr.Character.UpperTorso[rnd]:Destroy()
-                                                end
-                                               -- plr.Character.Humanoid.PlatformStand=false
-                                                TpPoss=nil
-                                                game:GetService("VirtualInputManager"):SendKeyEvent(
-                                                    true,
-                                                    Enum.KeyCode.R,
-                                                    true,
-                                                    game
-                                                )
-                                            end
-                                        end 
+                                            end 
+                                        end
+                                        
                                     end
                                     if not AttackInCooldown() and curstate == 1 and tick() - lastup > 0.4 then
                                         Click()
@@ -2137,7 +2499,7 @@ while wait() do
 
                                 local oldstate = curstate
                                 if true or Settings.FarmMode ~= "Black Leg" then
-                                    if AttackInCooldown() and tick() - lastclick > 0.6 then
+                                    if (AttackInCooldown() and tick() - lastclick > 0.6)  then
                                         if Dt.CooldownY then
                                             cf = CFrame.new(cf.X, Dt.CooldownY, cf.Z)
                                             curstate = 0
@@ -2150,15 +2512,16 @@ while wait() do
                                         if v:FindFirstChild("Humanoid") and v.Humanoid.Jump or v:FindFirstChild("Tvk") then
                                             if Dt.Mob == "Yeti" then
                                                 cf = cf + Vector3.new(0, 3, 0)
+                                                if not v:FindFirstChild("Tvk") then
+                                                    local t = Instance.new("BoolValue", v)
+                                                    t.Name = "Tvk"
+                                                    game.Debris:AddItem(t, 4)
+                                                end
                                             else
-                                                cf = cf + Vector3.new(0, 6, 0)
+                                             --   cf = cf + Vector3.new(0, 6, 0)
                                             end
 
-                                            if not v:FindFirstChild("Tvk") then
-                                                local t = Instance.new("BoolValue", v)
-                                                t.Name = "Tvk"
-                                                game.Debris:AddItem(t, 4)
-                                            end
+                                            
                                         else
                                         end
                                     end
@@ -2190,7 +2553,7 @@ while wait() do
             end
             MucTieu.MucTieu = nil
         elseif Settings.FarmMode == "Rifle" or Settings.FarmMode == "Suke" then
-            local questdata = CheckQuest("Rifle")
+            local questdata = CheckQuest("Rifle",IsAdvanceMode())
             if Settings.AutoBusoQuest and data.Stats.BusoMastery.Value == 0 and data.Stats.Level.Value > 80 then
                 if GetCurrentQuest() == "Road to Armament" then
                     questdata = CheckQuest(nil, nil, "Buso")
@@ -2207,9 +2570,7 @@ while wait() do
             end
 
             if game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == true then
-                if olddd and olddd ~= questdata and questdata.Mob ~= "Yeti" then
-                    -- Script generated by TurtleSpy, made by Intrer#0421
-
+                if GetCurrentQuest()~=Dt.Quest then
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
                 end
             end
