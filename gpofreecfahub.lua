@@ -22,7 +22,8 @@ local Temp = {
     Nodrown = {},
     Noclip = {},
     DashNoStam = {},
-    NoFallDame = {}
+    NoFallDame = {},
+    Drown={}
 }
 function TableToSave(tb) 
     local cac = {}
@@ -393,7 +394,7 @@ end
 function GetVauDau() 
     return banvaudau
 end
-
+local DisableNoDrown = false
 local old
 old = hookfunction(Instance.new("RemoteEvent").FireServer, function(...)
     local Self = ...
@@ -537,8 +538,11 @@ game:GetService("RunService").Stepped:Connect(
                 --     plr.Character.HumanoidRootPart.SwimPosition.Position = Vector3.new(0, -2.71834, 0)
                 -- end
 
-                if CheckEN("Nodrown") then
+                if CheckEN("Nodrown") and not DisableNoDrown then
                     plr.Character.HumanoidRootPart.SwimPosition.Position = Vector3.new(0, -2.71834, 0)
+                end
+                if CheckEN("Drown") then
+                    plr.Character.HumanoidRootPart.SwimPosition:Destroy()
                 end
             end
         )
@@ -666,11 +670,15 @@ function tpT(Pos,k,Origin,dieukien,DisableBypass,Float)
             end
         end
         if IsFishMan(Pos) and not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
+            tpT(CFrame.new(5682.19, 5, -16458.479),dieukien,DisableBypass,Float)
+            SetEN("Drown","Tween",true)
             tpT(CFrame.new(5639.86865, -92.762001, -16611.4688, -1, 0, 0, 0, 1, 0, 0, 0, -1),nil,nil,dieukien,DisableBypass,Float)
+            
             DisableSafeMode=true
             FireTouch(game:GetService("Workspace").Fishman.Part)
     
             wait(1)
+            SetEN("Drown","Tween",true)
             if IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
                 DisableSafeMode=false
                 return tpT(Pos,nil,nil,dieukien,DisableBypass,Float)
@@ -2107,7 +2115,6 @@ function RapidHold()
     for k,v in pairs(rac) do 
         if tostring(v)=="rapidHold" then return true end
     end   
-    
 end
 function EquipTool() 
     if StoringDF then return end
