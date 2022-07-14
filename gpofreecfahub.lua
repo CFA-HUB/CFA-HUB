@@ -548,7 +548,8 @@ game:GetService("RunService").Stepped:Connect(
         )
     end
 )
-local vt = 100
+--local vt = 100
+if not Settings.vt then Settings.vt=80 end
 function RayCast2(a, b, c)
     local ignored = {game.Players.LocalPlayer.Character, game:GetService("Workspace").Effects, part0}
 
@@ -575,7 +576,7 @@ function Tween2(t, cb)
     local tween_s = game:service "TweenService"
     local info =
         TweenInfo.new(
-        (game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position - t.p).magnitude / vt,
+        (game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position - t.p).magnitude / Settings.vt,
         Enum.EasingStyle.Linear
     )
     local tic_k = tick()
@@ -691,7 +692,7 @@ function tpT(Pos,k,Origin,dieukien,DisableBypass,Float)
                 Origin = Pos
             end
         
-            local info = TweenInfo.new((plr.Character.HumanoidRootPart.Position - Pos.p).magnitude / vt, Enum.EasingStyle.Linear)
+            local info = TweenInfo.new((plr.Character.HumanoidRootPart.Position - Pos.p).magnitude / Settings.vt, Enum.EasingStyle.Linear)
             if k == nil then
                 k = 1
             end
@@ -1778,8 +1779,8 @@ Section2:CreateToggle("DF Webhook", {Toggled=Settings.DFWebHook,Description = "W
 end)
 local Tab2 = Window:CreatePage("Settings")
 local Section2 = Tab2:CreateSection("Main")
-Section2:CreateSlider("Tween Speed", {Min = 50, Max = 120, DefaultValue = 80}, function(value)
-    vt=value
+Section2:CreateSlider("Tween Speed", {Min = 50, Max = 120, DefaultValue = Settings.vt}, function(value)
+    Settings.vt=value
 end)
 
 
