@@ -650,6 +650,10 @@ function FireTouch(part)
     end
 end
 function tpT(Pos,k,Origin,dieukien,DisableBypass,Float)
+    if Last then
+        Last()
+        Last = nil
+    end
     if not plr.Character:FindFirstChild("HumanoidRootPart") then return end
     if (plr.Character.HumanoidRootPart.Position-Pos.Position).magnitude <40 then 
         plr.Character.HumanoidRootPart.CFrame=Pos
@@ -685,10 +689,7 @@ function tpT(Pos,k,Origin,dieukien,DisableBypass,Float)
         -- TpTween(pos,sp,part)
         end
         if (IsFishMan(Pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position)) or (not IsFishMan(Pos) and not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position)) then 
-            if Last then
-                Last()
-                Last = nil
-            end
+            
             if not Origin then
                 Origin = Pos
             end
@@ -776,7 +777,9 @@ function tpT(Pos,k,Origin,dieukien,DisableBypass,Float)
                         end
                     end
                 end
-                return tpT(CFrame.new(Pos.X,  Pos.Y, Pos.Z), k, Origin,dieukien,DisableBypass,Float)
+                if not done then 
+                    return tpT(CFrame.new(Pos.X,  Pos.Y, Pos.Z), k, Origin,dieukien,DisableBypass,Float)
+                end
             end
         end
         
