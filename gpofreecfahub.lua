@@ -1750,7 +1750,7 @@ local Section2 = Tab2:CreateSection("Security")
 Section2:CreateToggle("Safe Mode", {Toggled=Settings.SafeMode,Description = "Will kick you if your character having suspicious movements"}, function(state)
     Settings.SafeMode = state
 end)
-Section2:CreateToggle("Auto Kick at 499 rifle shoot", {Toggled=Settings.SafeMode,Description = "Will kick you if you shooted more than 499 shoot"}, function(state)
+Section2:CreateToggle("Auto Kick at 499 rifle shoot", {Toggled=Settings.RifleKick,Description = "Will kick you if you shooted more than 499 shoot"}, function(state)
     Settings.RifleKick = state
 end)
 Section2:CreateToggle("Auto Kick", {Toggled=Settings.AutoKick,Description = "Auto kick you from the game after selected minute"}, function(state)
