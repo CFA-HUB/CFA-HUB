@@ -658,7 +658,6 @@ function tpT(Pos,k,Origin,dieukien,DisableBypass,Float)
             tpT(FishUp,nil,nil,dieukien,DisableBypass,Float)
             DisableSafeMode=true
             FireTouch(game:GetService("Workspace").Fishman.Part2)
-    
             wait(1)
             if not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) then
                 DisableSafeMode=false
@@ -677,99 +676,102 @@ function tpT(Pos,k,Origin,dieukien,DisableBypass,Float)
             end
         -- TpTween(pos,sp,part)
         end
-        if Last then
-            Last()
-            Last = nil
-        end
-        if not Origin then
-            Origin = Pos
-        end
-    
-        local info = TweenInfo.new((plr.Character.HumanoidRootPart.Position - Pos.p).magnitude / vt, Enum.EasingStyle.Linear)
-        if k == nil then
-            k = 1
-        end
-        local tween_s = game:service "TweenService"
-        local tween = game:service "TweenService":Create(plr.Character:WaitForChild("HumanoidRootPart"), info, {CFrame = Pos})
-        local done = false
-        tween.Completed:Connect(
-            function()
-                done = true
+        if (IsFishMan(Pos) and IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position)) or (not IsFishMan(Pos) and not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position)) then 
+            if Last then
+                Last()
+                Last = nil
             end
-        )
-        tween:Play()
-        local Stop = function()
-            tween:Cancel()
-            done = true
-            SetEN("Noclip", "Tween", false)
-        end
-        Last = Stop
-        while (done == false) do
-            if dieukien and not dieukien() then Stop() return end
-            SetEN("Noclip", "Tween", true)
-            if not( game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
-            game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
-            game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
-            not plr.PlayerGui:FindFirstChild("DEATHGUI")) then Stop() return end
-            if not plr.Character:FindFirstChild("Humanoid") then Stop() return end
-    
-            if math.abs(Pos.Position.Y-plr.Character.HumanoidRootPart.Position.Y)>50 then
-                StopFloat=false 
-            else
-                if not Float then 
-                    StopFloat=true
-                else
-                    StopFloat=false
+            if not Origin then
+                Origin = Pos
+            end
+        
+            local info = TweenInfo.new((plr.Character.HumanoidRootPart.Position - Pos.p).magnitude / vt, Enum.EasingStyle.Linear)
+            if k == nil then
+                k = 1
+            end
+            local tween_s = game:service "TweenService"
+            local tween = game:service "TweenService":Create(plr.Character:WaitForChild("HumanoidRootPart"), info, {CFrame = Pos})
+            local done = false
+            tween.Completed:Connect(
+                function()
+                    done = true
                 end
-            end
-            wait(.1)
-            if sp and not part.Parent then
-                return
-            end
-            if (plr.Character.HumanoidRootPart.Position-Pos.Position).magnitude <40 then 
-                plr.Character.HumanoidRootPart.CFrame=Pos
+            )
+            tween:Play()
+            local Stop = function()
                 tween:Cancel()
-                return
+                done = true
+                SetEN("Noclip", "Tween", false)
             end
-            do 
-                local hp = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-                local p1 = Vector3.new(Origin.X, 0, Origin.Z)
-                local p2 = Vector3.new(hp.X, 0, hp.Z)
-                if (p1 - p2).magnitude < 200 then
-                    tween:Cancel()
-                    return tpT(Origin,nil,Origin,dieukien,true,true)
+            Last = Stop
+            while (done == false) do
+                if dieukien and not dieukien() then Stop() return end
+                SetEN("Noclip", "Tween", true)
+                if not( game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
+                game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
+                game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
+                not plr.PlayerGui:FindFirstChild("DEATHGUI")) then Stop() return end
+                if not plr.Character:FindFirstChild("Humanoid") then Stop() return end
+        
+                if math.abs(Pos.Position.Y-plr.Character.HumanoidRootPart.Position.Y)>50 then
+                    StopFloat=false 
+                else
+                    if not Float then 
+                        StopFloat=true
+                    else
+                        StopFloat=false
+                    end
                 end
-            end
-            if not DisableBypass then 
-                local pos = -2.7848949432373
-                if
-                    not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) and IsSea() and
-                        math.abs(plr.Character.HumanoidRootPart.Position.Y - pos) > .1
-                 then
-                    tween:Cancel()
-                    local cf = plr.Character.HumanoidRootPart.CFrame      
-                    return tpT(
-                        CFrame.new(Pos.X, cf.Y, Pos.Z),
-                        k,
-                        Origin,
-                        dieukien,DisableBypass,Float
-                    )
+                wait(.1)
+                if sp and not part.Parent then
+                    return
                 end
-                if not IsSea() and (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
-                    --print("bu cu")
-                    local tss = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -500, 0))
-                    local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -7, 0))
-                    if not tvk then 
-                        if tss and tss.Instance then 
-                            tween:Cancel()
-                            local cf = plr.Character.HumanoidRootPart.CFrame
-                            return tpT(CFrame.new(Pos.X,  cf.Y, Pos.Z), k, Origin,dieukien,DisableBypass,Float)
+                if (plr.Character.HumanoidRootPart.Position-Pos.Position).magnitude <40 then 
+                    plr.Character.HumanoidRootPart.CFrame=Pos
+                    tween:Cancel()
+                    return
+                end
+                do 
+                    local hp = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                    local p1 = Vector3.new(Origin.X, 0, Origin.Z)
+                    local p2 = Vector3.new(hp.X, 0, hp.Z)
+                    if (p1 - p2).magnitude < 200 then
+                        tween:Cancel()
+                        return tpT(Origin,nil,Origin,dieukien,true,true)
+                    end
+                end
+                if not DisableBypass then 
+                    local pos = -2.7848949432373
+                    if
+                        not IsFishMan(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position) and IsSea() and
+                            math.abs(plr.Character.HumanoidRootPart.Position.Y - pos) > .1
+                     then
+                        tween:Cancel()
+                        local cf = plr.Character.HumanoidRootPart.CFrame      
+                        return tpT(
+                            CFrame.new(Pos.X, cf.Y, Pos.Z),
+                            k,
+                            Origin,
+                            dieukien,DisableBypass,Float
+                        )
+                    end
+                    if not IsSea() and (game.Players.LocalPlayer.Character.Humanoid.FloorMaterial == Enum.Material.Air) then
+                        --print("bu cu")
+                        local tss = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -500, 0))
+                        local tvk = RayCast2(game.Players.LocalPlayer.Character.HumanoidRootPart.Position+Vector3.new(0,3,0), Vector3.new(0, -7, 0))
+                        if not tvk then 
+                            if tss and tss.Instance then 
+                                tween:Cancel()
+                                local cf = plr.Character.HumanoidRootPart.CFrame
+                                return tpT(CFrame.new(Pos.X,  cf.Y, Pos.Z), k, Origin,dieukien,DisableBypass,Float)
+                            end
                         end
                     end
                 end
                 return tpT(CFrame.new(Pos.X,  Pos.Y, Pos.Z), k, Origin,dieukien,DisableBypass,Float)
             end
         end
+        
     end
     tvk()
     StopFloat=false
