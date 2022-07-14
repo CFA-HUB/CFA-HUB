@@ -482,17 +482,6 @@ local StopFloat=false
 
 game:GetService("RunService").Stepped:Connect(
     function()
-        
-        -- if Settings.WaterWalker and not (tweening or Settings.Farm or Settings.Dungeon) then
-        --     t.CFrame =
-        --         CFrame.new(
-        --         game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X,
-        --         -5.8,
-        --         game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z
-        --     )
-        -- else
-        --     t.CFrame = CFrame.new(0, -100000, 0)
-        -- end
         if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
         game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
         game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
@@ -735,6 +724,7 @@ function tpT(Pos,k,Origin,dieukien,DisableBypass,Float)
                 if sp and not part.Parent then
                     return
                 end
+                if done then return end
                 if (plr.Character.HumanoidRootPart.Position-Pos.Position).magnitude <40 then 
                     plr.Character.HumanoidRootPart.CFrame=Pos
                     tween:Cancel()
