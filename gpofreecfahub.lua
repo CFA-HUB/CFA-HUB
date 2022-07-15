@@ -246,9 +246,10 @@ local FarmPath = {
                 Island = "Gravito's Fort",
                 LevelReq = 160,
                 SwordY = 31.861898422241,
-                BlackLegY = 35.39432144165,
+                BlackLegY = 34.6,
                 CooldownY=7.6498141288757,
-                RapidY=35.39432144165
+                RapidY=35.39432144165,
+                BlackLegPos = CFrame.new(2604.27148, 37.3680725, -15549.2383, 0.999779046, -3.19521938e-08, -0.0210261438, 3.2335997e-08, 1, 1.79135871e-08, 0.0210261438, -1.85895299e-08, 0.999779046)
             },
         }
     },
@@ -925,6 +926,7 @@ function GetCurrentQuest()
 end
 
 function GetQuest(quest, rac)
+    
     local t = tick()
     repeat
         wait()
@@ -2213,6 +2215,7 @@ while wait() do
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
                 end
             end
+            if not syn then Dt.LevelReq=math.huge end
             if
                 true and game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == false and
                     not game.Players.LocalPlayer.QuestCD.Value and
@@ -2326,10 +2329,10 @@ while wait() do
                                 end
                                 local cf
                                 if Settings.FarmMode == "Black Leg" then
-                                    cf = Vector3.new(curr.X, Dt.BlackLegY, curr.Z)
+                                    cf = CFrame.new(curr.X, Dt.BlackLegY, curr.Z)
                                 else
                                     if Dt.SwordY then
-                                        cf = Vector3.new(curr.X, Dt.SwordY, curr.Z)
+                                        cf = CFrame.new(curr.X, Dt.SwordY, curr.Z)
                                     else
                                         cf = curr + Vector3.new(0, -11, 0)
                                     end
@@ -2356,66 +2359,22 @@ while wait() do
                                                 )
                                             elseif Settings.FarmMode =="Sword" then
                                                 if IsSkillReady("Rapid Slashes") and data.Stamina.Value>25 then 
-                                                    game:GetService("VirtualInputManager"):SendKeyEvent(
-                                                        true,
-                                                        Enum.KeyCode.R,
-                                                        false,
-                                                        game
-                                                    )
-                                                    local tvk=tick()
-                                                    repeat wait()
-                                                        if AttackInCooldown() then 
-                                                            Click()
-                                                        else
-
-                                                        end
-                                                        
-                                                        local Y = Dt.RapidY
-                                                        if not RapidHold() then Y=Dt.CooldownY end
-                                                        if plr.Character:FindFirstChild("HumanoidRootPart") then
-                                                            if syn then
-                                                                local rac = curr
-                                                                Tp(QuayNgang(CFrame.new(rac.X,Y,rac.Z)))
-                                                            else
-                                                                if RapidHold() then 
-                                                                    local v = GetNearestMob(mob)
-                                                                    if v and v:FindFirstChild("HumanoidRootPart") then 
-                                                                        local rac = v.HumanoidRootPart.CFrame
-                                                                        
-                                                                        -- local bm = plr.Character.UpperTorso:FindFirstChild(rnd) or Instance.new("BodyGyro",game.Players.LocalPlayer.Character.UpperTorso)
-                                                                        -- bm.Name=rnd
-                                                                        -- bm.CFrame = QuayNgang(CFrame.new(rac.X,Dt.RapidY,rac.Z))
-                                                                        -- bm.MaxTorque = Vector3.new(0, math.huge, 0)
-                                                                        -- bm.D = tonumber(shared.D or 0)
-                                                                        -- bm.P = tonumber(shared.P or 5000)      
-                                                                        Tp(rac*CFrame.new(0,0,10))                                               
-                                                                        ---TpPoss=rac*CFrame.new(0,0,7)
-                                                                    end
-                                                                end--plr.Character.Humanoid.PlatformStand=true
-                                                            end 
-                                                        end
+                                                    if CountNear(mob,23,Ff)>0 then 
                                                         game:GetService("VirtualInputManager"):SendKeyEvent(
-                                                        true,
-                                                        Enum.KeyCode.R,
-                                                        false,
-                                                        game
-                                                    )
-                                                    until not IsSkillReady("Rapid Slashes") or CountNear(mob, 40,Ff) ==0 or
-                                                    not Settings.Farm or tick()-tvk >7
-                                                    if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
-                                                        plr.Character.UpperTorso[rnd]:Destroy()
+                                                            true,
+                                                            Enum.KeyCode.R,
+                                                            false,
+                                                            game
+                                                        )
+                                                    else
+                                                        game:GetService("VirtualInputManager"):SendKeyEvent(
+                                                            false,
+                                                            Enum.KeyCode.R,
+                                                            false,
+                                                            game
+                                                        )
                                                     end
-                                                    if plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChild("UpperTorso") and plr.Character.UpperTorso:FindFirstChild(rnd) then 
-                                                        plr.Character.UpperTorso[rnd]:Destroy()
-                                                    end
-                                                   -- plr.Character.Humanoid.PlatformStand=false
-                                                    TpPoss=nil
-                                                    game:GetService("VirtualInputManager"):SendKeyEvent(
-                                                        false,
-                                                        Enum.KeyCode.R,
-                                                        false,
-                                                        game
-                                                    )
+                                                   
                                                 end
                                             end 
                                         end
@@ -2426,8 +2385,6 @@ while wait() do
                                         lastclick = tick()
                                     end
                                 end
-                                
-
                                 local oldstate = curstate
                                 if true or Settings.FarmMode ~= "Black Leg" then
                                     if (AttackInCooldown() and tick() - lastclick > 0.6)  then
@@ -2457,13 +2414,43 @@ while wait() do
                                         end
                                     end
                                 end
+
+                                if Dt.Mob~="Yeti" and RapidHold() then 
+                                    local Y = Dt.RapidY
+                                    if plr.Character:FindFirstChild("HumanoidRootPart") then
+                                        if syn then
+                                            local rac = curr 
+                                            cf = QuayNgang(CFrame.new(rac.X,Y,rac.Z))
+                                        else
+                                            if RapidHold() then 
+                                                local v = GetNearestMob(mob)
+                                                if v and v:FindFirstChild("HumanoidRootPart") then 
+                                                    local rac = v.HumanoidRootPart.CFrame
+                                                    
+                                                    -- local bm = plr.Character.UpperTorso:FindFirstChild(rnd) or Instance.new("BodyGyro",game.Players.LocalPlayer.Character.UpperTorso)
+                                                    -- bm.Name=rnd
+                                                    -- bm.CFrame = QuayNgang(CFrame.new(rac.X,Dt.RapidY,rac.Z))
+                                                    -- bm.MaxTorque = Vector3.new(0, math.huge, 0)
+                                                    -- bm.D = tonumber(shared.D or 0)
+                                                    -- bm.P = tonumber(shared.P or 5000)      
+                                                    cf = (rac*CFrame.new(0,0,10))                                               
+                                                    ---TpPoss=rac*CFrame.new(0,0,7)
+                                                end
+                                            end--plr.Character.Humanoid.PlatformStand=true
+                                        end 
+                                    end
+                                end
+                                -- if Dt.BlackLegPos then 
+                                --     cf=Dt.BlackLegPos
+                                -- end
+                                
                                 -- print(curstate,oldstate)
                                 if oldstate == 0 and curstate == 1 then
                                     lastup = tick()
                                     print("Changed")
                                 end
 
-                                local pos = CFrame.new(cf.X, cf.Y, cf.Z)
+                                local pos = cf
 
                                 if (pos.p - plr.Character.HumanoidRootPart.Position).magnitude > 25 then
                                     Tp(pos)
@@ -2505,6 +2492,8 @@ while wait() do
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
                 end
             end
+            if not syn then questdata.LevelRequest=math.huge end
+
             if
                 game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == false and
                     not game.Players.LocalPlayer.QuestCD.Value and
