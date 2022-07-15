@@ -483,6 +483,11 @@ local StopFloat=false
 
 game:GetService("RunService").Stepped:Connect(
     function()
+        if StopFloat then 
+            if plr.Character.HumanoidRootPart:FindFirstChild(tvktrumskid) then
+                plr.Character.HumanoidRootPart[tvktrumskid]:Destroy()
+            end
+        end
         if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and
         game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 and
         game.Players.LocalPlayer.Character.Parent == game.Workspace.PlayerCharacters and
@@ -1329,34 +1334,7 @@ plr.Backpack.ChildAdded:Connect(function(fruit)
         end
     end
 end)
--- plr.PlayerGui.Notifications.Frame.ChildAdded:Connect(function(v)
---     wait(.5)
---     if Settings.AutoStoreDF then
---         for i, v in ipairs(v:GetDescendants()) do
---             if v:IsA("TextLabel")
---             and string.find(v.Name, "Group0")
---             and v.TextColor3 == Color3.fromRGB(255, 255, 255)
---             and v.Text == "DROP!" then
---                 local Fruit = BackpackFruit()
---                 if Fruit then
---                     if string.find(InventoryItems.Value, "Prestige Fruitbag")
---                     and GetItemValue(Fruit.Name) >= 2
---                     or not string.find(InventoryItems.Value, "Prestige Fruitbag")
---                     and GetItemValue(Fruit.Name) >= 1 then
---                         if getgenv().toggledfwebhook then
---                             ASDF(Fruit, true)
---                         end
---                         local Ignored = Instance.new("IntValue", Fruit)
---                         Ignored.Name = "Ignored"
---                     else
---                         ASDF(Fruit)
---                     end
---                 end
---                 return
---             end
---         end
---     end
--- end)
+
 function GetMob(name,stud) 
     for k,v in pairs(game.Workspace.NPCs:GetChildren()) do 
         if v.Name==name and v:FindFirstChild("HumanoidRootPart") then 
