@@ -848,8 +848,11 @@ end
 
 local CFAHub = 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/cac/main/buoi.lua"))()
-
-local Window = CFAHub:CreateWindow("<font color=\"#4FC3F7\">CFA Hub</font>", "Grand Piece Online", true)
+local txt="Grand Piece Online"
+if identifyexecutor()=="Krnl" then 
+    txt="Grand Piece Online (KRNL)"
+end
+local Window = CFAHub:CreateWindow("<font color=\"#4FC3F7\">CFA Hub</font>", txt, true)
 
 --CFAHub:AddNoti("CFA Hub Premium", "UI Loaded!", 6)
 function GetSword()
@@ -2215,7 +2218,7 @@ while wait() do
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
                 end
             end
-            if not syn then Dt.LevelReq=math.huge end
+            --if not syn then Dt.LevelReq=math.huge end
             if
                 true and game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == false and
                     not game.Players.LocalPlayer.QuestCD.Value and
@@ -2492,7 +2495,7 @@ while wait() do
                     game:GetService("ReplicatedStorage").Events.Quest:InvokeServer({"quit"})
                 end
             end
-            if not syn then questdata.LevelRequest=math.huge end
+            --if not syn then questdata.LevelRequest=math.huge end
 
             if
                 game:GetService("Players").LocalPlayer.PlayerGui.Quest.Quest.Visible == false and
