@@ -847,7 +847,7 @@ end
 
 
 local CFAHub = 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/CFA-HUB/cac/main/buoi.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Kiet1308/tvkhub/main/rac"))()
 local txt="Grand Piece Online"
 if identifyexecutor()=="Krnl" then 
     txt="Grand Piece Online (KRNL)"
