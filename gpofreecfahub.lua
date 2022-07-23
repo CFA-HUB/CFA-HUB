@@ -1881,7 +1881,7 @@ function GetClick(x, m)
 end
 func = GetClick("MeleeScript", 85)
 function AttackInCooldown()
-    if NguyHiem then return false end
+    if NguyHiem then return true end
     if not func or getfenv(func).script.Parent == nil then
         func = GetClick("MeleeScript", 85)
     end
@@ -2389,7 +2389,7 @@ while wait() do
                                     end
                                 end
                                 local oldstate = curstate
-                                if true or Settings.FarmMode ~= "Black Leg" then
+                                if true then
                                     if (AttackInCooldown() and tick() - lastclick > 0.6)  then
                                         if Dt.CooldownY then
                                             cf = CFrame.new(cf.X, Dt.CooldownY, cf.Z)
@@ -2454,12 +2454,7 @@ while wait() do
                                 end
 
                                 local pos = cf
-
-                                if (pos.p - plr.Character.HumanoidRootPart.Position).magnitude > 25 then
-                                    Tp(pos)
-                                else
-                                    plr.Character.HumanoidRootPart.CFrame = pos
-                                end
+                                Tp(pos)
                             end
                         until not v.Parent or
                             not (v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and
