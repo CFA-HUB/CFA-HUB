@@ -52,7 +52,7 @@ end
 local tvk = Instance.new("UIListLayout")
 tvk.FillDirection = Enum.FillDirection.Vertical
 tvk.SortOrder = 2
-tvk.Padding = UDim.new(0,10)
+tvk.Padding = UDim.new(0,20)
 
 local Left = Instance.new("Frame",game.Players.LocalPlayer.PlayerGui.BubbleChat)
 Left.BackgroundTransparency = 1
@@ -64,6 +64,7 @@ Right.BackgroundTransparency = 1
 Right.Size = UDim2.new(.5,0,1,0) 
 Right.Position = UDim2.new(.6,0,0,0)
 tvk:Clone().Parent = Right
+local bucac
 for k,v in pairs(allitem) do 
     local cac = Instance.new("Frame",Left)
     cac.BackgroundTransparency = 1
@@ -74,6 +75,7 @@ for k,v in pairs(allitem) do
     cac2.BackgroundTransparency = 1
     cac2.Size = UDim2.new(1,0,0,0) 
     cac2.LayoutOrder = table.find(RaityLevel,k)
+ 
 
     local tvk = Instance.new("UIGridLayout",cac)
     tvk.CellPadding = UDim2.new(.005,0,.005,0)
@@ -86,7 +88,7 @@ for k,v in pairs(allitem) do
     for k,v in pairs(v) do 
         if Items[v.ItemName.Text] and Items[v.ItemName.Text].Mastery then 
             if v.ItemLine2.Text~="Accessory" then 
-                local bucac = v.ItemName:Clone()
+                bucac = v.ItemName:Clone()
                 bucac.BackgroundTransparency = 1
                 bucac.TextSize = 10
                 bucac.TextXAlignment  = 2
@@ -105,14 +107,8 @@ for k,v in pairs(allitem) do
     cac.AutomaticSize = 2
     cac2.AutomaticSize = 2
 end
-local ListHuhu = {
-    ["Superhuman"] = Vector2.new(3,2),
-    ["DeathStep"] = Vector2.new(4,3),
-    ["ElectricClaw"] = Vector2.new(2,0),
-    ["SharkmanKarate"] = Vector2.new(0,0),
-    ["DragonTalon"] = Vector2.new(1,5)
-}
-local MeleeG = Instance.new("Frame",Left)
+
+local MeleeG = Instance.new("Frame",Right)
 MeleeG.BackgroundTransparency = 1
 MeleeG.Size = UDim2.new(1,0,0,0) 
 MeleeG.LayoutOrder = table.find(RaityLevel,k)
@@ -123,16 +119,71 @@ tvk.CellPadding = UDim2.new(.005,0,.005,0)
 tvk.CellSize =  UDim2.new(0,70,0,70)
 tvk.FillDirectionMaxCells = 100
 tvk.FillDirection = Enum.FillDirection.Horizontal
+local ListHuhu = {
+    ["Superhuman"] = Vector2.new(3,2),
+    ["DeathStep"] = Vector2.new(4,3),
+    ["ElectricClaw"] = Vector2.new(2,0),
+    ["SharkmanKarate"] = Vector2.new(0,0),
+    ["DragonTalon"] = Vector2.new(1,5),
+    ["Godhuman"] = "rbxassetid://10338473987"
+}
+local nguu = {}
+function GetNext() end
+local Listcaiditconmemayskidconcaca = {}
+local buda
 
-local cac = {"Superhuman","ElectricClaw","DragonTalon","SharkmanKarate","DeathStep"}
-for k,v in pairs(cac) do
-    if ListHuhu[v] and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buy"..v,true) == 1 then 
+for k,v in pairs(ListHuhu) do
+    if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buy"..k,true) == 1 then 
         local huhu = Instance.new("ImageLabel",MeleeG)
-        huhu.Image = "rbxassetid://9945562382"
-        huhu.ImageRectSize = Vector2.new(100,100)
-        huhu.ImageRectOffset = ListHuhu[v]*100
+        if type(v)=="string" then 
+            huhu.Image = v
+        else
+            huhu.Image = "rbxassetid://9945562382"
+            huhu.ImageRectSize = Vector2.new(100,100)
+            huhu.ImageRectOffset = v*100
+        end 
+        Listcaiditconmemayskidconcaca[k] = huhu
+        table.insert(nguu,k)
     end
 end
+buda = 1
+function TimKiemItemNehuhu(item)
+    for k,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do 
+        if v.Name:gsub(" ","") == item then 
+            return v
+        end
+    end
+end
+spawn(function() 
+    local a = #nguu
+    local bucu = 0
+    while bucu < a do 
+        for k,v in pairs(Listcaiditconmemayskidconcaca) do 
+            if not v:FindFirstChild("Ditme") then 
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buy"..k) 
+                wait(.1)
+                local v2 = TimKiemItemNehuhu(k)
+                if v2 then 
+                    v2:WaitForChild("Level")
+                    local Ditme = bucac:Clone()
+                    Ditme.Name = "Ditme"
+                    Ditme.BackgroundTransparency = 1
+                    Ditme.TextSize = 10
+                    Ditme.TextXAlignment  = 2
+                    Ditme.TextYAlignment  = 2
+                    Ditme.ZIndex  = 5
+                    Ditme.Text = v2.Level.Value
+                    Ditme.Size = UDim2.new(.5,0,.5,0)
+                    Ditme.Position = UDim2.new(.5,0,.5,0)
+                    Ditme.Parent = v
+                    bucu=bucu+1
+                end
+            end
+        end
+        wait()
+    end
+
+end)
 function formatNumber(v)
     return tostring(v):reverse():gsub("%d%d%d", "%1,"):reverse():gsub("^,", "")
 end
@@ -143,7 +194,7 @@ local n = formatNumber(game.Players.LocalPlayer.Data.Fragments.Value)
 thieunang.Text = "ƒ"..n
 print("Done")
 pcall(function() 
-    game:GetService("Players").LocalPlayer.PlayerGui.Main.MenuButton:Destroy()
+   game:GetService("Players").LocalPlayer.PlayerGui.Main.MenuButton:Destroy()
 end)
 pcall(function() 
     game:GetService("Players").LocalPlayer.PlayerGui.Main.HP:Destroy()
