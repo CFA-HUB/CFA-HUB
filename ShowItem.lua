@@ -63,6 +63,7 @@ local Right = Instance.new("Frame",game.Players.LocalPlayer.PlayerGui.BubbleChat
 Right.BackgroundTransparency = 1
 Right.Size = UDim2.new(.5,0,1,0) 
 Right.Position = UDim2.new(.6,0,0,0)
+Right.Name = "Right"
 tvk:Clone().Parent = Right
 local bucac
 for k,v in pairs(allitem) do 
@@ -184,6 +185,14 @@ spawn(function()
     end
 
 end)
+game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = true
+repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.TopContainer.Frame:FindFirstChild("Z")
+local rac = game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler:Clone()
+rac.LayoutOrder = 101
+game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = false
+
+rac.Parent = Right
+rac.Size = UDim2.new(1,0,0.3,0)
 function formatNumber(v)
     return tostring(v):reverse():gsub("%d%d%d", "%1,"):reverse():gsub("^,", "")
 end
@@ -194,17 +203,20 @@ local n = formatNumber(game.Players.LocalPlayer.Data.Fragments.Value)
 thieunang.Text = "ƒ"..n
 print("Done")
 pcall(function() 
-   game:GetService("Players").LocalPlayer.PlayerGui.Main.MenuButton:Destroy()
+    game:GetService("Players").LocalPlayer.PlayerGui.Main.MenuButton.Visible = false
+  -- game:GetService("Players").LocalPlayer.PlayerGui.Main.MenuButton:Destroy()
 end)
 pcall(function() 
-    game:GetService("Players").LocalPlayer.PlayerGui.Main.HP:Destroy()
+    game:GetService("Players").LocalPlayer.PlayerGui.Main.HP.Visible = false
+    --game:GetService("Players").LocalPlayer.PlayerGui.Main.HP:Destroy()
 end)
 pcall(function() 
-    game:GetService("Players").LocalPlayer.PlayerGui.Main.Energy:Destroy()
+    game:GetService("Players").LocalPlayer.PlayerGui.Main.Energy.Visible = false
+    --game:GetService("Players").LocalPlayer.PlayerGui.Main.Energy:Destroy()
 end)
 for k,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Main:GetChildren()) do 
     if v:IsA("ImageButton") then 
-        v:Destroy()
+        v.Visible = false
     end
 end
 pcall(function() 
