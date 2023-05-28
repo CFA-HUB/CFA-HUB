@@ -60,6 +60,8 @@ if not getgenv().NoclipSetup then
 	end)
 	getgenv().NoclipSetup = true
 end
+for k,v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do v:Disable() end 
+
 local exploitSupported = true
 if not isnetworkowner then exploitSupported = false isnetworkowner = function() return true end end
 if not setsimulationradius then 
